@@ -1,6 +1,11 @@
 arv — a fast 23andMe parser for Python
 ======================================
 
+*This project is currently just a work in progress! I intend to wrap dna-traits
+under a new name, using Cython to interface with dna-traits much more easily.*
+
+*For a working (but old) version, see https://github.com/cslarsen/dna-traits*
+
 Arv (Norwegian; "inheritance") is a Python module for parsing raw 23andMe
 genome files. It lets you lookup SNPs from RSIDs:
 

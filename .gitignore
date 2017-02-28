@@ -2,6 +2,8 @@
 *.pyc
 *.so
 __pycache__
+build
+genomes
 GPATH
 GRTAGS
 GTAGS
