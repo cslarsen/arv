@@ -7,7 +7,8 @@ cdef extern from "dnatraits.hpp":
         Genome(const size_t)
         Genome(const Genome&)
         double load_factor() const
-    cdef Genome parse(const char* filename)
+
+    cdef Genome parse(const char* filename) except +
 
 cdef class PyGenome:
     cdef Genome _genome
@@ -18,9 +19,5 @@ cdef class PyGenome:
     def load_factor(self):
         return self._genome.load_factor()
 
-    @staticmethod
-    def load(filename):
-        cdef Genome genome = parse(filename)
-        r = PyGenome()
-        r._genome = genome
-        return r
+    def load(self, filename):
+        self._genome = parse(filename)
