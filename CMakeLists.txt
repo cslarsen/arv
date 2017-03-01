@@ -24,6 +24,7 @@ endif()
 
 add_subdirectory("${PROJECT_SOURCE_DIR}/cpp")
 add_subdirectory("${PROJECT_SOURCE_DIR}/cython")
+add_subdirectory("${PROJECT_SOURCE_DIR}/python")
 add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
 
 message(STATUS "ARV_PYTHON_VERSION: ${ARV_PYTHON_VERSION}")

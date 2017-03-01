@@ -3,11 +3,11 @@ project(arv-cython CXX)
 
 include(UseCython)
 
-set_source_files_properties(${PROJECT_SOURCE_DIR}/arv.pyx
+set_source_files_properties(${PROJECT_SOURCE_DIR}/_arv.pyx
   PROPERTIES CYTHON_IS_CXX TRUE
 )
 
-cython_add_module(arv arv.pyx)
+cython_add_module(_arv _arv.pyx)
 
 set(libs PRIVATE arv-cpp)
 
@@ -15,4 +15,4 @@ if (NOT APPLE)
   list(APPEND libs PRIVATE ${PYTHON_LIBRARY})
 endif()
 
-target_link_libraries(arv ${libs})
+target_link_libraries(_arv ${libs})

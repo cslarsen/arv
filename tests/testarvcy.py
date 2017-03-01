@@ -2,21 +2,21 @@
 # Copyright 2017 Christian Stigen Larsen
 # Distributed under the GNU GPL v3 or later; see COPYING.
 
-import arv
+import _arv
 import unittest
 
 class ArvTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.genome = arv.load("fake_genome.txt")
+        cls.genome = _arv.load("fake_genome.txt")
 
     def test_len(self):
         self.assertEqual(len(self.genome), 13)
-        self.assertEqual(len(arv.PyGenome()), 0)
+        self.assertEqual(len(_arv.PyGenome()), 0)
 
     def test_ychromo(self):
         self.assertTrue(self.genome.ychromo)
-        self.assertFalse(arv.PyGenome().ychromo)
+        self.assertFalse(_arv.PyGenome().ychromo)
 
     def test_genotypes(self):
         self.assertEqual(self.genome[4477212], "AT")
