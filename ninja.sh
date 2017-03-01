@@ -8,5 +8,7 @@ cd build; time ( \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_OSX_ARCHITECTURES=x86_64 \
     -DCMAKE_INSTALL_PREFIX=install \
+    -DARV_PYTHON_VERSION=2 \
     -GNinja \
     $* && ninja)
+cd tests; ctest -VV

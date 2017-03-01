@@ -427,10 +427,3 @@ GenomeIterator Genome::end() const
   auto p = new GenomeIteratorImpl(i);
   return GenomeIterator(p);
 }
-
-Genome parse(const char* filename)
-{
-  Genome g;
-  parse_file(filename, g);
-  return g;
-}

@@ -198,7 +198,6 @@ Nucleotide complement(const Nucleotide& n);
  * Parse a 23andMe genome text file and put contents into genome.
  */
 void DLL_PUBLIC parse_file(const std::string& filename, Genome&);
-Genome DLL_PUBLIC parse(const char* filename);
 
 std::ostream& operator<<(std::ostream&, const Chromosome&);
 std::ostream& operator<<(std::ostream&, const Genotype&);
