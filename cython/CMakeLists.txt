@@ -9,7 +9,10 @@ set_source_files_properties(${PROJECT_SOURCE_DIR}/arv.pyx
 
 cython_add_module(arv arv.pyx)
 
-target_link_libraries(arv
-  PRIVATE arv-cpp
-  PRIVATE ${PYTHON_LIBRARY}
-)
+set(libs PRIVATE arv-cpp)
+
+if (NOT APPLE)
+  list(APPEND libs PRIVATE ${PYTHON_LIBRARY})
+endif()
+
+target_link_libraries(arv ${libs})
