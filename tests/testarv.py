@@ -12,9 +12,11 @@ class ArvTests(unittest.TestCase):
 
     def test_len(self):
         self.assertEqual(len(self.genome), 13)
+        self.assertEqual(len(arv.PyGenome()), 0)
 
     def test_ychromo(self):
-        self.assertTrue(self.genome.ychromo())
+        self.assertTrue(self.genome.ychromo)
+        self.assertFalse(arv.PyGenome().ychromo)
 
     def test_genotypes(self):
         self.assertEqual(self.genome[4477212], "AT")

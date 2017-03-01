@@ -38,6 +38,7 @@ cdef class PyGenome:
             key = int(key[2:])
         return self._genome.genotype(key)
 
+    @property
     def ychromo(self):
         return self._genome.y_chromosome
 
