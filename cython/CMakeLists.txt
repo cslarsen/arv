@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(arv-cython CXX)
 
-set(CMAKE_CXX_STANDARD 11)
-
 include(UseCython)
 
 set_source_files_properties(${PROJECT_SOURCE_DIR}/arv.pyx
