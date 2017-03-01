@@ -14,7 +14,7 @@ file(GLOB sources
 add_library(arv-cpp SHARED ${sources})
 
 target_include_directories(arv-cpp
-  PRIVATE ${CMAKE_SOURCE_DIR}
+  PUBLIC ${PROJECT_SOURCE_DIR}
   PRIVATE ${google_densehash_INCLUDE_DIR}
 )
 

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
-project(arv-cython C)
+project(arv-cython CXX)
+
+set(CMAKE_CXX_STANDARD 11)
 
 include(UseCython)
 
@@ -9,10 +11,7 @@ set_source_files_properties(${PROJECT_SOURCE_DIR}/arv.pyx
 
 cython_add_module(arv arv.pyx)
 
-target_include_directories(arv
-  PRIVATE ${PROJECT_SOURCE_DIR}/../cpp/
-)
-
 target_link_libraries(arv
-  PUBLIC arv-cpp
+  PRIVATE arv-cpp
+  PRIVATE ${PYTHON_LIBRARY}
 )
