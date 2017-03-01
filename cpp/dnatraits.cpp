@@ -57,6 +57,19 @@ std::ostream& operator<<(std::ostream& o, const Nucleotide& n)
   return o; // appease compiler
 }
 
+static char nucleotide_char(const Nucleotide& n)
+{
+  switch ( n ) {
+    case A: return 'A';
+    case C: return 'C';
+    case D: return 'D';
+    case G: return 'G';
+    case I: return 'I';
+    case NONE: return '-';
+    case T: return 'T';
+  }
+}
+
 std::ostream& operator<<(std::ostream& o, const Genotype& bp)
 {
   return o << bp.first << bp.second;
@@ -287,6 +300,20 @@ struct DLL_LOCAL Genome::GenomeImpl {
   const SNP& operator[](const RSID& rsid) const {
     return !contains(rsid)? NONE_SNP : const_cast<SNPMap&>(snps)[rsid];
   }
+
+  std::string genotype(const RSID& id) const {
+    const SNP& snp = operator[](id);
+
+    char s[3];
+    s[0] = s[1] = s[2];
+
+    if ( snp != NONE_SNP ) {
+      s[0] = nucleotide_char(snp.genotype.first);
+      s[1] = nucleotide_char(snp.genotype.second);
+    }
+
+    return std::string(s);
+  }
 };
 
 Genome::Genome():
@@ -332,6 +359,11 @@ Genome::~Genome()
 const SNP& Genome::operator[](const RSID& rsid) const
 {
   return (*pimpl)[rsid];
+}
+
+std::string Genome::genotype(const RSID& rsid) const
+{
+  return (*pimpl).genotype(rsid);
 }
 
 bool Genome::has(const RSID& rsid) const

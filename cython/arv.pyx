@@ -1,10 +1,14 @@
+# arv
 # Copyright 2017 Christian Stigen Larsen
 # Distributed under the GNU GPL v3 or later; see COPYING.
 
+from libc.stdint cimport uint32_t
 from libcpp cimport bool
 from libcpp.string cimport string
 
 cdef extern from "dnatraits.hpp":
+    ctypedef uint32_t RSID
+
     cdef cppclass Genome:
         Genome() except +
         Genome(const size_t) except +
@@ -13,6 +17,7 @@ cdef extern from "dnatraits.hpp":
         double load_factor() const
         size_t size() const
         bool y_chromosome
+        string genotype(const RSID& id) const
 
     cdef void parse_file(const string&, Genome&) except +
 
@@ -27,6 +32,11 @@ cdef class PyGenome:
 
     def __len__(self):
         return self._genome.size()
+
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            key = int(key[2:])
+        return self._genome.genotype(key)
 
     def ychromo(self):
         return self._genome.y_chromosome

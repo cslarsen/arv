@@ -140,6 +140,7 @@ struct DLL_PUBLIC Genome {
    * Access SNP. Throws on not found.
    */
   const SNP& operator[](const RSID& id) const;
+  std::string genotype(const RSID& id) const;
 
   /*!
    * Checks if hash table contains given RSID.
