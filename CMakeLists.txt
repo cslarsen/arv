@@ -9,6 +9,9 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 set(ARV_PYTHON_VERSION 3 CACHE STRING "Target Python version (e.g. 2 or 3)")
 set(Python_ADDITIONAL_VERSIONS ${ARV_PYTHON_VERSION})
 
+# Python package
+set(PACKAGE_VERSION "0.1")
+
 # Set default build type to release
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
