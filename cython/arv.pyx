@@ -24,22 +24,32 @@ cdef extern from "dnatraits.hpp":
 cdef class PyGenome:
     cdef Genome _genome
 
-    def __cinit__(self, size_t size=1000003):
+    def __cinit__(PyGenome self, size_t size=1000003):
         self._genome = Genome(size)
 
-    def load_factor(self):
+    cpdef double load_factor(PyGenome self):
         return self._genome.load_factor()
 
-    def __len__(self):
+    def __len__(PyGenome self):
         return self._genome.size()
 
-    def __getitem__(self, key):
+    def __getitem__(PyGenome self, key):
+        cdef RSID rsid
         if isinstance(key, str):
-            key = int(key[2:])
-        return self._genome.genotype(key)
+            rsid = int(key[2:])
+        elif isinstance(key, int):
+            rsid = key
+        else:
+            raise TypeError("Expected str or int but got %s" %
+                    type(key).__name__)
+        cdef string s = self._genome.genotype(rsid)
+        if s.empty():
+            raise KeyError(key)
+        else:
+            return s
 
     @property
-    def ychromo(self):
+    def ychromo(PyGenome self):
         return self._genome.y_chromosome
 
 def load(string filename):

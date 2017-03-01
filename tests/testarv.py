@@ -24,3 +24,16 @@ class ArvTests(unittest.TestCase):
         self.assertEqual(self.genome["rs4672279"], "GT")
         self.assertEqual(self.genome["rs742927"], "GG")
 
+        with self.assertRaises(TypeError):
+            self.genome[1.0]
+
+        with self.assertRaises(KeyError):
+            self.genome[123]
+
+        with self.assertRaises(KeyError):
+            self.genome["rs123"]
+
+    def test_load_factor(self):
+        self.assertIsInstance(self.genome.load_factor(), float)
+        self.assertGreater(self.genome.load_factor(), 0.0)
+        self.assertLess(self.genome.load_factor(), 1.0)
