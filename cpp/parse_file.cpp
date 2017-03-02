@@ -59,8 +59,9 @@ static inline Chromosome parse_chromo(const char*& s)
 
 static inline Genotype parse_genotype(const char*& s)
 {
-  return Genotype(parse_nucleotide(s),
-                  parse_nucleotide(s));
+  Nucleotide first = parse_nucleotide(s);
+  Nucleotide second = parse_nucleotide(s);
+  return Genotype(first, second);
 }
 
 static inline void skipline(const char*& s)
