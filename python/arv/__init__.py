@@ -7,7 +7,7 @@ Distributed under the GPL v3 or later.
 
 from _arv import (
     PyGenome as Genome,
-    parse,
+    load,
 )
 
 __author__ = "Christian Stigen Larsen"
@@ -18,5 +18,5 @@ __version__ = "1.0"
 
 __all__ = [
     "Genome",
-    "parse",
+    "load",
 ]

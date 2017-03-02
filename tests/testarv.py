@@ -2,23 +2,23 @@
 # Copyright 2017 Christian Stigen Larsen
 # Distributed under the GNU GPL v3 or later; see COPYING.
 
-import _arv
+import arv
 import unittest
 
-class ArvImplTests(unittest.TestCase):
+class ArvModuleTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.genome = _arv.load("fake_genome.txt")
+        cls.genome = arv.load("fake_genome.txt")
 
-    def test_cython_len(self):
+    def test_module_len(self):
         self.assertEqual(len(self.genome), 13)
-        self.assertEqual(len(_arv.PyGenome()), 0)
+        self.assertEqual(len(arv.Genome()), 0)
 
-    def test_cython_ychromo(self):
+    def test_module_ychromo(self):
         self.assertTrue(self.genome.ychromo)
-        self.assertFalse(_arv.PyGenome().ychromo)
+        self.assertFalse(arv.Genome().ychromo)
 
-    def test_cython_genotypes(self):
+    def test_module_genotypes(self):
         self.assertEqual(self.genome[4477212], "AT")
         self.assertEqual(self.genome["rs4477212"], "AT")
         self.assertEqual(self.genome["rs4672279"], "GT")
@@ -33,7 +33,7 @@ class ArvImplTests(unittest.TestCase):
         with self.assertRaises(KeyError):
             self.genome["rs123"]
 
-    def test_cython_load_factor(self):
+    def test_module_load_factor(self):
         self.assertIsInstance(self.genome.load_factor(), float)
         self.assertGreater(self.genome.load_factor(), 0.0)
         self.assertLess(self.genome.load_factor(), 1.0)
