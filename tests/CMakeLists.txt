@@ -3,7 +3,7 @@ project(arv-tests)
 
 enable_testing()
 
-add_test(testarvcy.py COMMAND
+add_test(testarvcy.py
   ${PYTHON_EXECUTABLE} -m unittest discover ${CMAKE_CURRENT_BINARY_DIR} -v)
 
 configure_file(fake_genome.txt fake_genome.txt COPYONLY)

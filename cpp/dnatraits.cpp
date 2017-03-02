@@ -304,8 +304,7 @@ struct DLL_LOCAL Genome::GenomeImpl {
   std::string genotype(const RSID& id) const {
     const SNP& snp = operator[](id);
 
-    char s[3];
-    s[0] = s[1] = s[2];
+    char s[3] = {0};
 
     if ( snp != NONE_SNP ) {
       s[0] = nucleotide_char(snp.genotype.first);

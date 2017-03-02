@@ -47,6 +47,12 @@ You can change which Python version to compile for with the CMake cache
 variable `ARV_PYTHON_VERSION`, for example `cmake -DARV_PYTHON_VERSION=2
 [...]`.
 
+Requirements
+------------
+
+  * CMake
+  * Cython
+
 License
 =======
 
