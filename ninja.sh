@@ -11,4 +11,5 @@ cd build; time ( \
     -DARV_PYTHON_VERSION=2 \
     -GNinja \
     $* && ninja)
-cd tests; ctest -VV
+(cd tests; ctest -VV)
+ninja install

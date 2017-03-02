@@ -31,18 +31,20 @@ add_custom_command(
   MAIN_DEPENDENCY ${CONFIG_H}
 )
 
-add_library(arv-cpp SHARED
+add_library(arv SHARED
   ${sources}
   ${SPARSECONFIG_H}
 )
 
-target_include_directories(arv-cpp
+target_include_directories(arv
   PUBLIC ${PROJECT_SOURCE_DIR}
   PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 # Hide all non-public symbols
-set_target_properties(arv-cpp PROPERTIES
+set_target_properties(arv PROPERTIES
   CXX_VISIBILITY_PRESET hidden
   VISIBILITY_INLINES_HIDDEN 1
 )
+
+install(TARGETS arv LIBRARY DESTINATION lib/arv)

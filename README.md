@@ -36,11 +36,15 @@ The recommended way is to install from PyPi:
 
     $ pip install arv
 
+*NOTE: This is not yet available!*
+
 You can also build from source. In that case, you need a C++ compiler with
 C++11 support, CMake and Cython:
 
     $ mkdir build; cd build
-    $ cmake .. -GNinja # ninja is optional, but recommended
+    $ cmake .. -GNinja \
+      -DARV_PYTHON_VERSION=2 -DCMAKE_INSTALL_PREFIX=../install
+    $ ccmake . # optional, for changing settings
     $ ninja
 
 You can change which Python version to compile for with the CMake cache
@@ -50,8 +54,10 @@ variable `ARV_PYTHON_VERSION`, for example `cmake -DARV_PYTHON_VERSION=2
 Requirements
 ------------
 
-  * CMake
-  * Cython
+  * A C++ compiler
+  * A UNIX system
+  * CMake 3.5 or newer
+  * Cython: `pip install cython`
 
 License
 =======
