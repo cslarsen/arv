@@ -12,4 +12,4 @@ configure_file(testarvcy.py testarvcy.py COPYONLY)
 
 set_tests_properties(arv-python PROPERTIES
   ENVIRONMENT
-    "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}/../cython:${CMAKE_CURRENT_BINARY_DIR}/../python")
+    "PYTHONPATH=${CMAKE_BINARY_DIR}/cython:${CMAKE_BINARY_DIR}/python")

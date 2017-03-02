@@ -18,7 +18,7 @@ file(MAKE_DIRECTORY "${SHASH_BUILD_DIR}/internal")
 # Create config.h
 add_custom_command(
   OUTPUT ${CONFIG_H}
-  COMMAND ${PROJECT_SOURCE_DIR}/../3rd-party/sparsehash/configure
+  COMMAND ${CMAKE_SOURCE_DIR}/3rd-party/sparsehash/configure
   WORKING_DIRECTORY ${SHASH_BUILD_DIR}
   USES_TERMINAL
   COMMENT "Configuring Google Sparsehash"
