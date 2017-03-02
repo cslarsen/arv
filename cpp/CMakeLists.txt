@@ -41,6 +41,7 @@ target_include_directories(arv-cpp
   PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+# Hide all non-public symbols
 set_target_properties(arv-cpp PROPERTIES
   CXX_VISIBILITY_PRESET hidden
   VISIBILITY_INLINES_HIDDEN 1

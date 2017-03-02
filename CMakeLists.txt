@@ -25,7 +25,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release" AND
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 endif()
 
-add_subdirectory("${PROJECT_SOURCE_DIR}/3rd-party")
 add_subdirectory("${PROJECT_SOURCE_DIR}/cpp")
 add_subdirectory("${PROJECT_SOURCE_DIR}/cython")
 add_subdirectory("${PROJECT_SOURCE_DIR}/python")
