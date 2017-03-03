@@ -14,6 +14,13 @@ import arv
 import sys
 import time
 
+try:
+    # Python 3.3+
+    mark_time = time.process_time
+except AttributeError:
+    # Python 2
+    mark_time = time.clock
+
 def parse_args():
     p = argparse.ArgumentParser(description="arv parse benchmarking")
     p.add_argument("--count", "-c", type=int, metavar="N", default=80,
@@ -36,9 +43,9 @@ def benchmark(filename, maxsteps=20):
     best = 9999
     steps = 0
     while True:
-        start = time.clock()
+        start = mark_time()
         genome = arv.load(filename)
-        stop = time.clock()
+        stop = mark_time()
 
         this = stop-start
         if this < best:
