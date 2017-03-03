@@ -17,4 +17,11 @@ endif()
 
 target_link_libraries(_arv ${libs})
 
+set_target_properties(_arv PROPERTIES
+  VISIBILITY_INLINES_HIDDEN 1
+  BUILD_WITH_INSTALL_RPATH FALSE
+  INSTALL_RPATH "\$ORIGIN"
+  INSTALL_RPATH_USE_LINK_PATH TRUE
+)
+
 install(TARGETS _arv LIBRARY DESTINATION lib/arv)
