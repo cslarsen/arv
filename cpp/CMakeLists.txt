@@ -31,7 +31,17 @@ add_custom_command(
   MAIN_DEPENDENCY ${CONFIG_H}
 )
 
-add_library(arv SHARED
+option(ARV_STATIC "Build arv C++ backend statically" OFF)
+
+if (ARV_STATIC)
+  set(_arv_library_type STATIC)
+  message(STATUS "Building arv C++ backend as a static library")
+else()
+  set(_arv_library_type SHARED)
+  message(STATUS "Building arv C++ backend as a shared library")
+endif()
+
+add_library(arv ${_arv_library_type}
   ${sources}
   ${SPARSECONFIG_H}
 )
@@ -41,10 +51,16 @@ target_include_directories(arv
   PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+if(ARV_STATIC AND CMAKE_COMPILER_IS_GNUCXX)
+  target_compile_options(arv PUBLIC -fPIC)
+endif()
+
 # Hide all non-public symbols
 set_target_properties(arv PROPERTIES
   CXX_VISIBILITY_PRESET hidden
   VISIBILITY_INLINES_HIDDEN 1
 )
 
-install(TARGETS arv LIBRARY DESTINATION lib/arv)
+if (NOT ARV_STATIC)
+  install(TARGETS arv LIBRARY DESTINATION lib/arv)
+endif()
