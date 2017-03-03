@@ -1,25 +1,20 @@
 arv — a fast 23andMe parser for Python
 ======================================
 
-*This project is currently just a work in progress! I intend to wrap dna-traits
-under a new name, using Cython to interface with dna-traits much more easily.*
-
-*For a working (but old) version, see https://github.com/cslarsen/dna-traits*
-
 Arv (Norwegian; "inheritance") is a Python module for parsing raw 23andMe
 genome files. It lets you lookup SNPs from RSIDs:
 
     import arv
 
-    genome = arv.parse("genome.txt")
+    genome = arv.load("genome.txt")
 
     print("You are a {gender} with {eyecolor} and {complexion} skin.".format(
       gender     = "man" if genome.y_chromosome else "woman",
-      complexion = "light" if genome.["rs1426654"] == "AA" else "dark",
+      complexion = "light" if genome["rs1426654"] == "AA" else "dark",
       eyecolor   = arv.unphased_match(genome["rs12913832"], {
-                      "AA": "brown",
-                      "AG": "brown or green",
-                      "GG": "blue"})))
+                      "AA": "brown eyes",
+                      "AG": "brown or green eyes",
+                      "GG": "blue eyes"})))
 
 In my case, this little program produces
 
@@ -28,6 +23,14 @@ In my case, this little program produces
 It's insanely fast: On a 2013 Xeon machine, a 24 Mb file is fully
 parsed and put into a hash table in less than 70 ms. Its guts are written in
 finely tuned C++ and is exposed to Python via Cython.
+
+Status
+======
+
+*This project is currently just a work in progress! I intend to wrap dna-traits
+under a new name, using Cython to interface with dna-traits much more easily.*
+
+*For a working (but old) version, see https://github.com/cslarsen/dna-traits*
 
 Installation
 ============

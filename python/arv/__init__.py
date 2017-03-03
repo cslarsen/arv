@@ -10,6 +10,8 @@ from _arv import (
     load,
 )
 
+from match import unphased_match
+
 __author__ = "Christian Stigen Larsen"
 __copyright__ = "Copyright 2014, 2016, 2017 Christian Stigen Larsen"
 __email__ = "csl@csl.name"
@@ -19,4 +21,5 @@ __version__ = "1.0"
 __all__ = [
     "Genome",
     "load",
+    "unphased_match",
 ]
