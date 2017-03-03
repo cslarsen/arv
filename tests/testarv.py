@@ -14,9 +14,9 @@ class ArvModuleTests(unittest.TestCase):
         self.assertEqual(len(self.genome), 13)
         self.assertEqual(len(arv.Genome()), 0)
 
-    def test_module_ychromo(self):
-        self.assertTrue(self.genome.ychromo)
-        self.assertFalse(arv.Genome().ychromo)
+    def test_module_ychromosome(self):
+        self.assertTrue(self.genome.y_chromosome)
+        self.assertFalse(arv.Genome().y_chromosome)
 
     def test_module_genotypes(self):
         self.assertEqual(self.genome[4477212], "AT")

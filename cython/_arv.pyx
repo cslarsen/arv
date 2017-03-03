@@ -50,7 +50,7 @@ cdef class PyGenome:
             return s
 
     @property
-    def ychromo(PyGenome self):
+    def y_chromosome(PyGenome self):
         return self._genome.y_chromosome
 
 def load(string filename):

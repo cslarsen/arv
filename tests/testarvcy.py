@@ -15,8 +15,8 @@ class ArvImplTests(unittest.TestCase):
         self.assertEqual(len(_arv.PyGenome()), 0)
 
     def test_cython_ychromo(self):
-        self.assertTrue(self.genome.ychromo)
-        self.assertFalse(_arv.PyGenome().ychromo)
+        self.assertTrue(self.genome.y_chromosome)
+        self.assertFalse(_arv.PyGenome().y_chromosome)
 
     def test_cython_genotypes(self):
         self.assertEqual(self.genome[4477212], "AT")
