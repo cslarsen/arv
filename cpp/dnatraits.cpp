@@ -23,51 +23,34 @@ struct DLL_LOCAL RSIDEq {
 };
 
 typedef google::dense_hash_map<RSID, SNP, RSIDHash, RSIDEq> SNPMap;
-
-const Genotype AA (A, A);
-const Genotype AC (A, C);
-const Genotype AG (A, G);
-const Genotype AT (A, T);
-const Genotype CA (C, A);
-const Genotype CC (C, C);
-const Genotype CG (C, G);
-const Genotype CT (C, T);
-const Genotype GA (G, A);
-const Genotype GC (G, C);
-const Genotype GG (G, G);
-const Genotype GT (G, T);
-const Genotype NN (NONE, NONE);
-const Genotype TA (T, A);
-const Genotype TC (T, C);
-const Genotype TG (T, G);
-const Genotype TT (T, T);
-const SNP NONE_SNP(NO_CHR, 0, NN);
+const SNP NONE_SNP(NO_CHR, 0, Genotype(NONE, NONE));
 
 std::ostream& operator<<(std::ostream& o, const Nucleotide& n)
 {
   switch ( n ) {
-    case A: return o << 'A';
-    case C: return o << 'C';
-    case D: return o << 'D';
-    case G: return o << 'G';
-    case I: return o << 'I';
+    case A:    return o << 'A';
+    case C:    return o << 'C';
+    case D:    return o << 'D';
+    case G:    return o << 'G';
+    case I:    return o << 'I';
     case NONE: return o << '-';
-    case T: return o << 'T';
+    case T:    return o << 'T';
   }
-  return o; // appease compiler
+  return o;
 }
 
 static char nucleotide_char(const Nucleotide& n)
 {
   switch ( n ) {
-    case A: return 'A';
-    case C: return 'C';
-    case D: return 'D';
-    case G: return 'G';
-    case I: return 'I';
+    case A:    return 'A';
+    case C:    return 'C';
+    case D:    return 'D';
+    case G:    return 'G';
+    case I:    return 'I';
     case NONE: return '-';
-    case T: return 'T';
+    case T:    return 'T';
   }
+  return '-';
 }
 
 std::ostream& operator<<(std::ostream& o, const Genotype& bp)
@@ -80,19 +63,18 @@ std::ostream& operator<<(std::ostream& o, const Chromosome& chr) {
     return o << static_cast<int>(chr);
 
   switch ( chr ) {
-    default: return o;
+    default: break;
     case CHR_MT: return o << "MT";
-    case CHR_X: return o << "X";
-    case CHR_Y: return o << "Y";
+    case CHR_X:  return o << "X";
+    case CHR_Y:  return o << "Y";
   }
 
-  return o; // appease compiler
+  return o;
 }
 
 std::ostream& operator<<(std::ostream& o, const SNP& snp)
 {
-  return o << snp.genotype << " " << snp.chromosome
-    << " " << snp.position;
+  return o << snp.genotype << " " << snp.chromosome << " " << snp.position;
 }
 
 /**
@@ -101,15 +83,15 @@ std::ostream& operator<<(std::ostream& o, const SNP& snp)
 Nucleotide complement(const Nucleotide& n)
 {
   switch ( n ) {
-    case A: return T;
-    case C: return G;
-    case G: return C;
-    case T: return A;
-    case D: return D;
-    case I: return I;
+    case A:    return T;
+    case C:    return G;
+    case D:    return D;
+    case G:    return C;
+    case I:    return I;
     case NONE: return NONE;
+    case T:    return A;
   }
-  return NONE; // appease compiler
+  return NONE;
 }
 
 Genotype::Genotype(const Nucleotide& a, const Nucleotide& b)

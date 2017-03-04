@@ -46,25 +46,6 @@ struct DLL_PUBLIC Genotype {
   bool operator<(const Genotype& g) const;
 };
 
-// Some handy constants
-extern DLL_PUBLIC const Genotype AA;
-extern DLL_PUBLIC const Genotype AC;
-extern DLL_PUBLIC const Genotype AG;
-extern DLL_PUBLIC const Genotype AT;
-extern DLL_PUBLIC const Genotype CA;
-extern DLL_PUBLIC const Genotype CC;
-extern DLL_PUBLIC const Genotype CG;
-extern DLL_PUBLIC const Genotype CT;
-extern DLL_PUBLIC const Genotype GA;
-extern DLL_PUBLIC const Genotype GC;
-extern DLL_PUBLIC const Genotype GG;
-extern DLL_PUBLIC const Genotype GT;
-extern DLL_PUBLIC const Genotype NN;
-extern DLL_PUBLIC const Genotype TA;
-extern DLL_PUBLIC const Genotype TC;
-extern DLL_PUBLIC const Genotype TG;
-extern DLL_PUBLIC const Genotype TT;
-
 #pragma pack(1)
 struct DLL_PUBLIC SNP {
   Chromosome chromosome : 5;
@@ -73,7 +54,7 @@ struct DLL_PUBLIC SNP {
 
   SNP(const Chromosome& = NO_CHR,
       const Position& = 0,
-      const Genotype& = NN);
+      const Genotype& = Genotype(NONE, NONE));
   SNP(const SNP&);
 
   SNP& operator=(const SNP&);

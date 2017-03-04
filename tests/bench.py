@@ -46,6 +46,7 @@ def benchmark(filename, maxsteps=20):
         start = mark_time()
         genome = arv.load(filename)
         stop = mark_time()
+        assert(len(genome) == 15)
 
         this = stop-start
         if this < best:

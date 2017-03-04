@@ -11,7 +11,7 @@ class ArvImplTests(unittest.TestCase):
         cls.genome = _arv.load("fake_genome.txt")
 
     def test_cython_len(self):
-        self.assertEqual(len(self.genome), 13)
+        self.assertEqual(len(self.genome), 15)
         self.assertEqual(len(_arv.PyGenome()), 0)
 
     def test_cython_ychromo(self):
