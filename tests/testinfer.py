@@ -3,12 +3,14 @@
 # Distributed under the GNU GPL v3 or later; see COPYING.
 
 import arv
+import os
 import unittest
 
 class ArvInferTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.genome = arv.load("fake_genome.txt")
+        filename = os.getenv("GENOME")
+        cls.genome = arv.load(filename)
 
     def test_gender(self):
         gender = "man" if self.genome.y_chromosome else "woman"

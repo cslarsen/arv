@@ -3,12 +3,14 @@
 # Distributed under the GNU GPL v3 or later; see COPYING.
 
 import _arv
+import os
 import unittest
 
 class ArvImplTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.genome = _arv.load("fake_genome.txt")
+        filename = os.getenv("GENOME")
+        cls.genome = _arv.load(filename)
 
     def test_cython_len(self):
         self.assertEqual(len(self.genome), 15)

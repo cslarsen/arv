@@ -3,12 +3,14 @@
 # Distributed under the GNU GPL v3 or later; see COPYING.
 
 import arv
+import os
 import unittest
 
 class ArvModuleTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.genome = arv.load("fake_genome.txt")
+        filename = os.getenv("GENOME")
+        cls.genome = arv.load(filename)
 
     def test_module_len(self):
         self.assertEqual(len(self.genome), 15)
