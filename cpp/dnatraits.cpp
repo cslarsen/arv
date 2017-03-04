@@ -1,12 +1,15 @@
 /*
- * Copyright (C) 2014, 2016 Christian Stigen Larsen
+ * Copyright 2014, 2016, 2017 Christian Stigen Larsen
  * Distributed under the GPL v3 or later. See COPYING.
  */
 
-#include <sstream>
 #include <google/dense_hash_map>
 
 #include "dnatraits.hpp"
+
+const SNP NONE_SNP(NO_CHR, 0, Genotype(NONE, NONE));
+
+namespace {
 
 struct DLL_LOCAL RSIDHash {
   inline std::size_t operator() (const RSID& rsid) const
@@ -23,20 +26,12 @@ struct DLL_LOCAL RSIDEq {
 };
 
 typedef google::dense_hash_map<RSID, SNP, RSIDHash, RSIDEq> SNPMap;
-const SNP NONE_SNP(NO_CHR, 0, Genotype(NONE, NONE));
 
-std::ostream& operator<<(std::ostream& o, const Nucleotide& n)
+} // anonymus namespace
+
+bool RsidSNP::operator==(const RsidSNP& o) const
 {
-  switch ( n ) {
-    case A:    return o << 'A';
-    case C:    return o << 'C';
-    case D:    return o << 'D';
-    case G:    return o << 'G';
-    case I:    return o << 'I';
-    case NONE: return o << '-';
-    case T:    return o << 'T';
-  }
-  return o;
+  return rsid == o.rsid && snp == o.snp;
 }
 
 static char nucleotide_char(const Nucleotide& n)
@@ -53,33 +48,6 @@ static char nucleotide_char(const Nucleotide& n)
   return '-';
 }
 
-std::ostream& operator<<(std::ostream& o, const Genotype& bp)
-{
-  return o << bp.first << bp.second;
-}
-
-std::ostream& operator<<(std::ostream& o, const Chromosome& chr) {
-  if ( chr >= NO_CHR && chr < CHR_MT )
-    return o << static_cast<int>(chr);
-
-  switch ( chr ) {
-    default: break;
-    case CHR_MT: return o << "MT";
-    case CHR_X:  return o << "X";
-    case CHR_Y:  return o << "Y";
-  }
-
-  return o;
-}
-
-std::ostream& operator<<(std::ostream& o, const SNP& snp)
-{
-  return o << snp.genotype << " " << snp.chromosome << " " << snp.position;
-}
-
-/**
- * Returns the complement nucleotide.
- */
 Nucleotide complement(const Nucleotide& n)
 {
   switch ( n ) {
@@ -195,7 +163,7 @@ bool SNP::operator==(const Genotype& g) const
   return genotype == g;
 }
 
-struct GenomeIteratorImpl {
+struct DLL_LOCAL GenomeIteratorImpl {
   SNPMap::const_iterator it;
 
   GenomeIteratorImpl(SNPMap::const_iterator& i):

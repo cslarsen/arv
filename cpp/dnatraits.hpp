@@ -7,7 +7,6 @@
 #define INC_DNATRAITS_H
 
 #include <cstdint>
-#include <iostream>
 #include <vector>
 #include <string>
 
@@ -75,10 +74,7 @@ struct DLL_PUBLIC RsidSNP {
   RSID rsid;
   SNP snp;
 
-  bool operator==(const RsidSNP& o) const
-  {
-    return rsid == o.rsid && snp == o.snp;
-  }
+  bool operator==(const RsidSNP& o) const;
 };
 
 struct DLL_PUBLIC GenomeIterator {
@@ -180,10 +176,5 @@ Nucleotide complement(const Nucleotide& n);
  * Parse a 23andMe genome text file and put contents into genome.
  */
 void DLL_PUBLIC parse_file(const std::string& filename, Genome&);
-
-std::ostream& operator<<(std::ostream&, const Chromosome&);
-std::ostream& operator<<(std::ostream&, const Genotype&);
-std::ostream& operator<<(std::ostream&, const Nucleotide&);
-std::ostream& operator<<(std::ostream&, const SNP&);
 
 #endif
