@@ -259,6 +259,9 @@ struct DLL_LOCAL Genome::GenomeImpl {
     if ( snp != NONE_SNP ) {
       s[0] = nucleotide_char(snp.genotype.first);
       s[1] = nucleotide_char(snp.genotype.second);
+
+      if ( s[0] != '-' && s[1] == '-' )
+        s[1] = '\0';
     }
 
     return std::string(s);

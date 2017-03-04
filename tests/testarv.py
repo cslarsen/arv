@@ -13,7 +13,7 @@ class ArvModuleTests(unittest.TestCase):
         cls.genome = arv.load(filename)
 
     def test_module_len(self):
-        self.assertEqual(len(self.genome), 15)
+        self.assertEqual(len(self.genome), 17)
         self.assertEqual(len(arv.Genome()), 0)
 
     def test_module_ychromosome(self):
@@ -21,20 +21,23 @@ class ArvModuleTests(unittest.TestCase):
         self.assertFalse(arv.Genome().y_chromosome)
 
     def test_module_genotypes(self):
-        # internal IDs not supported yet
-        #self.assertEqual(self.genome["i3001754"], "A")
-        #self.assertEqual(self.genome["i3001755"], "--")
-        #self.assertEqual(self.genome["i3001759"], "--")
-        #self.assertEqual(self.genome["i3001761"], "--")
-        #self.assertEqual(self.genome["i3001773"], "T")
-        #self.assertEqual(self.genome["i4000755"], "C")
-        #self.assertEqual(self.genome["i4000759"], "G")
+        # Internal IDs not supported yet
+        # self.assertEqual(self.genome["i3001754"], "A")
+        # self.assertEqual(self.genome["i3001755"], "--")
+        # self.assertEqual(self.genome["i3001759"], "--")
+        # self.assertEqual(self.genome["i3001761"], "--")
+        # self.assertEqual(self.genome["i3001773"], "T")
+        # self.assertEqual(self.genome["i4000755"], "C")
+        # self.assertEqual(self.genome["i4000759"], "G")
+
         self.assertEqual(self.genome["rs10488822"], "TC")
         self.assertEqual(self.genome["rs10810289"], "AA")
         self.assertEqual(self.genome["rs11980927"], "GG")
         self.assertEqual(self.genome["rs12913832"], "GG")
         self.assertEqual(self.genome["rs1426654"], "AA")
         self.assertEqual(self.genome["rs1540613"], "AG")
+        self.assertEqual(self.genome["rs28504042"], "--")
+        self.assertEqual(self.genome["rs3135027"], "G")
         self.assertEqual(self.genome["rs4477212"], "AT")
         self.assertEqual(self.genome["rs4536786"], "CA")
         self.assertEqual(self.genome["rs4672279"], "GT")
@@ -51,6 +54,8 @@ class ArvModuleTests(unittest.TestCase):
         self.assertEqual(self.genome[12913832], "GG")
         self.assertEqual(self.genome[1426654], "AA")
         self.assertEqual(self.genome[1540613], "AG")
+        self.assertEqual(self.genome[28504042], "--")
+        self.assertEqual(self.genome[3135027], "G")
         self.assertEqual(self.genome[4477212], "AT")
         self.assertEqual(self.genome[4536786], "CA")
         self.assertEqual(self.genome[4672279], "GT")
