@@ -95,13 +95,11 @@ cdef extern from "dnatraits.hpp":
 cdef class PyGenome:
     cdef Genome _genome
     cdef int orientation
-    cdef string filename
     cdef string name
 
     def __cinit__(PyGenome self, size_t size=1000003):
         self._genome = Genome(size)
         self.orientation = 0
-        self.filename = ""
         self.name = ""
 
     cpdef double load_factor(PyGenome self):
@@ -111,11 +109,41 @@ cdef class PyGenome:
         return self._genome.size()
 
     def __repr__(PyGenome self):
-        return "<Genome: SNPs=%d, y_chromosome=%s, orientation=%s, filename=%s, name=%s>" % (
-                    len(self), self.y_chromosome, self.orientation,
-                    repr(self.filename), repr(self.name))
+        return "<Genome: SNPs=%d, name=%r>" % (self.__len__(), self.name)
+
     def __getitem__(PyGenome self, key):
+        """Retrieves genotype keyed by its RSID.
+
+        Arguments:
+            key: An RSID as a string or integer.
+
+        Raises:
+            KeyError - SNP not found.
+
+        Returns:
+            A one or two-character string containing the genotype for this
+            RSID. The order of the two characters is the same as given in the
+            source file.
+
+            The characters that are used are `A`, `T`, `C`, `G` as well as `D`,
+            `I` and `-`. The first four are nucleotides, while `D` indicates
+            deletion, `I` insertion. SNPs that are present in the genome, but
+            with no result, are always indicated by two dashes, `--`. Some SNPs
+            only have one nucleotide, for example from the Y chromosome or
+            mitochondrial DNA.
+
+        Usage:
+            >>> genome["rs2534636"]
+            'C'
+            >>> genome["rs123"]
+            'AA'
+            >>> genome["rs28504042"]
+            '--'
+            >>> genome["rs3135027"]
+            'G'
+        """
         cdef RSID rsid
+
         if isinstance(key, str):
             rsid = int(key[2:])
         elif isinstance(key, int):
@@ -131,21 +159,25 @@ cdef class PyGenome:
 
     @property
     def y_chromosome(PyGenome self):
+        """Flag indicating presence of a Y chromosome."""
         return self._genome.y_chromosome
 
-def load(string filename):
+def load(string filename, name=None, size_t initial_size=1000003):
     """Loads given 23andMe raw genome file.
 
     Arguments:
         filename: Name of file to load.
+        name (optional): Name to give the genome
+        initial_size (optional): Number of initial empty slots to reserve in
+            the underlying hash table.
 
     Raises:
         RuntimeError
 
     Returns:
-        A PyGenome.
+        A ``Genome``.
     """
-    genome = PyGenome(1000003)
+    genome = PyGenome(initial_size)
     parse_file(filename, genome._genome)
-    genome.filename = filename
+    genome.name = name if name is not None else filename
     return genome
