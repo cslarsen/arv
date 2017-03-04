@@ -92,6 +92,16 @@ cdef extern from "dnatraits.hpp":
 
     cdef void parse_file(const string&, Genome&) except +
 
+cdef class PySNP:
+    cdef SNP _snp
+
+    def __cinit__(self):
+        self._snp = NONE_SNP
+
+    @property
+    def genotype(self):
+        return "??"
+
 cdef class PyGenome:
     cdef Genome _genome
     cdef int orientation
@@ -105,13 +115,37 @@ cdef class PyGenome:
     cpdef double load_factor(PyGenome self):
         return self._genome.load_factor()
 
-    def __len__(PyGenome self):
+    def keys(self):
+        return self._genome.rsids()
+
+    cdef vector[SNP] values(self):
+        return self._genome.snps()
+
+    def get_snp(self, key):
+        cdef RSID rsid
+
+        if isinstance(key, str):
+            rsid = int(key[2:])
+        elif isinstance(key, int):
+            rsid = key
+        else:
+            raise TypeError("Expected str or int but got %s" %
+                    type(key).__name__)
+        cdef SNP s = self._genome[rsid]
+        if s == NONE_SNP:
+            raise KeyError(key)
+        else:
+            snp = PySNP()
+            snp._snp = s
+            return snp
+
+    def __len__(self):
         return self._genome.size()
 
-    def __repr__(PyGenome self):
+    def __repr__(self):
         return "<Genome: SNPs=%d, name=%r>" % (self.__len__(), self.name)
 
-    def __getitem__(PyGenome self, key):
+    def __getitem__(self, key):
         """Retrieves genotype keyed by its RSID.
 
         Arguments:
@@ -181,3 +215,17 @@ def load(string filename, name=None, size_t initial_size=1000003):
     parse_file(filename, genome._genome)
     genome.name = name if name is not None else filename
     return genome
+
+def _sizes(self):
+    """Returns C++ sizeof() for internal structures."""
+    return {
+        "Chromosome": sizeof(Chromosome),
+        "Genome": sizeof(Genome),
+        "GenomeIterator": sizeof(GenomeIterator),
+        "Genotype": sizeof(Genotype),
+        "Nucleotide": sizeof(Nucleotide),
+        "Position": sizeof(Position),
+        "RSID": sizeof(RSID),
+        "RsidSNP": sizeof(RsidSNP),
+        "SNP": sizeof(SNP),
+    }

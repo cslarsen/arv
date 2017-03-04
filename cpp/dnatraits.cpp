@@ -89,9 +89,14 @@ bool Genotype::operator<(const Genotype& g) const
   return second < g.second;
 }
 
-SNP::SNP(const Chromosome& chr,
-    const Position& pos,
-    const Genotype& gt) :
+SNP::SNP() :
+  chromosome(NO_CHR),
+  position(0),
+  genotype(NONE, NONE)
+{
+}
+
+SNP::SNP(const Chromosome& chr, const Position& pos, const Genotype& gt) :
   chromosome(chr),
   position(pos),
   genotype(gt)

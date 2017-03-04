@@ -51,9 +51,8 @@ struct DLL_PUBLIC SNP {
   Position position;
   Genotype genotype;
 
-  SNP(const Chromosome& = NO_CHR,
-      const Position& = 0,
-      const Genotype& = Genotype(NONE, NONE));
+  SNP();
+  SNP(const Chromosome&, const Position&, const Genotype&);
   SNP(const SNP&);
 
   SNP& operator=(const SNP&);
