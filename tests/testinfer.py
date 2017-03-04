@@ -12,15 +12,15 @@ class ArvInferTests(unittest.TestCase):
         filename = os.getenv("GENOME")
         cls.genome = arv.load(filename)
 
-    def test_gender(self):
+    def test_infer_gender(self):
         gender = "man" if self.genome.y_chromosome else "woman"
         self.assertEqual(gender, "man")
 
-    def test_complexion(self):
+    def test_infer_complexion(self):
         complexion = "light" if self.genome["rs1426654"] == "AA" else "dark"
         self.assertEqual(complexion, "light")
 
-    def test_unphased_match_eyecolor(self):
+    def test_infer_unphased_match_eyecolor(self):
         eyecolor = arv.unphased_match(self.genome["rs12913832"], {
             "AA": "brown eyes",
             "AG": "brown or green eyes",
