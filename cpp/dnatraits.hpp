@@ -37,12 +37,14 @@ struct DLL_PUBLIC Genotype {
   Nucleotide first : 3;
   Nucleotide second : 3;
 
-  Genotype(const Nucleotide& a = NONE,
-           const Nucleotide& b = NONE);
+  Genotype();
+  Genotype(const Nucleotide& a, const Nucleotide& b);
 
   friend Genotype operator~(const Genotype&);
   bool operator==(const Genotype& g) const;
   bool operator<(const Genotype& g) const;
+
+  std::string to_string() const;
 };
 
 #pragma pack(1)
@@ -116,7 +118,6 @@ struct DLL_PUBLIC Genome {
    * Access SNP. Throws on not found.
    */
   const SNP& operator[](const RSID& id) const;
-  std::string genotype(const RSID& id) const;
 
   /*!
    * Checks if hash table contains given RSID.
@@ -175,5 +176,7 @@ Nucleotide complement(const Nucleotide& n);
  * Parse a 23andMe genome text file and put contents into genome.
  */
 void DLL_PUBLIC parse_file(const std::string& filename, Genome&);
+
+Genotype DLL_PUBLIC complement(const Genotype& g);
 
 #endif

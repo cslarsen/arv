@@ -62,6 +62,10 @@ Nucleotide complement(const Nucleotide& n)
   return NONE;
 }
 
+Genotype::Genotype() : first(NONE), second(NONE)
+{
+}
+
 Genotype::Genotype(const Nucleotide& a, const Nucleotide& b)
   : first(a), second(b)
 {
@@ -71,6 +75,11 @@ Genotype operator~(const Genotype& g)
 {
   return Genotype(complement(g.first),
                   complement(g.second));
+}
+
+Genotype DLL_PUBLIC complement(const Genotype& g)
+{
+  return ~g;
 }
 
 bool Genotype::operator==(const Genotype& g) const
@@ -87,6 +96,19 @@ bool Genotype::operator<(const Genotype& g) const
     return false;
 
   return second < g.second;
+}
+
+std::string Genotype::to_string() const
+{
+  char s[3] = {0};
+
+  s[0] = nucleotide_char(first);
+  s[1] = nucleotide_char(second);
+
+  if ( s[0] != '-' && s[1] == '-' )
+    s[1] = '\0';
+
+  return std::string(s);
 }
 
 SNP::SNP() :
@@ -258,18 +280,7 @@ struct DLL_LOCAL Genome::GenomeImpl {
 
   std::string genotype(const RSID& id) const {
     const SNP& snp = operator[](id);
-
-    char s[3] = {0};
-
-    if ( snp != NONE_SNP ) {
-      s[0] = nucleotide_char(snp.genotype.first);
-      s[1] = nucleotide_char(snp.genotype.second);
-
-      if ( s[0] != '-' && s[1] == '-' )
-        s[1] = '\0';
-    }
-
-    return std::string(s);
+    return snp.genotype.to_string();
   }
 };
 
@@ -316,11 +327,6 @@ Genome::~Genome()
 const SNP& Genome::operator[](const RSID& rsid) const
 {
   return (*pimpl)[rsid];
-}
-
-std::string Genome::genotype(const RSID& rsid) const
-{
-  return (*pimpl).genotype(rsid);
 }
 
 bool Genome::has(const RSID& rsid) const

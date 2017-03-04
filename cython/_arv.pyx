@@ -26,9 +26,12 @@ cdef extern from "dnatraits.hpp":
         Nucleotide first
         Nucleotide second
 
+        Genotype()
         Genotype(const Nucleotide&, const Nucleotide&)
         bool operator==(const Genotype&) const
         bool operator<(const Genotype&) const
+
+        string to_string() const
 
     cdef cppclass SNP:
         Chromosome chromosome
@@ -91,6 +94,18 @@ cdef extern from "dnatraits.hpp":
         RSID last
 
     cdef void parse_file(const string&, Genome&) except +
+    cdef Genotype complement(const Genotype&)
+
+cdef class PyGenotype:
+    cdef Genotype _genotype
+
+    def __repr__(self):
+        return self._genotype.to_string()
+
+    def __invert__(self):
+        gt = PyGenotype()
+        gt._genotype = complement(self._genotype)
+        return gt
 
 cdef class PySNP:
     cdef SNP _snp
@@ -99,8 +114,31 @@ cdef class PySNP:
         self._snp = NONE_SNP
 
     @property
+    def position(self):
+        return self._snp.position;
+
+    @property
+    def chromosome(self):
+        cdef Chromosome c = self._snp.chromosome
+        if c >= CHR1 and c <= CHR22:
+            return c
+        return {NO_CHR: None,
+                CHR_MT: "MT",
+                CHR_X: "X",
+                CHR_Y: "Y"}[c]
+
+    @property
     def genotype(self):
-        return "??"
+        gt = PyGenotype()
+        gt._genotype = self._snp.genotype
+        return gt
+
+    def __repr__(self):
+        return "<SNP: chromosome=%r position=%r genotype=%r>" % (
+                self.chromosome, self.position, self.genotype)
+
+    def __str__(self):
+        return self.genotype
 
 cdef class PyGenome:
     cdef Genome _genome
@@ -185,11 +223,12 @@ cdef class PyGenome:
         else:
             raise TypeError("Expected str or int but got %s" %
                     type(key).__name__)
-        cdef string s = self._genome.genotype(rsid)
-        if s.empty():
+
+        cdef SNP s = self._genome[rsid]
+        if s == NONE_SNP:
             raise KeyError(key)
         else:
-            return s
+            return s.genotype.to_string()
 
     @property
     def y_chromosome(PyGenome self):
