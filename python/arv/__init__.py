@@ -14,6 +14,8 @@ from _arv import (
 )
 
 from match import unphased_match
+import traits
+import util
 
 __author__ = "Christian Stigen Larsen"
 __copyright__ = "Copyright 2014, 2016, 2017 Christian Stigen Larsen"

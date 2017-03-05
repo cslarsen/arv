@@ -9,8 +9,8 @@ Copyright (C) 2014, 2016 Christian Stigen Larsen
 Distributed under the GPL v3 or later. See COPYING.
 """
 
-from dna_traits.match import unphased_match, assert_european
-from dna_traits.util import make_report
+from arv.match import unphased_match, assert_european
+from arv.util import make_report
 
 def bitter_taste(genome):
     "Bitter taste perception."
