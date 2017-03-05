@@ -13,9 +13,9 @@ from _arv import (
     PySNP as SNP,
 )
 
-from match import unphased_match
-import traits
-import util
+from .match import unphased_match
+from . import traits
+from . import util
 
 __author__ = "Christian Stigen Larsen"
 __copyright__ = "Copyright 2014, 2016, 2017 Christian Stigen Larsen"

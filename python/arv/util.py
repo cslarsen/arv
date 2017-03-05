@@ -14,9 +14,9 @@ def make_report(genome, functions):
 
         try:
             report[title] = func(genome)
-        except ValueError, e:
+        except ValueError as e:
             report[title] = "Error: %s" % e
-        except AssertionError, e:
+        except AssertionError as e:
             report[title] = "Error: %s" % e
         except NotImplementedError:
             continue

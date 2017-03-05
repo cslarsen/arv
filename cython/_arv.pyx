@@ -1,3 +1,5 @@
+# cython: c_string_type=unicode, c_string_encoding=utf8
+
 # arv
 # Copyright 2017 Christian Stigen Larsen
 # Distributed under the GNU GPL v3 or later; see COPYING.
@@ -143,8 +145,8 @@ cdef class PySNP:
 cdef class PyGenome:
     cdef Genome _genome
     cdef int orientation
-    cdef string name
-    cdef string ethnicity
+    cdef str name
+    cdef str ethnicity
 
     def __cinit__(PyGenome self, size_t size=1000003):
         self._genome = Genome(size)
@@ -237,7 +239,7 @@ cdef class PyGenome:
         """Flag indicating presence of a Y chromosome."""
         return self._genome.y_chromosome
 
-def load(string filename, name=None, ethnicity=None, size_t initial_size=1000003):
+def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
     """Loads given 23andMe raw genome file.
 
     Arguments:
@@ -255,7 +257,7 @@ def load(string filename, name=None, ethnicity=None, size_t initial_size=1000003
         A ``Genome``.
     """
     genome = PyGenome(initial_size)
-    parse_file(filename, genome._genome)
+    parse_file(filename.encode("utf-8"), genome._genome)
     genome.name = name if name is not None else filename
     genome.ethnicity = ethnicity if ethnicity is not None else ""
     return genome

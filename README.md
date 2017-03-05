@@ -52,7 +52,9 @@ C++11 support, CMake and Cython:
 
 You can change which Python version to compile for with the CMake cache
 variable `ARV_PYTHON_VERSION`, for example `cmake -DARV_PYTHON_VERSION=2
-[...]`.
+[...]`. If you have several versions of Python installed on your machine, e.g.
+3.3 and 3.4 and so on, you are advised to specify both major and minor version
+here, for example `ARV_PYTHON_VERSION=3.3`.
 
 Requirements
 ------------
