@@ -3,12 +3,20 @@ project(arv-tests)
 
 enable_testing()
 
+file(GLOB python_files
+  "${CMAKE_SOURCE_DIR}/tests/*.py")
+
+foreach(filename ${python_files})
+  get_filename_component(basename ${filename} NAME)
+  configure_file(${filename} ${CMAKE_BINARY_DIR}/tests/${basename} COPYONLY)
+endforeach()
+
 add_test(arv-python
-  ${PYTHON_EXECUTABLE} -m unittest discover ${CMAKE_SOURCE_DIR}/tests -v)
+  ${PYTHON_EXECUTABLE} -m unittest discover ${CMAKE_BINARY_DIR}/tests -v)
 
 add_test(arv-benchmark
   ${PYTHON_EXECUTABLE}
-  ${CMAKE_SOURCE_DIR}/tests/bench.py
+  ${CMAKE_BINARY_DIR}/tests/bench.py
   ${CMAKE_SOURCE_DIR}/tests/fake_genome.txt -c10)
 
 set(env
