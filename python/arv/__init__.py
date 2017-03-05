@@ -6,8 +6,11 @@ Distributed under the GPL v3 or later.
 """
 
 from _arv import (
-    PyGenome as Genome,
+    _sizes,
     load,
+    PyGenome as Genome,
+    PyGenotype as Genotype,
+    PySNP as SNP,
 )
 
 from match import unphased_match
@@ -20,6 +23,9 @@ __version__ = "1.0"
 
 __all__ = [
     "Genome",
+    "Genotype",
     "load",
+    "SNP",
     "unphased_match",
+    "_sizes",
 ]

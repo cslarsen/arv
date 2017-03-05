@@ -144,11 +144,13 @@ cdef class PyGenome:
     cdef Genome _genome
     cdef int orientation
     cdef string name
+    cdef string ethnicity
 
     def __cinit__(PyGenome self, size_t size=1000003):
         self._genome = Genome(size)
         self.orientation = 0
         self.name = ""
+        self.ethnicity = ""
 
     cpdef double load_factor(PyGenome self):
         return self._genome.load_factor()
@@ -235,12 +237,14 @@ cdef class PyGenome:
         """Flag indicating presence of a Y chromosome."""
         return self._genome.y_chromosome
 
-def load(string filename, name=None, size_t initial_size=1000003):
+def load(string filename, name=None, ethnicity=None, size_t initial_size=1000003):
     """Loads given 23andMe raw genome file.
 
     Arguments:
         filename: Name of file to load.
         name (optional): Name to give the genome
+        ethnicity: Provide genome's ethnicity to unlock more reports. Accepted
+            values are typically "european", "african", "asian".
         initial_size (optional): Number of initial empty slots to reserve in
             the underlying hash table.
 
@@ -253,6 +257,7 @@ def load(string filename, name=None, size_t initial_size=1000003):
     genome = PyGenome(initial_size)
     parse_file(filename, genome._genome)
     genome.name = name if name is not None else filename
+    genome.ethnicity = ethnicity if ethnicity is not None else ""
     return genome
 
 def _sizes(self):
