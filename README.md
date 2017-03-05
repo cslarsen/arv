@@ -1,8 +1,8 @@
 arv — a fast 23andMe parser for Python
 ======================================
 
-Arv (Norwegian; "inheritance") is a Python module for parsing raw 23andMe
-genome files. It lets you lookup SNPs from RSIDs:
+Arv (Norwegian; "inheritance" or "heritage") is a Python module for parsing raw
+23andMe genome files. It lets you lookup SNPs from RSIDs:
 
     import arv
 
