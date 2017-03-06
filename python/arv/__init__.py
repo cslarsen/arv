@@ -5,7 +5,7 @@ Copyright 2014, 2016, 2017 Christian Stigen Larsen
 Distributed under the GPL v3 or later.
 """
 
-from _arv import (
+from ._arv import (
     _sizes,
     load,
     PyGenome as Genome,
