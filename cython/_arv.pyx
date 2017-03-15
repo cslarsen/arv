@@ -140,7 +140,7 @@ cdef class PySNP:
                 self.chromosome, self.position, self.genotype)
 
     def __str__(self):
-        return self.genotype
+        return str(self.genotype)
 
 cdef class PyGenome:
     cdef Genome _genome
