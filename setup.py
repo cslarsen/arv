@@ -1,4 +1,5 @@
 from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext
 import multiprocessing
 import os
 import shutil
@@ -23,6 +24,11 @@ def configure_google_hashmap():
         raise RuntimeError("Error configuring Google hash map")
     shutil.copy("src/config.h", "cpp/sparsehash/internal/sparseconfig.h")
 
+class BuildExt(build_ext):
+    def run(self):
+        configure_google_hashmap()
+        return build_ext.run(self)
+
 def extensions():
     from Cython.Build import cythonize
     import multiprocessing
@@ -42,7 +48,7 @@ def extensions():
             extra_compile_args=["-std=c++11", "-g0"], # gcc specific
         ),
     ]
-    configure_google_hashmap()
+    #configure_google_hashmap()
     return cythonize(exts, nthreads=multiprocessing.cpu_count())
 
 def slurp(filename):
@@ -85,4 +91,5 @@ setup(
     setup_requires=["cython>=0.25"],
     ext_modules=lazy_cythonize(extensions),
     test_suite="setup.get_testsuite",
+    cmdclass={'build_ext': BuildExt},
 )
