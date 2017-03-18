@@ -55,10 +55,10 @@ details.
     :scale: 100%
     :target: https://travis-ci.org/cslarsen/lyn
 
-.. |license| image:: https://img.shields.io/badge/license-GPL%20v3.1%2B-blue.svg
+.. |license| image:: https://img.shields.io/badge/license-GPL%20v3%2B-blue.svg
     :target: http://www.gnu.org/licenses/old-licenses/gpl-3.en.html
     :alt: Project License
 
-.. |versions| image:: https://img.shields.io/badge/python-2.7%2C%203.4-blue.svg
+.. |versions| image:: https://img.shields.io/badge/python-2%2C%203-blue.svg
     :target: https://pypi.python.org/pypi/lyn/
     :alt: Supported Python versions
