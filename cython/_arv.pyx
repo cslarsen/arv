@@ -99,9 +99,13 @@ cdef extern from "dnatraits.hpp":
     cdef Genotype complement(const Genotype&)
 
 cdef class PyGenotype:
+    """A pair of nucleotides."""
     cdef Genotype _genotype
 
     def __repr__(self):
+        return self._genotype.to_string()
+
+    def __str__(self):
         return self._genotype.to_string()
 
     def __invert__(self):
@@ -110,6 +114,7 @@ cdef class PyGenotype:
         return gt
 
 cdef class PySNP:
+    """A single nucleotide polymorphism."""
     cdef SNP _snp
 
     def __cinit__(self):
@@ -131,6 +136,7 @@ cdef class PySNP:
 
     @property
     def genotype(self):
+        """Returns Genotype."""
         gt = PyGenotype()
         gt._genotype = self._snp.genotype
         return gt
@@ -143,6 +149,11 @@ cdef class PySNP:
         return str(self.genotype)
 
 cdef class PyGenome:
+    """A collection of SNPs for a human being.
+
+    Provides a dictionary interface, including keys, values, __get_item__ and
+    so on.
+    """
     cdef Genome _genome
     cdef int orientation
     cdef str name
@@ -155,6 +166,7 @@ cdef class PyGenome:
         self.ethnicity = ""
 
     cpdef double load_factor(PyGenome self):
+        """The underlying hash table's load factor."""
         return self._genome.load_factor()
 
     def keys(self):
@@ -164,6 +176,19 @@ cdef class PyGenome:
         return self._genome.snps()
 
     def get_snp(self, key):
+        """Retrieves given SNP.
+
+        Arguments:
+            key: An RSID as a string ("rs123") or an integer (123, for
+                 example).
+
+        Returns:
+            A ``SNP``.
+
+        Raises:
+            KeyError - if RSID was not found.
+        """
+
         cdef RSID rsid
 
         if isinstance(key, str):
@@ -243,15 +268,16 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
     """Loads given 23andMe raw genome file.
 
     Arguments:
-        filename: Name of file to load.
-        name (optional): Name to give the genome
-        ethnicity: Provide genome's ethnicity to unlock more reports. Accepted
-            values are typically "european", "african", "asian".
+        filename:        Name of file to load.
+        name (optional): Name to give the genome. Will use filename by default.
+        ethnicity:       Provide genome's ethnicity to unlock more reports.
+                         Accepted values are typically "european", "african",
+                         "asian". None by default.
         initial_size (optional): Number of initial empty slots to reserve in
-            the underlying hash table.
+                                 the underlying hash table.
 
     Raises:
-        RuntimeError
+        RuntimeError - instead of FileNotFoundError etc.
 
     Returns:
         A ``Genome``.
