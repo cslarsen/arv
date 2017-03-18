@@ -1,4 +1,19 @@
-language: python
+sudo: false
+
+language: cpp
+
+compiler:
+    - gcc
+
+install:
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
 
 python:
   - "2.7"
@@ -9,5 +24,3 @@ install:
 
 script:
   - python setup.py test
-
-sudo: false
