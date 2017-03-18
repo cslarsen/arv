@@ -76,5 +76,6 @@ setup(
     ],
     platforms=["unix", "linux", "osx"],
     install_requires=["cython>=0.25"],
+    setup_requires=["cython>=0.25"],
     ext_modules=lazy_cythonize(extensions),
 )
