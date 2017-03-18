@@ -2,7 +2,7 @@ arv — a fast 23andMe parser for Python
 ======================================
 
 Arv (Norwegian; "inheritance" or "heritage") is a Python module for parsing raw
-23andMe genome files. It lets you lookup SNPs from RSIDs:
+23andMe genome files. It lets you lookup SNPs from RSIDs::
 
     from arv import load, unphased_match as match
 
@@ -15,33 +15,33 @@ Arv (Norwegian; "inheritance" or "heritage") is a Python module for parsing raw
                                                 "AG": "brown or green",
                                                 "GG": "blue"})))
 
-In my case, this little program produces
+In my case, this little program produces::
 
     You are a man with blue eyes and light skin.
 
-It's insanely fast: On a 2013 Xeon machine, a 24 Mb file is fully
-parsed and put into a hash table in less than 70 ms. Its guts are written in
-finely tuned C++ and is exposed to Python via Cython.
+It's insanely fast: On a 2013 Xeon machine, a 24 Mb file is fully parsed and
+put into a hash table in less than 70 ms. Its guts are written in finely tuned
+C++ and is exposed to Python via Cython.
 
 Status
 ======
 
-*This project is currently just a work in progress! I intend to wrap dna-traits
-under a new name, using Cython to interface with dna-traits much more easily.*
-
-*For a working (but old) version, see https://github.com/cslarsen/dna-traits*
+> This project is currently just a work in progress! I intend to wrap dna-traits
+under a new name, using Cython to interface with dna-traits much more easily.
+>
+> For a working (but old) version, see https://github.com/cslarsen/dna-traits*
 
 Installation
 ============
 
-The recommended way is to install from PyPi:
+The recommended way is to install from PyPi::
 
     $ pip install arv
 
-*NOTE: This is not yet available!*
+**NOTE: This is not yet available!**
 
 You can also build from source. In that case, you need a C++ compiler with
-C++11 support, CMake and Cython:
+C++11 support, CMake and Cython::
 
     $ mkdir build; cd build
     $ cmake .. -GNinja \
@@ -58,9 +58,9 @@ here, for example `ARV_PYTHON_VERSION=3.3`.
 Requirements
 ------------
 
-  * A C++ compiler
+  * A C++ compiler with C++11 support
   * A UNIX system
-  * CMake 3.5 or newer
+  * Optional: CMake 3.5 or newer
   * Cython: `pip install cython`
 
 License
