@@ -49,10 +49,10 @@ def slurp(filename):
     with open(filename, "rt") as f:
         return f.read()
 
-#def get_testsuite():
-    #loader = unittest.TestLoader()
-    #suite = loader.discover("tests", pattern="test*.py")
-    #return suite
+def get_testsuite():
+    loader = unittest.TestLoader()
+    suite = loader.discover("tests", pattern="test*.py")
+    return suite
 
 setup(
     name="arv",
@@ -84,5 +84,5 @@ setup(
     install_requires=["cython>=0.25"],
     setup_requires=["cython>=0.25"],
     ext_modules=lazy_cythonize(extensions),
-    test_suite="tests",
+    test_suite="setup.get_testsuite",
 )
