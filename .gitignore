@@ -3,8 +3,13 @@
 *.so
 __pycache__
 build
+config.log
+config.status
+cpp/sparsehash/internal/sparseconfig.h
 genomes
 GPATH
 GRTAGS
 GTAGS
+Makefile
+src
 Testing

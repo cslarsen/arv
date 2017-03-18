@@ -52,4 +52,4 @@ target_include_directories(_arv
   PRIVATE ${CMAKE_BINARY_DIR}/cpp # sparseconfig.h
 )
 
-install(TARGETS _arv LIBRARY DESTINATION lib/arv)
+install(TARGETS _arv LIBRARY DESTINATION lib)
