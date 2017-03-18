@@ -42,13 +42,8 @@ The recommended way is to install from PyPi.
 
     $ pip install arv
 
-**NOTE: PyPi/pip is not yet available!**
-
-In the meantime, you can do
-
-.. code:: bash
-
-    $ python setup.py install
+Note that the pip install builds from source. And if it breaks, please submit a
+bug report on GitHub. The whole pip thing is a bit sketchy right now.
 
 License
 =======
