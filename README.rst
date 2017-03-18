@@ -2,18 +2,20 @@ arv — a fast 23andMe parser for Python
 ======================================
 
 Arv (Norwegian; "inheritance" or "heritage") is a Python module for parsing raw
-23andMe genome files. It lets you lookup SNPs from RSIDs::
+23andMe genome files. It lets you lookup SNPs from RSIDs.
 
-    from arv import load, unphased_match as match
+.. code:: python
 
-    genome = load("genome.txt")
+  from arv import load, unphased_match as match
 
-    print("You are a {gender} with {color} eyes and {complexion} skin.".format(
-      gender     = "man" if genome.y_chromosome else "woman",
-      complexion = "light" if genome["rs1426654"] == "AA" else "dark",
-      eyecolor   = match(genome["rs12913832"], {"AA": "brown",
-                                                "AG": "brown or green",
-                                                "GG": "blue"})))
+  genome = load("genome.txt")
+
+  print("You are a {gender} with {color} eyes and {complexion} skin.".format(
+    gender     = "man" if genome.y_chromosome else "woman",
+    complexion = "light" if genome["rs1426654"] == "AA" else "dark",
+    eyecolor   = match(genome["rs12913832"], {"AA": "brown",
+                                              "AG": "brown or green",
+                                              "GG": "blue"})))
 
 In my case, this little program produces::
 
