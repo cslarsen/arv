@@ -1,6 +1,7 @@
 *.o
 *.pyc
 *.so
+.tox
 __pycache__
 build
 config.log
@@ -11,5 +12,6 @@ GPATH
 GRTAGS
 GTAGS
 Makefile
+MANIFEST
 src
 Testing

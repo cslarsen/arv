@@ -28,42 +28,27 @@ C++ and is exposed to Python via Cython.
 Status
 ======
 
-> This project is currently just a work in progress! I intend to wrap dna-traits
-under a new name, using Cython to interface with dna-traits much more easily.
->
-> For a working (but old) version, see https://github.com/cslarsen/dna-traits*
+> This project is currently just a work in progress! I intend to wrap
+dna-traits under a new name, using Cython to interface with dna-traits much
+more easily.  For a working (but old) version, see
+https://github.com/cslarsen/dna-traits
 
 Installation
 ============
 
-The recommended way is to install from PyPi::
+The recommended way is to install from PyPi.
+
+.. code:: bash
 
     $ pip install arv
 
-**NOTE: This is not yet available!**
+**NOTE: PyPi/pip is not yet available!**
 
-You can also build from source. In that case, you need a C++ compiler with
-C++11 support, CMake and Cython::
+In the meantime, you can do
 
-    $ mkdir build; cd build
-    $ cmake .. -GNinja \
-      -DARV_PYTHON_VERSION=2 -DCMAKE_INSTALL_PREFIX=../install
-    $ ccmake . # optional, for changing settings
-    $ ninja
+.. code:: bash
 
-You can change which Python version to compile for with the CMake cache
-variable `ARV_PYTHON_VERSION`, for example `cmake -DARV_PYTHON_VERSION=2
-[...]`. If you have several versions of Python installed on your machine, e.g.
-3.3 and 3.4 and so on, you are advised to specify both major and minor version
-here, for example `ARV_PYTHON_VERSION=3.3`.
-
-Requirements
-------------
-
-  * A C++ compiler with C++11 support
-  * A UNIX system
-  * Optional: CMake 3.5 or newer
-  * Cython: `pip install cython`
+    $ python setup.py install
 
 License
 =======
