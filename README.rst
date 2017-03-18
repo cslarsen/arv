@@ -1,5 +1,6 @@
 arv — a fast 23andMe parser for Python
 ======================================
+|travis-status| |versions| |license|
 
 Arv (Norwegian; "heritage" or "inheritance") is a Python module for parsing raw
 23andMe genome files. It lets you lookup SNPs from RSIDs.
@@ -45,7 +46,19 @@ License
 
 Copyright 2017 Christian Stigen Larsen
 
-Distributed under the GNU GPL v3 or later.
+Distributed under the GNU GPL v3 or later. See the file COPYING for the full
+license text. This software makes use of open source software; see LICENSES for
+details.
 
-See the file COPYING for the full license text. This software makes use of open
-source software; see LICENSES for details.
+.. |travis-status| image:: https://travis-ci.org/cslarsen/arv.svg?branch=master
+    :alt: Travis build status
+    :scale: 100%
+    :target: https://travis-ci.org/cslarsen/lyn
+
+.. |license| image:: https://img.shields.io/badge/license-GPL%20v3.1%2B-blue.svg
+    :target: http://www.gnu.org/licenses/old-licenses/gpl-3.en.html
+    :alt: Project License
+
+.. |versions| image:: https://img.shields.io/badge/python-2.7%2C%203.4-blue.svg
+    :target: https://pypi.python.org/pypi/lyn/
+    :alt: Supported Python versions
