@@ -63,7 +63,6 @@ def get_testsuite():
 setup(
     name="arv",
     packages=["arv"],
-    package_dir={"arv": "python/arv"},
     version="0.1",
     description="A fast 23andMe raw genome file parser",
     author="Christian Stigen Larsen",
