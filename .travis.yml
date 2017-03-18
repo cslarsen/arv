@@ -20,7 +20,7 @@ python:
   - "3.4"
 
 install:
-  - python setup.py install --user
+  - CC=g++-4.8 python setup.py install --user
 
 script:
-  - python setup.py test
+  - CC=g++-4.8 python setup.py test
