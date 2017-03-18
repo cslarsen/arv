@@ -20,7 +20,7 @@ python:
   - "3.4"
 
 install:
-  - python setup.py -q install
+  - python setup.py install --user
 
 script:
   - python setup.py test
