@@ -60,7 +60,7 @@ __author__ = "Christian Stigen Larsen"
 __copyright__ = "Copyright 2014, 2016, 2017 Christian Stigen Larsen"
 __email__ = "csl@csl.name"
 __license__ = "GNU General Public License v3"
-__version__ = "0.1"
+__version__ = "0.2"
 
 __all__ = [
     "_sizes",
