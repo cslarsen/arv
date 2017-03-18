@@ -2,6 +2,7 @@ from setuptools import setup, Extension
 import multiprocessing
 import os
 import shutil
+import unittest
 
 # From http://stackoverflow.com/a/26698408/21028
 class lazy_cythonize(list):
@@ -48,6 +49,11 @@ def slurp(filename):
     with open(filename, "rt") as f:
         return f.read()
 
+#def get_testsuite():
+    #loader = unittest.TestLoader()
+    #suite = loader.discover("tests", pattern="test*.py")
+    #return suite
+
 setup(
     name="arv",
     packages=["arv"],
@@ -78,4 +84,5 @@ setup(
     install_requires=["cython>=0.25"],
     setup_requires=["cython>=0.25"],
     ext_modules=lazy_cythonize(extensions),
+    test_suite="tests",
 )
