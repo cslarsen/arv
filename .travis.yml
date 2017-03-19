@@ -1,28 +1,19 @@
 sudo: false
-
 language: cpp
-
 compiler:
     - gcc
-
-install:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - g++-4.8
-
+      - g++-4.8
+install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - pip install tox-travis --user
 python:
   - "2.7"
   - "3.4"
-
-install:
-  - pip install tox-travis --user
-
 script:
   - CC=g++-4.8 python2 setup.py test
-  - CC=g++-4.8 python3 setup.py test
   - tox
