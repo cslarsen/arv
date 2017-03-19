@@ -1,4 +1,4 @@
-sudo: true
+sudo: false
 language: python
 python:
   - "2.7"
@@ -13,6 +13,5 @@ addons:
       - g++-4.8
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-  - pip install tox-travis
 script:
-  - CXX=g++-4.8 python setup.py test
+  - CC=g++-4.8 CXX=g++-4.8 python setup.py test
