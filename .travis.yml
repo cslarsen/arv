@@ -15,5 +15,4 @@ install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - pip install tox-travis --user
 script:
-  - CXX=g++-4.8 python2 setup.py test
-  - CXX=g++-4.8 tox
+  - CXX=g++-4.8 python setup.py test
