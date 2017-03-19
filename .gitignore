@@ -2,6 +2,7 @@
 *.o
 *.pyc
 *.so
+.eggs
 .tox
 __pycache__
 build
