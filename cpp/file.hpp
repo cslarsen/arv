@@ -8,11 +8,13 @@
  * Distributed under the GNU GPL v3 or later. See COPYING.
  */
 
-#ifndef DNA_FILE_H
-#define DNA_FILE_H
+#ifndef ARV_FILE_HPP
+#define ARV_FILE_HPP
 
 #define BUILDING_DLL
 #include "export.hpp"
+
+namespace arv {
 
 class DLL_LOCAL File {
   int fd;
@@ -25,4 +27,6 @@ public:
   }
 };
 
-#endif
+} // ns arv
+
+#endif // guard

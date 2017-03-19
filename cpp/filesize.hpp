@@ -8,7 +8,18 @@
  * Distributed under the GNU GPL V3 or later. See COPYING.
  */
 
+#ifndef ARV_FILESIZE_HPP
+#define ARV_FILESIZE_HPP
+
+#include <cstddef>
+
 #define BUILDING_DLL
 #include "export.hpp"
 
-off_t DLL_LOCAL filesize(const int file_descriptor);
+namespace arv {
+
+std::size_t DLL_LOCAL filesize(const int file_descriptor);
+
+} // namespace arv
+
+#endif // guard

@@ -35,11 +35,11 @@ def extensions():
 
     exts = [
         Extension("_arv", [
-                "cpp/dnatraits.cpp",
+                "cpp/arv.cpp",
                 "cpp/file.cpp",
                 "cpp/filesize.cpp",
                 "cpp/mmap.cpp",
-                "cpp/parse_file.cpp",
+                "cpp/parse.cpp",
                 "cython/_arv.pyx",
             ],
             language="c++",

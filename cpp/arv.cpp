@@ -10,29 +10,31 @@
 
 #include <google/dense_hash_map>
 
-#include "dnatraits.hpp"
-
-const SNP NONE_SNP(NO_CHR, 0, Genotype(NONE, NONE));
+#include "arv.hpp"
 
 namespace {
 
 struct DLL_LOCAL RSIDHash {
-  inline std::size_t operator() (const RSID& rsid) const
+  inline std::size_t operator() (const arv::RSID& rsid) const
   {
     return static_cast<std::size_t>(rsid);
   }
 };
 
 struct DLL_LOCAL RSIDEq {
-  inline bool operator()(const RSID& a, const RSID& b) const
+  inline bool operator()(const arv::RSID& a, const arv::RSID& b) const
   {
     return a == b;
   }
 };
 
-typedef google::dense_hash_map<RSID, SNP, RSIDHash, RSIDEq> SNPMap;
+typedef google::dense_hash_map<arv::RSID, arv::SNP, RSIDHash, RSIDEq> SNPMap;
 
 } // anonymus namespace
+
+namespace arv {
+
+const SNP NONE_SNP(CHR_NO, 0, Genotype(NONE, NONE));
 
 bool RsidSNP::operator==(const RsidSNP& o) const
 {
@@ -117,7 +119,7 @@ std::string Genotype::to_string() const
 }
 
 SNP::SNP() :
-  chromosome(NO_CHR),
+  chromosome(CHR_NO),
   position(0),
   genotype(NONE, NONE)
 {
@@ -427,3 +429,5 @@ GenomeIterator Genome::end() const
   auto p = new GenomeIteratorImpl(i);
   return GenomeIterator(p);
 }
+
+} // namespace arv

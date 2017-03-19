@@ -9,7 +9,7 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 
-cdef extern from "dnatraits.hpp":
+cdef extern from "arv.hpp" namespace "arv":
     ctypedef uint32_t Position
     ctypedef int32_t RSID
 
@@ -17,12 +17,32 @@ cdef extern from "dnatraits.hpp":
         NONE, A, G, C, T, D, I
 
     cdef enum Chromosome:
-        NO_CHR=0,
-        CHR1, CHR2, CHR3, CHR4, CHR5,
-        CHR6, CHR7, CHR8, CHR9, CHR10,
-        CHR11, CHR12, CHR13, CHR14, CHR15,
-        CHR16, CHR17, CHR18, CHR19, CHR20,
-        CHR21, CHR22, CHR_MT, CHR_X, CHR_Y
+        CHR_NO =  0,
+        CHR_01 =  1,
+        CHR_02 =  2,
+        CHR_03 =  3,
+        CHR_04 =  4,
+        CHR_05 =  5,
+        CHR_06 =  6,
+        CHR_07 =  7,
+        CHR_08 =  8,
+        CHR_09 =  9,
+        CHR_10 = 10,
+        CHR_11 = 11,
+        CHR_12 = 12,
+        CHR_13 = 13,
+        CHR_14 = 14,
+        CHR_15 = 15,
+        CHR_16 = 16,
+        CHR_17 = 17,
+        CHR_18 = 18,
+        CHR_19 = 19,
+        CHR_20 = 20,
+        CHR_21 = 21,
+        CHR_22 = 22,
+        CHR_X  = 23,
+        CHR_Y  = 24,
+        CHR_MT = 25
 
     cdef cppclass Genotype:
         Nucleotide first
@@ -40,7 +60,7 @@ cdef extern from "dnatraits.hpp":
         Position position
         Genotype genotype
 
-        SNP(const Chromosome& = NO_CHR,
+        SNP(const Chromosome& = CHR_NO,
             const Position& = 0,
             const Genotype& = Genotype(NONE, NONE))
         SNP(const SNP&)
@@ -153,12 +173,11 @@ cdef class PySNP:
         "X" and "Y".
         """
         cdef Chromosome c = self._snp.chromosome
-        if c >= CHR1 and c <= CHR22:
+
+        if CHR_01 <= c <= CHR_22:
             return c
-        return {NO_CHR: None,
-                CHR_MT: "MT",
-                CHR_X: "X",
-                CHR_Y: "Y"}[c]
+        else:
+            return {CHR_NO: None, CHR_MT: "MT", CHR_X: "X", CHR_Y: "Y"}[c]
 
     @property
     def genotype(self):

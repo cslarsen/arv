@@ -3,16 +3,21 @@
  * Distributed under the GPL v3 or later. See COPYING.
  */
 
+#include "filesize.hpp"
 #include <stdexcept>
 #include <sys/stat.h>
-#include "filesize.hpp"
 
-off_t filesize(const int file_descriptor)
+namespace arv {
+
+std::size_t filesize(const int file_descriptor)
 {
-  struct stat stat;
+  struct stat stat = {0};
 
   if ( fstat(file_descriptor, &stat) < 0 )
     throw std::runtime_error("Could not stat file");
 
-  return stat.st_size;
+  const off_t size = stat.st_size;
+  return size < 0 ? 0 : static_cast<std::size_t>(size);
+}
+
 }

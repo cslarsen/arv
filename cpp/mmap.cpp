@@ -8,22 +8,20 @@
  * Distributed under the GNU GPL v3 or later. See COPYING.
  */
 
-#include <stdexcept>
 #include "mmap.hpp"
 
+#include <stdexcept>
+
+namespace arv {
+
 DLL_LOCAL MMap::MMap(void *address,
-           size_t length,
-           int protection_level,
-           int flags,
-           int file_descriptor,
-           off_t offset)
+           const std::size_t length,
+           const int protection_level,
+           const int flags,
+           const int file_descriptor,
+           const off_t offset)
   : l(length),
-    p(mmap(address,
-           length,
-           protection_level,
-           flags,
-           file_descriptor,
-           offset))
+    p(mmap(address, length, protection_level, flags, file_descriptor, offset))
 {
   if ( p == reinterpret_cast<caddr_t>(-1) )
     throw std::runtime_error("mmap error");
@@ -32,3 +30,5 @@ DLL_LOCAL MMap::MMap(void *address,
 DLL_LOCAL MMap::~MMap() {
   munmap(p, l);
 }
+
+} // ns arv

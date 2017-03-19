@@ -8,11 +8,14 @@
  * Distributed under the GNU GPL v3 or later. See COPYING.
  */
 
+#include "file.hpp"
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdexcept>
 #include <string>
-#include "file.hpp"
+
+namespace arv {
 
 File::File(const char* filename, const int flags):
   fd(open(filename, flags))
@@ -26,3 +29,5 @@ File::File(const char* filename, const int flags):
 File::~File() {
   close(fd);
 }
+
+} // ns arv

@@ -1,8 +1,7 @@
-#ifndef DNATRAITS_EXPORT_H
-#define DNATRAITS_EXPORT_H
+#ifndef ARV_EXPORT_HPP
+#define ARV_EXPORT_HPP
 
 // Taken from https://gcc.gnu.org/wiki/Visibility
-
 #if defined _WIN32 || defined __CYGWIN__
   #ifdef BUILDING_DLL
     #ifdef __GNUC__

@@ -8,14 +8,17 @@
  * Distributed under the GNU GPL v3 or later. See COPYING.
  */
 
-#ifndef INC_DNATRAITS_H
-#define INC_DNATRAITS_H
+#ifndef ARV_ARV_HPP
+#define ARV_ARV_HPP
 
+#include <cstddef>
 #include <cstdint>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "export.hpp"
+
+namespace arv {
 
 typedef std::uint32_t Position;
 typedef std::int32_t RSID;
@@ -24,22 +27,39 @@ enum Nucleotide {
   NONE, A, G, C, T, D, I
 };
 
-/*
- * CHR_MT denotes mitochondrial DNA
- */
 enum Chromosome {
-  NO_CHR=0,
-  CHR1, CHR2, CHR3, CHR4, CHR5,
-  CHR6, CHR7, CHR8, CHR9, CHR10,
-  CHR11, CHR12, CHR13, CHR14, CHR15,
-  CHR16, CHR17, CHR18, CHR19, CHR20,
-  CHR21, CHR22, CHR_MT, CHR_X, CHR_Y
+  CHR_NO =  0,
+  CHR_01 =  1,
+  CHR_02 =  2,
+  CHR_03 =  3,
+  CHR_04 =  4,
+  CHR_05 =  5,
+  CHR_06 =  6,
+  CHR_07 =  7,
+  CHR_08 =  8,
+  CHR_09 =  9,
+  CHR_10 = 10,
+  CHR_11 = 11,
+  CHR_12 = 12,
+  CHR_13 = 13,
+  CHR_14 = 14,
+  CHR_15 = 15,
+  CHR_16 = 16,
+  CHR_17 = 17,
+  CHR_18 = 18,
+  CHR_19 = 19,
+  CHR_20 = 20,
+  CHR_21 = 21,
+  CHR_22 = 22,
+  CHR_X  = 23,
+  CHR_Y  = 24,
+  CHR_MT = 25 // Mitochondrial DNA
 };
 
 // We can get this down to a byte if we want to
 #pragma pack(1)
 struct DLL_PUBLIC Genotype {
-  Nucleotide first : 3;
+  Nucleotide first  : 3;
   Nucleotide second : 3;
 
   Genotype();
@@ -114,7 +134,7 @@ struct DLL_PUBLIC Genome {
   RSID last;
 
   Genome();
-  Genome(const size_t size);
+  Genome(const std::size_t size);
   Genome(const Genome&);
   Genome& operator=(const Genome&);
   ~Genome();
@@ -142,7 +162,7 @@ struct DLL_PUBLIC Genome {
   /*!
    * Number of SNPs.
    */
-  size_t size() const;
+  std::size_t size() const;
 
   /*!
    * Returns RSIDs that exist in both genomes.
@@ -184,4 +204,6 @@ void DLL_PUBLIC parse_file(const std::string& filename, Genome&);
 
 Genotype DLL_PUBLIC complement(const Genotype& g);
 
-#endif
+} // namespace arv
+
+#endif // include guard
