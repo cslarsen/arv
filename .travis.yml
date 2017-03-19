@@ -1,5 +1,8 @@
 sudo: false
-language: cpp
+language: python
+python:
+  - "2.7"
+  - "3.4"
 compiler:
     - gcc
 addons:
@@ -11,9 +14,6 @@ addons:
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - pip install tox-travis --user
-python:
-  - "2.7"
-  - "3.4"
 script:
-  - CC=g++-4.8 python2 setup.py test
-  - tox
+  - CXX=g++-4.8 python2 setup.py test
+  - CXX=g++-4.8 tox
