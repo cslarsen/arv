@@ -41,7 +41,7 @@ A full example would be
                         "GG": "blue"})))
 
 Copyright 2014, 2016, 2017 Christian Stigen Larsen
-Distributed under the GPL v3 or later.
+Distributed under the GNU GPL v3 or later.
 """
 
 from _arv import (
