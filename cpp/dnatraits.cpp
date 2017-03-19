@@ -1,6 +1,11 @@
 /*
+ * dna-traits
  * Copyright 2014, 2016, 2017 Christian Stigen Larsen
- * Distributed under the GPL v3 or later. See COPYING.
+ * Distributed under the GNU GPL v3 or later. See COPYING.
+ *
+ * arv
+ * Copyright 2017 Christian Stigen Larsen
+ * Distributed under the GNU GPL v3 or later. See COPYING.
  */
 
 #include <google/dense_hash_map>
