@@ -21,24 +21,29 @@ ordering of the two nucleotides. For example, ``AT`` and ``TA`` would be
 considered equal. Here is an example usage:
 
         genotype = genome["rs12913832"]
-        color = unphased_match(igenotype, {
-                    "AA": "brown",
-                    "AG": "brown or green",
-                    "GG": "blue",
-                    None: "unknown"})
+        eyecolor = unphased_match(genotype, {
+                        "AA": "brown",
+                        "AG": "brown or green",
+                        "GG": "blue",
+                        None: "unknown"})
 
-A full example would be
+A full example would be:
 
     import arv
 
     genome = arv.load("genome.txt")
+
     print("You are a {gender} with {color} eyes and {complexion} skin.".format(
         gender     = "man" if genome.y_chromosome else "woman",
         complexion = "light" if genome["rs1426654"] == "AA" else "dark",
-        eyecolor   = unphased_match(genome["rs12913832"], {
+        color      = unphased_match(genome["rs12913832"], {
                         "AA": "brown",
                         "AG": "brown or green",
                         "GG": "blue"})))
+
+For a given genome, this might print
+
+    You are a man with blue eyes and light skin.
 
 Copyright 2014, 2016, 2017 Christian Stigen Larsen
 Distributed under the GNU GPL v3 or later.
