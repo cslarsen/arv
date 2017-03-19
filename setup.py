@@ -90,4 +90,17 @@ setup(
     ext_modules=lazy_cythonize(extensions),
     test_suite="setup.get_testsuite",
     cmdclass={'build_ext': BuildExt},
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Natural Language :: English",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: POSIX",
+        "Operating System :: Unix",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+    ],
 )
