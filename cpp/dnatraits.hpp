@@ -18,7 +18,7 @@
 #include "export.hpp"
 
 typedef std::uint32_t Position;
-typedef std::uint32_t RSID;
+typedef std::int32_t RSID;
 
 enum Nucleotide {
   NONE, A, G, C, T, D, I

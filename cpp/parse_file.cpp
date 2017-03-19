@@ -43,6 +43,16 @@ static inline uint32_t parse_uint32(const char*& s)
   return n;
 }
 
+static inline int32_t parse_int32(const char*& s)
+{
+  int32_t n = 0;
+
+  while ( isdigit(*s) )
+    n = n*10 - '0' + *s++;
+
+  return n;
+}
+
 static inline Nucleotide parse_nucleotide(const char*& s)
 {
   return CharToNucleotide[static_cast<const std::size_t>(*s++)];
@@ -100,10 +110,14 @@ void parse_file(const std::string& name, Genome& genome)
   SNP snps[SIZE];
   RSID rsids[SIZE];
   int i=0;
+  bool internal=false;
 
   for ( ; *s; ++s ) {
-    // Skip anything other than an RSID (internal IDs, etc.)
-    if ( *s != 'r' ) {
+    if (*s == 'i')
+      internal = true;
+    else if ( *s == 'r')
+      internal = false;
+    else {
       skipline(s);
       continue;
     }
@@ -111,7 +125,9 @@ void parse_file(const std::string& name, Genome& genome)
     RSID& rsid = rsids[i];
     SNP& snp = snps[i];
 
-    rsid = parse_uint32(s+=2); // skip "rs"-prefix
+    rsid = parse_int32(s+=internal? 1 : 2); // skip "i"/"rs"-prefix
+    if (internal)
+      rsid = -rsid;
 
     if ( rsid < genome.first ) genome.first = rsid;
     if ( rsid > genome.last ) genome.last = rsid;

@@ -4,14 +4,14 @@
 # Copyright 2017 Christian Stigen Larsen
 # Distributed under the GNU GPL v3 or later; see COPYING.
 
-from libc.stdint cimport uint32_t
+from libc.stdint cimport uint32_t, int32_t
 from libcpp cimport bool
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 
 cdef extern from "dnatraits.hpp":
     ctypedef uint32_t Position
-    ctypedef uint32_t RSID
+    ctypedef int32_t RSID
 
     cdef enum Nucleotide:
         NONE, A, G, C, T, D, I
@@ -103,10 +103,16 @@ cdef class PyGenotype:
     cdef Genotype _genotype
 
     def __repr__(self):
-        return self._genotype.to_string()
+        return str(self._genotype.to_string())
 
     def __str__(self):
-        return self._genotype.to_string()
+        return str(self._genotype.to_string())
+
+    def __richcmp__(self, obj, int op):
+        if op == 2:
+            return str(self) == str(obj)
+        else:
+            raise NotImplementedError("Operation %s" % str(op))
 
     def __invert__(self):
         gt = PyGenotype()
@@ -126,6 +132,11 @@ cdef class PySNP:
 
     @property
     def chromosome(self):
+        """Returns the chromosome.
+
+        Possible values are the integers 1 through 22, and the strings "MT",
+        "X" and "Y".
+        """
         cdef Chromosome c = self._snp.chromosome
         if c >= CHR1 and c <= CHR22:
             return c
@@ -136,14 +147,14 @@ cdef class PySNP:
 
     @property
     def genotype(self):
-        """Returns Genotype."""
+        """Returns the Genotype."""
         gt = PyGenotype()
         gt._genotype = self._snp.genotype
         return gt
 
     def __repr__(self):
         return "<SNP: chromosome=%r position=%r genotype=%r>" % (
-                self.chromosome, self.position, self.genotype)
+                self.chromosome, self.position, repr(self.genotype))
 
     def __str__(self):
         return str(self.genotype)
@@ -180,7 +191,8 @@ cdef class PyGenome:
 
         Arguments:
             key: An RSID as a string ("rs123") or an integer (123, for
-                 example).
+                 example). Internal IDs ("i123") are represented as negative
+                 numbers (-123).
 
         Returns:
             A ``SNP``.
@@ -192,7 +204,12 @@ cdef class PyGenome:
         cdef RSID rsid
 
         if isinstance(key, str):
-            rsid = int(key[2:])
+            if key.startswith("rs"):
+                rsid = int(key[2:])
+            elif key.startswith("i"):
+                rsid = -int(key[1:])
+            else:
+                raise KeyError(key)
         elif isinstance(key, int):
             rsid = key
         else:
@@ -216,7 +233,12 @@ cdef class PyGenome:
         """Retrieves genotype keyed by its RSID.
 
         Arguments:
-            key: An RSID as a string or integer.
+            key: An RSID as a string (e.g. "rs123" or "i123") or a plain
+            integer. Positive integers are used for normal RSIDs (e.g. 123 for
+            "rs123") and negative integers for internal IDs (e.g. -123 for
+            "i123"). The reason we support integers is because ``keys()`` will
+            return integers, because it is so much faster to work with and
+            takes up much less space.
 
         Raises:
             KeyError - SNP not found.
@@ -226,12 +248,12 @@ cdef class PyGenome:
             RSID. The order of the two characters is the same as given in the
             source file.
 
-            The characters that are used are `A`, `T`, `C`, `G` as well as `D`,
-            `I` and `-`. The first four are nucleotides, while `D` indicates
-            deletion, `I` insertion. SNPs that are present in the genome, but
-            with no result, are always indicated by two dashes, `--`. Some SNPs
-            only have one nucleotide, for example from the Y chromosome or
-            mitochondrial DNA.
+            The characters that are used are ``A``, ``T``, ``C``, ``G`` as well
+            as ``D``, ``I`` and ``-``. The first four are nucleotides, while
+            ``D`` indicates deletion, ``I`` insertion. SNPs that are present in
+            the genome, but with no result, are always indicated by two dashes,
+            ``--``. Some SNPs only have one nucleotide, for example from the Y
+            chromosome or mitochondrial DNA.
 
         Usage:
             >>> genome["rs2534636"]
@@ -246,18 +268,22 @@ cdef class PyGenome:
         cdef RSID rsid
 
         if isinstance(key, str):
-            rsid = int(key[2:])
+            if key.startswith("rs"):
+                rsid = int(key[2:])
+            elif key.startswith("i"):
+                rsid = -int(key[1:])
+            else:
+                raise KeyError(key)
         elif isinstance(key, int):
             rsid = key
         else:
-            raise TypeError("Expected str or int but got %s" %
-                    type(key).__name__)
+            raise KeyError(key)
 
         cdef SNP s = self._genome[rsid]
         if s == NONE_SNP:
             raise KeyError(key)
         else:
-            return s.genotype.to_string()
+            return str(s.genotype.to_string())
 
     @property
     def y_chromosome(PyGenome self):
