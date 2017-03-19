@@ -22,10 +22,11 @@ For my genome, this little program produces::
 
     You are a man with blue eyes and light skin.
 
-The parser is insanely fast, having been written in finely tuned C++. A Xeon
-machine I've tested on parses a 24 Mb file into a hash table in 70 ms.
+The parser is insanely fast, having been written in finely tuned C++, exposed
+via Cython. A 2013 Xeon machine I've tested on parses a 24 Mb file into a hash
+table in 70 ms!
 
-Works with Python 2 and 3.
+Works with Python 2.7+ and 3+. Installable with pip!
 
 Installation
 ============
@@ -37,8 +38,8 @@ The recommended way is to install from PyPi.
     $ pip install arv
 
 Note that the pip install builds from source. You'll need not only Cython, but
-also a C++11 capable compiler. I might distributed binary wheels in time. If
-the installation doesn't work for you, please file a GitHub issue with as much
+also a C++11 capable compiler. I might distribute binary wheels in time. If the
+installation doesn't work for you, please file a GitHub issue with as much
 detail as you can.
 
 License
