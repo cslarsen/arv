@@ -44,7 +44,7 @@ def extensions():
             ],
             language="c++",
             include_dirs=["cpp"],
-            extra_compile_args=["-std=c++11", "-g0"], # gcc specific
+            extra_compile_args=["--std=c++11", "-g0"], # gcc specific
         ),
     ]
     #configure_google_hashmap()
