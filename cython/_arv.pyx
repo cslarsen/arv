@@ -329,16 +329,16 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
     genome.ethnicity = ethnicity if ethnicity is not None else ""
     return genome
 
-def _sizes(self):
+def _sizes():
     """Returns C++ sizeof() for internal structures."""
     return {
-        "Chromosome": sizeof(Chromosome),
-        "Genome": sizeof(Genome),
+        "Chromosome":     sizeof(Chromosome),
+        "Genome":         sizeof(Genome),
         "GenomeIterator": sizeof(GenomeIterator),
-        "Genotype": sizeof(Genotype),
-        "Nucleotide": sizeof(Nucleotide),
-        "Position": sizeof(Position),
-        "RSID": sizeof(RSID),
-        "RsidSNP": sizeof(RsidSNP),
-        "SNP": sizeof(SNP),
+        "Genotype":       sizeof(Genotype),
+        "Nucleotide":     sizeof(Nucleotide),
+        "Position":       sizeof(Position),
+        "RSID":           sizeof(RSID),
+        "RsidSNP":        sizeof(RsidSNP),
+        "SNP":            sizeof(SNP),
     }
