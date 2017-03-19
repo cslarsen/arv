@@ -54,12 +54,12 @@ details.
 .. |travis-status| image:: https://travis-ci.org/cslarsen/arv.svg?branch=master
     :alt: Travis build status
     :scale: 100%
-    :target: https://travis-ci.org/cslarsen/lyn
+    :target: https://travis-ci.org/cslarsen/arv
 
 .. |license| image:: https://img.shields.io/badge/license-GPL%20v3%2B-blue.svg
     :target: http://www.gnu.org/licenses/old-licenses/gpl-3.en.html
     :alt: Project License
 
 .. |versions| image:: https://img.shields.io/badge/python-2%2C%203-blue.svg
-    :target: https://pypi.python.org/pypi/lyn/
+    :target: https://pypi.python.org/pypi/arv/
     :alt: Supported Python versions
