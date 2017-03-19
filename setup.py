@@ -37,7 +37,6 @@ def extensions():
         Extension("_arv", [
                 "cpp/dnatraits.cpp",
                 "cpp/file.cpp",
-                "cpp/fileptr.cpp",
                 "cpp/filesize.cpp",
                 "cpp/mmap.cpp",
                 "cpp/parse_file.cpp",
