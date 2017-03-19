@@ -58,8 +58,11 @@ from . import util
 
 __author__ = "Christian Stigen Larsen"
 __copyright__ = "Copyright 2017 Christian Stigen Larsen"
+__credits__ = ["Christian Stigen Larsen", "Google"]
 __email__ = "csl@csl.name"
 __license__ = "GNU General Public License v3"
+__maintainer__ = "Christian Stigen Larsen"
+__status__ = "Prototype"
 __version__ = "0.3"
 
 __all__ = [
