@@ -169,7 +169,7 @@ cdef class PySNP:
 
     def __repr__(self):
         return "<SNP: chromosome=%r position=%r genotype=%r>" % (
-                self.chromosome, self.position, repr(self.genotype))
+                self.chromosome, self.position, self.genotype)
 
     def __str__(self):
         return str(self.genotype)
