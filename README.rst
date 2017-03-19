@@ -14,7 +14,7 @@ Arv (Norwegian; "heritage" or "inheritance") is a Python module for parsing raw
   print("You are a {gender} with {color} eyes and {complexion} skin.".format(
     gender     = "man" if genome.y_chromosome else "woman",
     complexion = "light" if genome["rs1426654"] == "AA" else "dark",
-    eyecolor   = match(genome["rs12913832"], {"AA": "brown",
+    color      = match(genome["rs12913832"], {"AA": "brown",
                                               "AG": "brown or green",
                                               "GG": "blue"})))
 
