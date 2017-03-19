@@ -257,7 +257,7 @@ bool GenomeIterator::operator!=(const GenomeIterator& o)
 struct DLL_LOCAL Genome::GenomeImpl {
   SNPMap snps;
 
-  GenomeImpl(const size_t size) :
+  GenomeImpl(const std::size_t size) :
     snps(size)
   {
     snps.set_empty_key(0);
@@ -299,7 +299,7 @@ Genome::Genome():
 {
 }
 
-Genome::Genome(const size_t size):
+Genome::Genome(const std::size_t size):
   y_chromosome(false),
   first(0xffffffff),
   last(0),
@@ -341,7 +341,7 @@ bool Genome::has(const RSID& rsid) const
   return pimpl->contains(rsid);
 }
 
-size_t Genome::size() const
+std::size_t Genome::size() const
 {
   return pimpl->snps.size();
 }
@@ -383,7 +383,7 @@ std::vector<RSID> Genome::rsids() const
 {
   std::vector<RSID> r(size());
 
-  size_t n = 0;
+  std::size_t n = 0;
   for ( const auto i : pimpl->snps )
     r[n++] = i.first;
 
@@ -394,7 +394,7 @@ std::vector<SNP> Genome::snps() const
 {
   std::vector<SNP> r(size());
 
-  size_t n = 0;
+  std::size_t n = 0;
   for ( const auto i : pimpl->snps )
     r[n++] = i.second;
 

@@ -1,7 +1,6 @@
 graft 3rd-party
 graft cpp
 graft cython
-graft python
 graft tests
 include COPYING
 include LICENSES

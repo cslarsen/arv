@@ -57,7 +57,7 @@ static int32_t parse_int32(const char*& s)
 
 static Nucleotide parse_nucleotide(const char*& s)
 {
-  return CharToNucleotide[static_cast<const char>(*s++)];
+  return CharToNucleotide[static_cast<short>(*s++)];
 }
 
 static Chromosome parse_chromo(const char*& s)
@@ -94,13 +94,13 @@ void parse_file(const std::string& name, Genome& genome)
 {
   using namespace arv;
 
-  CharToNucleotide['-'] = NONE;
-  CharToNucleotide['A'] = A;
-  CharToNucleotide['C'] = C;
-  CharToNucleotide['D'] = D;
-  CharToNucleotide['G'] = G;
-  CharToNucleotide['I'] = I;
-  CharToNucleotide['T'] = T;
+  CharToNucleotide[static_cast<short>('-')] = NONE;
+  CharToNucleotide[static_cast<short>('A')] = A;
+  CharToNucleotide[static_cast<short>('C')] = C;
+  CharToNucleotide[static_cast<short>('D')] = D;
+  CharToNucleotide[static_cast<short>('G')] = G;
+  CharToNucleotide[static_cast<short>('I')] = I;
+  CharToNucleotide[static_cast<short>('T')] = T;
 
   File fd(name.c_str(), O_RDONLY);
   MMap fmap(0, filesize(fd), PROT_READ, MAP_PRIVATE, fd, 0);
@@ -141,7 +141,7 @@ void parse_file(const std::string& name, Genome& genome)
     snp.position = parse_uint32(skipwhite(s));
     snp.genotype = parse_genotype(skipwhite(s));
 
-    ychromo |= (snp.chromosome == CHR_Y && snp.genotype.first != CHR_NO);
+    ychromo |= (snp.chromosome == CHR_Y && snp.genotype.first != NONE);
 
     // Ordinarly, we would just call `genome.insert(rsid, snp)` here, but it's
     // a tad faster to stage them in an array first, and then flush it to the
