@@ -18,6 +18,37 @@ class ArvModuleTests(unittest.TestCase):
         self.assertTrue(self.genome.y_chromosome)
         self.assertFalse(arv.Genome().y_chromosome)
 
+    def test_genotype_compare(self):
+        a = self.genome.get_snp("rs4477212").genotype
+        b = self.genome.get_snp("rs4672279").genotype
+
+        self.assertFalse(a != a)
+        self.assertTrue(a != b)
+        self.assertTrue(a < b)
+        self.assertTrue(a <= b)
+        self.assertTrue(a == a)
+        self.assertTrue(b != a)
+        self.assertTrue(b == b)
+        self.assertTrue(b > a)
+        self.assertTrue(b >= a)
+
+        self.assertFalse("AT" > a)
+        self.assertFalse(a > "AT")
+        self.assertTrue("AT" >= a)
+        self.assertTrue(a != "AA")
+        self.assertTrue(a != "TA")
+        self.assertTrue(a < b)
+        self.assertTrue(a <= b)
+        self.assertTrue(a == "AT")
+        self.assertTrue(a > "AA")
+        self.assertTrue(a > "AS")
+        self.assertTrue(a >= "AA")
+        self.assertTrue(a >= "AS")
+        self.assertTrue(a >= "AT")
+        self.assertTrue(b == "GT")
+        self.assertTrue(b > "AT")
+        self.assertTrue(b >= "AT")
+
     def test_genotypes(self):
         self.assertEqual(self.genome["i3001754"], "A")
         self.assertEqual(self.genome["i3001755"], "--")

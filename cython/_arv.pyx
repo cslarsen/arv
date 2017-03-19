@@ -103,16 +103,31 @@ cdef class PyGenotype:
     cdef Genotype _genotype
 
     def __repr__(self):
-        return str(self._genotype.to_string())
+        return "'%s'" % self._genotype.to_string()
 
     def __str__(self):
         return str(self._genotype.to_string())
 
     def __richcmp__(self, obj, int op):
-        if op == 2:
-            return str(self) == str(obj)
+        # The PyGenotype may look like a string, so allow comparisons with
+        # strings
+        this = str(self)
+        that = str(obj)
+
+        if op == 0:
+            return this < that
+        elif op == 1:
+            return this <= that
+        elif op == 2:
+            return this == that
+        elif op == 3:
+            return this != that
+        elif op == 4:
+            return this > that
+        elif op == 5:
+            return this >= that
         else:
-            raise NotImplementedError("Operation %s" % str(op))
+            raise NotImplementedError()
 
     def __invert__(self):
         gt = PyGenotype()
