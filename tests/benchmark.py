@@ -53,17 +53,28 @@ def log(msg):
     sys.stdout.write(msg)
     sys.stdout.flush()
 
+if sys.version_info[:2] >= (3, 3):
+    mark_time = time.perf_counter
+else:
+    mark_time = time.clock
+
 @contextlib.contextmanager
 def timed_block():
-    start = time.clock()
+    start = mark_time()
     elapsed = None
     yield lambda: elapsed
-    elapsed = time.clock() - start
+    elapsed = mark_time() - start
 
 def benchmark(times, code, **local_args):
-    best = 9999999
+    best = 1e9
     for no in range(times):
-        localvars = {"arv": arv, "sys": sys}
+        localvars = {
+            "arv": arv,
+            "sys": sys
+        }
+        if sys.version_info[0] >= 3:
+            localvars["xrange"] = range
+
         localvars.update(local_args)
 
         with timed_block() as elapsed:
@@ -78,6 +89,9 @@ def benchmark(times, code, **local_args):
     return elapsed
 
 def all_benchmarks(filename, times):
+    log("Benchmarking arv %s at %s\n" % (arv.__version__, arv.__file__))
+    log("Measuring time with %s\n\n" % mark_time)
+
     results = {}
     genome = arv.load(filename)
 
@@ -89,6 +103,9 @@ def all_benchmarks(filename, times):
         except Exception as e:
             log(str(e))
         finally:
+            if name == "parsing":
+                genome = arv.load(filename)
+                log(" %.2g SNPs / second" % (len(genome)/results[name]))
             log("\n")
 
     return results
