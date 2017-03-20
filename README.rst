@@ -156,10 +156,10 @@ operations on the nucleotides. For example, you can get its complement with the
 The complement is important due to eah SNPs orientation. All of 23andMe SNPs
 are oriented towards the positive ("plus") strand, based on the GRCh37
 reference human genome assembly build. But some SNPs on SNPedia are given with
-the `minus orientation <http://snpedia.com/index.php/Orientation>`.
+the `minus orientation <http://snpedia.com/index.php/Orientation>`_.
 
 For example, to determine if the human in question is likely lactose tolerant
-or not, we can look at `rs4988235 <http://snpedia.com/index.php/Rs4988235>`.
+or not, we can look at `rs4988235 <http://snpedia.com/index.php/Rs4988235>`_.
 SNPedia reports its _Stabilized_ orientation to be minus, so we need to use the
 complement:
 
@@ -171,8 +171,9 @@ complement:
     'TT'
 
 By reading a few `GWAS
-<https://en.wikipedia.org/wiki/Genome-wide_association_study>` research papers,
-we can build a rule to determine a human's likelihood for lactose tolerance:
+<https://en.wikipedia.org/wiki/Genome-wide_association_study>`_ research
+papers, we can build a rule to determine a human's likelihood for lactose
+tolerance:
 
 .. code:: python
 
@@ -185,9 +186,9 @@ we can build a rule to determine a human's likelihood for lactose tolerance:
 
 Note that reading GWAS papers for hobbyists can be a bit tricky. If you are a
 hobbyist, be sure to spend some time reading the paper closely, checking up
-SNPs on places like `SNPedia <http://snpedia.com>`, `dnSNP
-<https://www.ncbi.nlm.nih.gov/projects/SNP/>` and `OpenSNP
-<https://opensnp.org/genotypes>`. Finally, have fun, but be extremely careful
+SNPs on places like `SNPedia <http://snpedia.com>`_, `dnSNP
+<https://www.ncbi.nlm.nih.gov/projects/SNP/>`_ and `OpenSNP
+<https://opensnp.org/genotypes>`_. Finally, have fun, but be extremely careful
 about drawing conclusions from your results.
 
 Command line interface
