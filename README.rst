@@ -37,10 +37,16 @@ The recommended way is to install from PyPi.
 
     $ pip install arv
 
-Note that the pip install builds from source. You'll need not only Cython, but
-also a C++11 capable compiler. I might distribute binary wheels in time. If the
-installation doesn't work for you, please file a GitHub issue with as much
-detail as you can.
+This will most likely build Arv from source. The package requires Cython, but
+it doesn't check if you have a C++ compiler. Currently, it expects that you
+have clang++ or g++.
+
+If you have problems running ``pip install arv``, please open an issue on
+GitHub with as much detail as possible (``g++/clang++ --version``, ``uname
+-a``, ``python --version`` and so on).
+
+If you set the environment variable ``ARV_DEBUG``, it will build with full
+warnings and debug symbols.
 
 License
 =======

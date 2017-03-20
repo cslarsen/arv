@@ -5,6 +5,20 @@ import os
 import shutil
 import unittest
 
+def extra_compile_flags(debug=None):
+    flags = []
+
+    # TODO: Can we detect compiler through Cython? We default to gcc here,
+    # which isn't very polite.
+    flags += ["--std=c++11"]
+
+    if debug:
+        flags += ["-W", "-Wall"]
+    else:
+        flags += ["-g0"] # gcc specific; turns off symbols
+
+    return flags
+
 # From http://stackoverflow.com/a/26698408/21028
 class lazy_cythonize(list):
     def __init__(self, callback):
@@ -44,7 +58,7 @@ def extensions():
             ],
             language="c++",
             include_dirs=["cpp"],
-            extra_compile_args=["--std=c++11", "-g0"], # gcc specific
+            extra_compile_args=extra_compile_flags(os.getenv("ARV_DEBUG", False)),
         ),
     ]
     #configure_google_hashmap()

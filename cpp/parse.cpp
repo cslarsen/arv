@@ -107,15 +107,14 @@ void parse_file(const std::string& name, Genome& genome)
   auto s = fmap.c_str();
 
   skip_comments(s);
-  bool ychromo = false;
 
   // Local cache of SNPs and RSIDs, for more locality and hence more speed. Its
   // size is somewhat arbitrary, but shouldn't be too big.
-  const std::size_t SIZE = 200;
-  SNP snps[SIZE];
-  RSID rsids[SIZE];
-  int i=0;
-  bool internal=false;
+  const std::size_t BUFFER_SIZE = 200;
+  std::pair<RSID, SNP> buffer[BUFFER_SIZE];
+  size_t buffer_pos = 0;
+
+  bool internal = false; // rsid or internal id
 
   for ( ; *s; ++s ) {
     if (*s == 'i')
@@ -127,38 +126,45 @@ void parse_file(const std::string& name, Genome& genome)
       continue;
     }
 
-    RSID& rsid = rsids[i];
-    SNP& snp = snps[i];
+    RSID& rsid = buffer[buffer_pos].first;
+    SNP& snp = buffer[buffer_pos].second;
 
-    rsid = parse_int32(s+=internal? 1 : 2); // skip "i"/"rs"-prefix
-    if (internal)
-      rsid = -rsid;
+    // Skip i/rs prefix and parse number
+    if ( internal )
+      rsid = -parse_int32(s += 1);
+    else
+      rsid = parse_int32(s += 2);
 
+    // We postpone handling the rare case that last == first
     if ( rsid < genome.first ) genome.first = rsid;
-    if ( rsid > genome.last ) genome.last = rsid;
+    else if ( rsid > genome.last ) genome.last = rsid;
 
     snp.chromosome = parse_chromo(skipwhite(s));
     snp.position = parse_uint32(skipwhite(s));
     snp.genotype = parse_genotype(skipwhite(s));
 
-    ychromo |= (snp.chromosome == CHR_Y && snp.genotype.first != NONE);
+    genome.y_chromosome |= (snp.chromosome == CHR_Y && snp.genotype.first != NONE);
 
     // Ordinarly, we would just call `genome.insert(rsid, snp)` here, but it's
     // a tad faster to stage them in an array first, and then flush it to the
     // hash map when it's full.
 
-    if ( ++i == SIZE ) {
-      i = 0;
-      for ( int n = 0; n < SIZE; ++n )
-        genome.insert(rsids[n], snps[n]);
+    if ( ++buffer_pos == BUFFER_SIZE ) {
+      buffer_pos = 0;
+      for ( size_t n = 0; n < BUFFER_SIZE; ++n )
+        genome.insert(buffer[n]);
     }
   }
 
-  // flush the rest
-  for ( int n=0; n < i; ++n )
-    genome.insert(rsids[n], snps[n]);
+  // Store the rest of the buffer
+  for ( size_t n = 0; n < buffer_pos; ++n )
+    genome.insert(buffer[n]);
 
-  genome.y_chromosome = ychromo;
+  // Handle the rare case that last == first (only one SNP)
+  if ( genome.first == 0 )
+    genome.first = genome.last;
+  if ( genome.last == 0 )
+    genome.last = genome.first;
 }
 
 } // namespace arv

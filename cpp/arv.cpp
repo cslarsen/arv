@@ -356,6 +356,11 @@ void Genome::insert(const RSID& rsid, const SNP& snp)
   pimpl->snps.insert({rsid, snp});
 }
 
+void Genome::insert(const std::pair<RSID, SNP>& obj)
+{
+  pimpl->snps.insert(obj);
+}
+
 std::vector<RSID> Genome::intersect_rsid(const Genome& genome) const
 {
   std::vector<RSID> r;

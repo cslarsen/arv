@@ -153,6 +153,7 @@ struct DLL_PUBLIC Genome {
    * Add a SNP to the hash table.
    */
   void insert(const RSID& rsid, const SNP& snp);
+  void insert(const std::pair<RSID, SNP>&);
 
   /*!
    * Underlying hash table's load factor. (For developer purposes)
