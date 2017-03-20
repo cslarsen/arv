@@ -108,16 +108,34 @@ class ArvModuleTests(unittest.TestCase):
             self.genome[1.0]
 
         with self.assertRaises(KeyError):
+            self.genome.get_snp(1.0)
+
+        with self.assertRaises(KeyError):
             self.genome[123]
+
+        with self.assertRaises(KeyError):
+            self.genome.get_snp(123)
+
+        with self.assertRaises(KeyError):
+            self.genome.get_snp(0)
 
         with self.assertRaises(KeyError):
             self.genome[-123]
 
         with self.assertRaises(KeyError):
+            self.genome.get_snp(-123)
+
+        with self.assertRaises(KeyError):
             self.genome["rs123"]
 
         with self.assertRaises(KeyError):
+            self.genome.get_snp("rs123")
+
+        with self.assertRaises(KeyError):
             self.genome["i123"]
+
+        with self.assertRaises(KeyError):
+            self.genome.get_snp("i123")
 
         with self.assertRaises(KeyError):
             self.genome["rs91389"]

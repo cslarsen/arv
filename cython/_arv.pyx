@@ -123,7 +123,7 @@ cdef class PyGenotype:
     cdef Genotype _genotype
 
     def __repr__(self):
-        return "'%s'" % self._genotype.to_string()
+        return "<Genotype %r>" % str(self)
 
     def __str__(self):
         return str(self._genotype.to_string())
@@ -214,13 +214,29 @@ cdef class PyGenome:
         """The underlying hash table's load factor."""
         return self._genome.load_factor()
 
+    cdef string _rsid_str(self, RSID rsid):
+        if rsid >= 0:
+            return "rs%d" % rsid
+        else:
+            return "i%d" % -rsid
+
+    cdef RSID _rsid_int(self, key) except? 0:
+        if isinstance(key, int):
+            return key
+        if isinstance(key, str):
+            if key.startswith("rs"):
+                return int(key[2:])
+            if key.startswith("i"):
+                return -int(key[1:])
+        raise KeyError(key)
+
     def keys(self):
         return self._genome.rsids()
 
     cdef vector[SNP] values(self):
         return self._genome.snps()
 
-    def get_snp(self, key):
+    cpdef PySNP get_snp(self, key):
         """Retrieves given SNP.
 
         Arguments:
@@ -234,28 +250,15 @@ cdef class PyGenome:
         Raises:
             KeyError - if RSID was not found.
         """
-
-        cdef RSID rsid
-
-        if isinstance(key, str):
-            if key.startswith("rs"):
-                rsid = int(key[2:])
-            elif key.startswith("i"):
-                rsid = -int(key[1:])
-            else:
-                raise KeyError(key)
-        elif isinstance(key, int):
-            rsid = key
-        else:
-            raise TypeError("Expected str or int but got %s" %
-                    type(key).__name__)
+        cdef RSID rsid = self._rsid_int(key)
         cdef SNP s = self._genome[rsid]
+
         if s == NONE_SNP:
             raise KeyError(key)
-        else:
-            snp = PySNP()
-            snp._snp = s
-            return snp
+
+        snp = PySNP()
+        snp._snp = s
+        return snp
 
     def __len__(self):
         return self._genome.size()
@@ -299,25 +302,7 @@ cdef class PyGenome:
             >>> genome["rs3135027"]
             'G'
         """
-        cdef RSID rsid
-
-        if isinstance(key, str):
-            if key.startswith("rs"):
-                rsid = int(key[2:])
-            elif key.startswith("i"):
-                rsid = -int(key[1:])
-            else:
-                raise KeyError(key)
-        elif isinstance(key, int):
-            rsid = key
-        else:
-            raise KeyError(key)
-
-        cdef SNP s = self._genome[rsid]
-        if s == NONE_SNP:
-            raise KeyError(key)
-        else:
-            return str(s.genotype.to_string())
+        return str(self.get_snp(key).genotype)
 
     @property
     def y_chromosome(PyGenome self):
