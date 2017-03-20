@@ -1,6 +1,10 @@
-# arv
-# Copyright 2017 Christian Stigen Larsen
-# Distributed under the GNU GPL v3 or later; see COPYING.
+"""
+Inferring tests for arv.
+
+arv
+Copyright 2017 Christian Stigen Larsen
+Distributed under the GNU GPL v3 or later; see COPYING.
+"""
 
 import arv
 import unittest
