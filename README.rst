@@ -38,15 +38,15 @@ Important disclaimer
 ====================
 
 It's very important to tell you that I, the author of arv, am merely a
-*hobbyist*! I'm a professional software developer, not a geneticist, medical
-doctor or anything like that.
+*hobbyist*! I *am* a professional software developer, but *not* a geneticist,
+biologist, medical doctor or anything like that.
 
 Because of that, this software may not only look weird to people in the field,
 it may also contain serious errors. If you find any problem whatsoever, please
-submit a GitHub issue!
+submit a GitHub issue.
 
 This a slightly modified version of what I wrote for the original software
-called "dna-traits", and the same goes this software:
+called "dna-traits", and the same goes for this software:
 
 In addition to the GPL v3 license terms, and given that this code deals with
 health-related issues, I want to stress that the provided code most likely
