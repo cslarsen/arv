@@ -30,10 +30,20 @@ def _parse_args():
     p.add_argument("--example", default=False, action="store_true",
             help="Shows an example report for the genome(s)")
 
-    p.add_argument("files", nargs="+",
+    p.add_argument("--version", "-V", default=False, action="store_true",
+            help="Shows version and exits")
+
+    p.add_argument("files", nargs="*",
             help="23andMe raw genome file name(s)")
 
     opts = p.parse_args()
+
+    if opts.version:
+        print("arv %s" % arv.__version__)
+        print(arv.__copyright__)
+        print("Distributed under the %s" % arv.__license__)
+        sys.exit(0)
+
     return opts
 
 def summary(genome):
