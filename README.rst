@@ -48,7 +48,7 @@ submit a GitHub issue.
 This a slightly modified version of what I wrote for the original software
 called "dna-traits", and the same goes for this software:
 
-In addition to the GPL v3 license terms, and given that this code deals with
+In addition to the GPL v3 licensing terms, and given that this code deals with
 health-related issues, I want to stress that the provided code most likely
 contains errors, or invalid genome reports. Results from this code must be
 interpreted as HIGHLY SPECULATIVE and may even be downright INCORRECT. Always
