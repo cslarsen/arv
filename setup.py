@@ -15,7 +15,11 @@ def extra_compile_flags(debug=None):
     if debug:
         flags += ["-W", "-Wall"]
     else:
-        flags += ["-g0"] # gcc specific; turns off symbols
+        flags += [
+            "-g0", # no symbols
+            "-march=native",
+            "-O2",
+        ]
 
     return flags
 
