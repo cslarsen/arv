@@ -62,10 +62,10 @@ research purposes, please cross-check key results with other software: The
 parser code may contain serious errors, for example.
 
 An interesting story about the research part: I once released a pretty good
-Mersenne Twister PRNG that ended up being used in research. Turned out the
-engine had bugs, and by the time I had fixed them, the poor researcher already
-had results (hopefully not published; I don't know). The guy had to go back and
-fix hi stuff, and I felt terribly bad about it.
+Mersenne Twister PRNG for C++ that ended up being used in research. Turned out
+the engine had bugs, and by the time I had fixed them, a poor researcher had
+already produced results with it (hopefully not published; I don't know). The
+guy had to go back and fix his stuff, and I felt terribly bad about it.
 
 So beware!
 
