@@ -19,8 +19,12 @@ benchmarks = {
     "random access":
 r"""
 for n in xrange(5000):
-    pos = random.randint(genome.first, genome.last)
-    snp = genome[pos]
+    try:
+        pos = random.randint(genome.first, genome.last)
+        snp = genome[pos]
+    except KeyError:
+        # RSIDs are not contiguous
+        pass
 """,
 
     "iterate items in genome":
