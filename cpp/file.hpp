@@ -11,7 +11,9 @@
 #ifndef ARV_FILE_HPP
 #define ARV_FILE_HPP
 
-#define BUILDING_DLL
+#ifndef BUILDING_DLL
+# define BUILDING_DLL
+#endif
 #include "export.hpp"
 
 namespace arv {

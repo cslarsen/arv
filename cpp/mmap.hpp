@@ -17,7 +17,9 @@
 #include <sys/mman.h>
 #include <sys/types.h>
 
-#define BUILDING_DLL
+#ifndef BUILDING_DLL
+# define BUILDING_DLL
+#endif
 #include "export.hpp"
 
 namespace arv {

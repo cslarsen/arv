@@ -10,7 +10,10 @@ def extra_compile_flags(debug=None):
 
     # TODO: Can we detect compiler through Cython? We default to gcc here,
     # which isn't very polite.
-    flags += ["--std=c++11"]
+    flags += [
+        "--std=c++11",
+        "-DBUILDING_DLL",
+    ]
 
     if debug:
         flags += ["-W", "-Wall"]
