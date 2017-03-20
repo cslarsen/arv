@@ -154,13 +154,14 @@ operations on the nucleotides. For example, you can get its complement with the
     'TT'
 
 The complement is important due to eah SNPs orientation. All of 23andMe SNPs
-are oriented towards the positive ("plus") strand, based on the GRCh37
-reference human genome assembly build. But some SNPs on SNPedia are given with
-the `minus orientation <http://snpedia.com/index.php/Orientation>`_.
+are oriented towards the positive ("plus") strand, based on the `GRCh37
+<https://www.ncbi.nlm.nih.gov/grc/human>`_ reference human genome assembly
+build. But some SNPs on SNPedia are given with the `minus orientation
+<http://snpedia.com/index.php/Orientation>`_.
 
 For example, to determine if the human in question is likely lactose tolerant
 or not, we can look at `rs4988235 <http://snpedia.com/index.php/Rs4988235>`_.
-SNPedia reports its _Stabilized_ orientation to be minus, so we need to use the
+SNPedia reports its *Stabilized* orientation to be minus, so we need to use the
 complement:
 
 .. code:: python
