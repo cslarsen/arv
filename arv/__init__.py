@@ -68,7 +68,7 @@ __email__ = "csl@csl.name"
 __license__ = "GNU General Public License v3"
 __maintainer__ = "Christian Stigen Larsen"
 __status__ = "Prototype"
-__version__ = "0.4"
+__version__ = "0.5"
 
 __all__ = [
     "_sizes",
