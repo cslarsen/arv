@@ -105,7 +105,7 @@ The parser works on the pure text files.
 
 Then you load the genome in Python with
 
-... code:: python
+.. code:: python
 
     >>> genome = arv.load("filename.txt")
     >>> genome
@@ -170,8 +170,9 @@ complement:
     >>> ~genome.get_snp("rs4988235").genotype
     'TT'
 
-By reading a few `GWAS <>` research papers, we can build a rule to determine a
-human's likelihood for lactose tolerance:
+By reading a few `GWAS
+<https://en.wikipedia.org/wiki/Genome-wide_association_study>` research papers,
+we can build a rule to determine a human's likelihood for lactose tolerance:
 
 .. code:: python
 
@@ -180,14 +181,14 @@ human's likelihood for lactose tolerance:
         "TC": "Likely lactose tolerant",
         "CC": "Likely lactose intolerant",
         None: "Unable to determine (genotype not present)"})
+    'Likely lactose tolerant'
 
-Note that for non-professionals, reading GWAS papers can be a bit tricky. . To
-create a
-usually requi
-Note that reading GWAS papers can be a bit tricky, and it is very tempting to
-jump to conclusions or not understand all of it. But for casual users, it's
-very educational and most of all very fun to try your hand at inferring various
-results.
+Note that reading GWAS papers for hobbyists can be a bit tricky. If you are a
+hobbyist, be sure to spend some time reading the paper closely, checking up
+SNPs on places like `SNPedia <http://snpedia.com>`, `dnSNP
+<https://www.ncbi.nlm.nih.gov/projects/SNP/>` and `OpenSNP
+<https://opensnp.org/genotypes>`. Finally, have fun, but be extremely careful
+about drawing conclusions from your results.
 
 Command line interface
 ======================
