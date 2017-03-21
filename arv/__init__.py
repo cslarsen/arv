@@ -51,9 +51,9 @@ Distributed under the GNU GPL v3 or later.
 
 from _arv import (
     _sizes,
+    Genome,
     Genotype,
     load,
-    PyGenome as Genome,
     SNP,
 )
 

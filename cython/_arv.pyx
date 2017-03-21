@@ -89,11 +89,11 @@ cdef extern from "arv.hpp" namespace "arv":
 
     cdef const CSNP NONE_SNP
 
-    cdef cppclass Genome:
-        Genome() except +
-        Genome(const size_t) except +
-        Genome(const Genome&) except +
-        Genome& operator=(const Genome&)
+    cdef cppclass CGenome "arv::Genome":
+        CGenome() except +
+        CGenome(const size_t) except +
+        CGenome(const CGenome&) except +
+        CGenome& operator=(const CGenome&)
 
         double load_factor() const
         size_t size() const
@@ -105,8 +105,8 @@ cdef extern from "arv.hpp" namespace "arv":
         vector[RSID] rsids() const
         vector[CSNP] snps() const
 
-        bool operator==(const Genome&) const
-        bool operator!=(const Genome&) const
+        bool operator==(const CGenome&) const
+        bool operator!=(const CGenome&) const
 
         GenomeIterator begin() const
         GenomeIterator end() const
@@ -115,7 +115,7 @@ cdef extern from "arv.hpp" namespace "arv":
         RSID first
         RSID last
 
-    cdef void parse_file(const string&, Genome&) except +
+    cdef void parse_file(const string&, CGenome&) except +
     cdef CGenotype complement(const CGenotype&)
 
 cdef class Genotype:
@@ -193,24 +193,24 @@ cdef class SNP:
     def __str__(self):
         return str(self.genotype)
 
-cdef class PyGenome:
+cdef class Genome:
     """A collection of SNPs for a human being.
 
     Provides a dictionary interface, including keys, values, __get_item__ and
     so on.
     """
-    cdef Genome _genome
+    cdef CGenome _genome
     cdef int orientation
     cdef str name
     cdef str ethnicity
 
-    def __cinit__(PyGenome self, size_t size=1000003):
-        self._genome = Genome(size)
+    def __cinit__(Genome self, size_t size=1000003):
+        self._genome = CGenome(size)
         self.orientation = 0
         self.name = ""
         self.ethnicity = ""
 
-    cpdef double load_factor(PyGenome self):
+    cpdef double load_factor(Genome self):
         """The underlying hash table's load factor."""
         return self._genome.load_factor()
 
@@ -305,7 +305,7 @@ cdef class PyGenome:
         return str(self.get_snp(key).genotype)
 
     @property
-    def y_chromosome(PyGenome self):
+    def y_chromosome(Genome self):
         """Flag indicating presence of a Y chromosome."""
         return self._genome.y_chromosome
 
@@ -327,7 +327,7 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
     Returns:
         A ``Genome``.
     """
-    genome = PyGenome(initial_size)
+    genome = Genome(initial_size)
     parse_file(filename.encode("utf-8"), genome._genome)
     genome.name = name if name is not None else filename
     genome.ethnicity = ethnicity if ethnicity is not None else ""
@@ -336,10 +336,10 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
 def _sizes():
     """Returns C++ sizeof() for internal structures."""
     return {
+        "CGenome":         sizeof(CGenome),
         "CGenotype":       sizeof(CGenotype),
         "Chromosome":      sizeof(Chromosome),
         "CSNP":            sizeof(CSNP),
-        "Genome":          sizeof(Genome),
         "GenomeIterator":  sizeof(GenomeIterator),
         "Nucleotide":      sizeof(Nucleotide),
         "Position":        sizeof(Position),
