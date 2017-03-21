@@ -18,6 +18,8 @@
 
 #include "export.hpp"
 
+#include "Python.h"
+
 namespace arv {
 
 typedef std::uint32_t Position;
