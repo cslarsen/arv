@@ -14,6 +14,6 @@
 // put visibility specifiers in the generated code, so we just do the trick
 // here. And as long as Python can find the init function, it will be able to
 // fetch all the required function addresses.
-extern "C" DLL_PUBLIC PyMODINIT_FUNC init_arv(void);
+PyMODINIT_FUNC DLL_PUBLIC init_arv(void);
 
 #endif
