@@ -39,11 +39,15 @@ class lazy_cythonize(list):
     def __len__(self): return len(self.c_list())
 
 def configure_google_hashmap():
-    # TODO: Perform out-of-source
-    print("Configuring Google hash map")
-    if os.system("3rd-party/sparsehash/configure") != 0:
-        raise RuntimeError("Error configuring Google hash map")
-    shutil.copy("src/config.h", "cpp/sparsehash/internal/sparseconfig.h")
+    script = os.path.join("3rd-party", "sparsehash", "configure")
+    config = os.path.join("cpp", "sparsehash", "internal", "sparseconfig.h")
+
+    if not os.path.isfile(config):
+        print("Configuring Google hash map")
+        if os.system(script) == 0:
+            shutil.copy(os.path.join("src", "config.h"), config)
+        else:
+            raise RuntimeError("Error configuring Google hash map")
 
 class BuildExt(build_ext):
     def run(self):
