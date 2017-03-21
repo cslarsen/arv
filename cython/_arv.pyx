@@ -55,28 +55,28 @@ cdef extern from "arv.hpp" namespace "arv":
 
         string to_string() const
 
-    cdef cppclass SNP:
+    cdef cppclass CSNP "arv::SNP":
         Chromosome chromosome
         Position position
         CGenotype genotype
 
-        SNP(const Chromosome& = CHR_NO,
+        CSNP(const Chromosome& = CHR_NO,
             const Position& = 0,
             const CGenotype& = CGenotype(NONE, NONE))
-        SNP(const SNP&)
+        CSNP(const CSNP&)
 
-        SNP& operator=(const SNP&);
-        bool operator!=(const SNP&) const;
-        bool operator<(const SNP&) const;
-        bool operator<=(const SNP&) const;
+        CSNP& operator=(const CSNP&);
+        bool operator!=(const CSNP&) const;
+        bool operator<(const CSNP&) const;
+        bool operator<=(const CSNP&) const;
         bool operator==(const CGenotype&) const;
-        bool operator==(const SNP&) const;
-        bool operator>(const SNP&) const;
-        bool operator>=(const SNP&) const;
+        bool operator==(const CSNP&) const;
+        bool operator>(const CSNP&) const;
+        bool operator>=(const CSNP&) const;
 
     cdef cppclass RsidSNP:
         RSID rsid
-        SNP snp
+        CSNP snp
         bool operator==(const RsidSNP&) const
 
     cdef cppclass GenomeIterator:
@@ -87,7 +87,7 @@ cdef extern from "arv.hpp" namespace "arv":
         bool operator!=(const GenomeIterator&);
         const RsidSNP operator*();
 
-    cdef const SNP NONE_SNP
+    cdef const CSNP NONE_SNP
 
     cdef cppclass Genome:
         Genome() except +
@@ -99,11 +99,11 @@ cdef extern from "arv.hpp" namespace "arv":
         size_t size() const
 
         string genotype(const RSID& id) const
-        const SNP& operator[](const RSID&) const
+        const CSNP& operator[](const RSID&) const
         bool has(const RSID&) const
-        void insert(const RSID&, const SNP&)
+        void insert(const RSID&, const CSNP&)
         vector[RSID] rsids() const
-        vector[SNP] snps() const
+        vector[CSNP] snps() const
 
         bool operator==(const Genome&) const
         bool operator!=(const Genome&) const
@@ -154,9 +154,9 @@ cdef class Genotype:
         gt._genotype = complement(self._genotype)
         return gt
 
-cdef class PySNP:
+cdef class SNP:
     """A single nucleotide polymorphism."""
-    cdef SNP _snp
+    cdef CSNP _snp
 
     def __cinit__(self):
         self._snp = NONE_SNP
@@ -233,10 +233,10 @@ cdef class PyGenome:
     def keys(self):
         return self._genome.rsids()
 
-    cdef vector[SNP] values(self):
+    cdef vector[CSNP] values(self):
         return self._genome.snps()
 
-    cpdef PySNP get_snp(self, key):
+    cpdef SNP get_snp(self, key):
         """Retrieves given SNP.
 
         Arguments:
@@ -251,12 +251,12 @@ cdef class PyGenome:
             KeyError - if RSID was not found.
         """
         cdef RSID rsid = self._rsid_int(key)
-        cdef SNP s = self._genome[rsid]
+        cdef CSNP s = self._genome[rsid]
 
         if s == NONE_SNP:
             raise KeyError(key)
 
-        snp = PySNP()
+        snp = SNP()
         snp._snp = s
         return snp
 
@@ -336,13 +336,13 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
 def _sizes():
     """Returns C++ sizeof() for internal structures."""
     return {
-        "Chromosome":     sizeof(Chromosome),
-        "Genome":         sizeof(Genome),
-        "GenomeIterator": sizeof(GenomeIterator),
         "CGenotype":       sizeof(CGenotype),
-        "Nucleotide":     sizeof(Nucleotide),
-        "Position":       sizeof(Position),
-        "RSID":           sizeof(RSID),
-        "RsidSNP":        sizeof(RsidSNP),
-        "SNP":            sizeof(SNP),
+        "Chromosome":      sizeof(Chromosome),
+        "CSNP":            sizeof(CSNP),
+        "Genome":          sizeof(Genome),
+        "GenomeIterator":  sizeof(GenomeIterator),
+        "Nucleotide":      sizeof(Nucleotide),
+        "Position":        sizeof(Position),
+        "RSID":            sizeof(RSID),
+        "RsidSNP":         sizeof(RsidSNP),
     }

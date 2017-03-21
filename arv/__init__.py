@@ -51,10 +51,10 @@ Distributed under the GNU GPL v3 or later.
 
 from _arv import (
     _sizes,
+    Genotype,
     load,
     PyGenome as Genome,
-    Genotype,
-    PySNP as SNP,
+    SNP,
 )
 
 from .match import unphased_match
