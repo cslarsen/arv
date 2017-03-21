@@ -53,7 +53,7 @@ from _arv import (
     _sizes,
     load,
     PyGenome as Genome,
-    PyGenotype as Genotype,
+    Genotype,
     PySNP as SNP,
 )
 

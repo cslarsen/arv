@@ -44,32 +44,32 @@ cdef extern from "arv.hpp" namespace "arv":
         CHR_Y  = 24,
         CHR_MT = 25
 
-    cdef cppclass Genotype:
+    cdef cppclass CGenotype "arv::Genotype":
         Nucleotide first
         Nucleotide second
 
-        Genotype()
-        Genotype(const Nucleotide&, const Nucleotide&)
-        bool operator==(const Genotype&) const
-        bool operator<(const Genotype&) const
+        CGenotype()
+        CGenotype(const Nucleotide&, const Nucleotide&)
+        bool operator==(const CGenotype&) const
+        bool operator<(const CGenotype&) const
 
         string to_string() const
 
     cdef cppclass SNP:
         Chromosome chromosome
         Position position
-        Genotype genotype
+        CGenotype genotype
 
         SNP(const Chromosome& = CHR_NO,
             const Position& = 0,
-            const Genotype& = Genotype(NONE, NONE))
+            const CGenotype& = CGenotype(NONE, NONE))
         SNP(const SNP&)
 
         SNP& operator=(const SNP&);
         bool operator!=(const SNP&) const;
         bool operator<(const SNP&) const;
         bool operator<=(const SNP&) const;
-        bool operator==(const Genotype&) const;
+        bool operator==(const CGenotype&) const;
         bool operator==(const SNP&) const;
         bool operator>(const SNP&) const;
         bool operator>=(const SNP&) const;
@@ -116,11 +116,11 @@ cdef extern from "arv.hpp" namespace "arv":
         RSID last
 
     cdef void parse_file(const string&, Genome&) except +
-    cdef Genotype complement(const Genotype&)
+    cdef CGenotype complement(const CGenotype&)
 
-cdef class PyGenotype:
+cdef class Genotype:
     """A pair of nucleotides."""
-    cdef Genotype _genotype
+    cdef CGenotype _genotype
 
     def __repr__(self):
         return "<Genotype %r>" % str(self)
@@ -129,7 +129,7 @@ cdef class PyGenotype:
         return str(self._genotype.to_string())
 
     def __richcmp__(self, obj, int op):
-        # The PyGenotype may look like a string, so allow comparisons with
+        # The Genotype may look like a string, so allow comparisons with
         # strings
         this = str(self)
         that = str(obj)
@@ -150,7 +150,7 @@ cdef class PyGenotype:
             raise NotImplementedError()
 
     def __invert__(self):
-        gt = PyGenotype()
+        gt = Genotype()
         gt._genotype = complement(self._genotype)
         return gt
 
@@ -182,7 +182,7 @@ cdef class PySNP:
     @property
     def genotype(self):
         """Returns the Genotype."""
-        gt = PyGenotype()
+        gt = Genotype()
         gt._genotype = self._snp.genotype
         return gt
 
@@ -339,7 +339,7 @@ def _sizes():
         "Chromosome":     sizeof(Chromosome),
         "Genome":         sizeof(Genome),
         "GenomeIterator": sizeof(GenomeIterator),
-        "Genotype":       sizeof(Genotype),
+        "CGenotype":       sizeof(CGenotype),
         "Nucleotide":     sizeof(Nucleotide),
         "Position":       sizeof(Position),
         "RSID":           sizeof(RSID),

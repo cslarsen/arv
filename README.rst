@@ -139,7 +139,7 @@ You can also access the SNP as an object:
     >>> snp.genotype
     'AA'
 
-The last line actually returns a ``PyGenotype`` object, but its ``repr``
+The last line actually returns a ``Genotype`` object, but its ``repr``
 returns something that looks like a string. This lets you perform a few
 operations on the nucleotides. For example, you can get its complement with the
 ``~``-operator.
@@ -147,7 +147,7 @@ operations on the nucleotides. For example, you can get its complement with the
 .. code:: python
 
     >>> type(snp.genotype)
-    <type '_arv.PyGenotype'>
+    <type '_arv.Genotype'>
     >>> snp.genotype
     'AA'
     >>> ~snp.genotype
