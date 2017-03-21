@@ -79,12 +79,12 @@ cdef extern from "arv.hpp" namespace "arv":
         CSNP snp
         bool operator==(const RsidSNP&) const
 
-    cdef cppclass GenomeIterator:
-        GenomeIterator(const GenomeIterator&);
-        GenomeIterator& operator=(const GenomeIterator&);
-        GenomeIterator& operator++();
-        bool operator==(const GenomeIterator&);
-        bool operator!=(const GenomeIterator&);
+    cdef cppclass CGenomeIterator "arv::GenomeIterator":
+        CGenomeIterator(const CGenomeIterator&);
+        CGenomeIterator& operator=(const CGenomeIterator&);
+        CGenomeIterator& operator++();
+        bool operator==(const CGenomeIterator&);
+        bool operator!=(const CGenomeIterator&);
         const RsidSNP operator*();
 
     cdef const CSNP NONE_SNP
@@ -108,8 +108,8 @@ cdef extern from "arv.hpp" namespace "arv":
         bool operator==(const CGenome&) const
         bool operator!=(const CGenome&) const
 
-        GenomeIterator begin() const
-        GenomeIterator end() const
+        CGenomeIterator begin() const
+        CGenomeIterator end() const
 
         bool y_chromosome
         RSID first
@@ -336,13 +336,13 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
 def _sizes():
     """Returns C++ sizeof() for internal structures."""
     return {
-        "CGenome":         sizeof(CGenome),
-        "CGenotype":       sizeof(CGenotype),
-        "Chromosome":      sizeof(Chromosome),
-        "CSNP":            sizeof(CSNP),
-        "GenomeIterator":  sizeof(GenomeIterator),
-        "Nucleotide":      sizeof(Nucleotide),
-        "Position":        sizeof(Position),
-        "RSID":            sizeof(RSID),
-        "RsidSNP":         sizeof(RsidSNP),
+        "CGenome":          sizeof(CGenome),
+        "CGenomeIterator":  sizeof(CGenomeIterator),
+        "CGenotype":        sizeof(CGenotype),
+        "Chromosome":       sizeof(Chromosome),
+        "CSNP":             sizeof(CSNP),
+        "Nucleotide":       sizeof(Nucleotide),
+        "Position":         sizeof(Position),
+        "RSID":             sizeof(RSID),
+        "RsidSNP":          sizeof(RsidSNP),
     }
