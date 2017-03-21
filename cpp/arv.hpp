@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-#include "arv_cython.hpp"
+#include "export.hpp"
 
 namespace arv {
 

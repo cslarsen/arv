@@ -22,7 +22,7 @@ def extra_compile_flags(debug=None):
             "-g0", # no symbols
             "-march=native",
             "-O2",
-            "-fvisibility=hidden",
+            #"-fvisibility=hidden", # not working portably
         ]
 
     return flags
