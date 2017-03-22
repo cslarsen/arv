@@ -5,7 +5,7 @@ import os
 import shutil
 import unittest
 
-def extra_compile_flags(debug=None, warnings=True, hidden_symbols=False):
+def extra_compile_flags(debug=None, warnings=True, hidden_symbols=True):
     flags = []
 
     # TODO: Can we detect compiler through Cython? We default to gcc here,

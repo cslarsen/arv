@@ -14,9 +14,9 @@
 // make the init function's symbol global (i.e. public).
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC DLL_PUBLIC init_arv(void);
+PyMODINIT_FUNC init_arv(void) DLL_PUBLIC;
 #else
-PyMODINIT_FUNC DLL_PUBLIC PyInit__arv(void);
+PyMODINIT_FUNC PyInit__arv(void) DLL_PUBLIC;
 #endif
 
 #endif // guard
