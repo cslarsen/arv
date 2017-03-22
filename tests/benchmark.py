@@ -85,7 +85,7 @@ def benchmark(times, code, **local_args):
             exec(code, localvars)
 
         elapsed = elapsed()
-        if elapsed < best:
+        if round(elapsed, 4) < round(best, 4):
             log("\n%6.4fs " % elapsed)
             best = elapsed
         else:
