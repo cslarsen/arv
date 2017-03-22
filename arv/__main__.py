@@ -66,7 +66,7 @@ def example(genome):
         "AG": "brown or green",
         "GG": "blue"})
 
-    report = "A {gender} with {color} eyes and {complexion} skin"
+    report = "A {gender} with {color} eyes and {complexion} skin"
     return report.format(**locals())
 
 def _main():
