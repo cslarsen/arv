@@ -23,6 +23,7 @@ def extra_compile_flags(debug=None, warnings=True, hidden_symbols=True,
         flags += [
             "-g0", # no symbols
             "-march=native",
+            "-mtune=native",
             "-O2",
         ]
         if hidden_symbols:
