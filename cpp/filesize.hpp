@@ -13,14 +13,9 @@
 
 #include <cstddef>
 
-#ifndef BUILDING_DLL
-# define BUILDING_DLL
-#endif
-#include "export.hpp"
-
 namespace arv {
 
-std::size_t DLL_LOCAL filesize(const int file_descriptor);
+std::size_t filesize(const int file_descriptor);
 
 } // namespace arv
 

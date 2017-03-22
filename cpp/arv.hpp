@@ -16,8 +16,6 @@
 #include <string>
 #include <vector>
 
-#include "export.hpp"
-
 namespace arv {
 
 typedef std::uint32_t Position;
@@ -58,7 +56,7 @@ enum Chromosome {
 
 // We can get this down to a byte if we want to
 #pragma pack(1)
-struct DLL_PUBLIC Genotype {
+struct Genotype {
   Nucleotide first  : 3;
   Nucleotide second : 3;
 
@@ -73,7 +71,7 @@ struct DLL_PUBLIC Genotype {
 };
 
 #pragma pack(1)
-struct DLL_PUBLIC SNP {
+struct SNP {
   Chromosome chromosome : 5;
   Position position;
   Genotype genotype;
@@ -92,18 +90,18 @@ struct DLL_PUBLIC SNP {
   bool operator>=(const SNP&) const;
 };
 
-extern DLL_PUBLIC const SNP NONE_SNP;
+extern const SNP NONE_SNP;
 
-struct DLL_LOCAL GenomeIteratorImpl;
+struct GenomeIteratorImpl;
 
-struct DLL_PUBLIC RsidSNP {
+struct RsidSNP {
   RSID rsid;
   SNP snp;
 
   bool operator==(const RsidSNP& o) const;
 };
 
-struct DLL_PUBLIC GenomeIterator {
+struct GenomeIterator {
   // todo copy ctor, assignment op, dtor
   GenomeIterator(GenomeIteratorImpl*);
   ~GenomeIterator();
@@ -117,7 +115,7 @@ private:
   GenomeIteratorImpl* pimpl;
 };
 
-struct DLL_PUBLIC Genome {
+struct Genome {
   /*!
    * True if genome contains a Y-chromosome (with non-empty genotypes).
    */
@@ -192,7 +190,7 @@ struct DLL_PUBLIC Genome {
   GenomeIterator end() const;
 
 private:
-  struct DLL_LOCAL GenomeImpl;
+  struct GenomeImpl;
   GenomeImpl* pimpl;
 };
 
@@ -201,9 +199,9 @@ Nucleotide complement(const Nucleotide& n);
 /*!
  * Parse a 23andMe genome text file and put contents into genome.
  */
-void DLL_PUBLIC parse_file(const std::string& filename, Genome&);
+void parse_file(const std::string& filename, Genome&);
 
-Genotype DLL_PUBLIC complement(const Genotype& g);
+Genotype complement(const Genotype& g);
 
 } // namespace arv
 

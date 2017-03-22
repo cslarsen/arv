@@ -17,14 +17,9 @@
 #include <sys/mman.h>
 #include <sys/types.h>
 
-#ifndef BUILDING_DLL
-# define BUILDING_DLL
-#endif
-#include "export.hpp"
-
 namespace arv {
 
-class DLL_LOCAL MMap {
+class MMap {
   std::size_t l;
   void *p;
 public:

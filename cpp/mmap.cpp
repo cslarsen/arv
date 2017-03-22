@@ -14,7 +14,7 @@
 
 namespace arv {
 
-DLL_LOCAL MMap::MMap(void *address,
+MMap::MMap(void *address,
            const std::size_t length,
            const int protection_level,
            const int flags,
@@ -27,7 +27,7 @@ DLL_LOCAL MMap::MMap(void *address,
     throw std::runtime_error("mmap error");
 }
 
-DLL_LOCAL MMap::~MMap() {
+MMap::~MMap() {
   munmap(p, l);
 }
 

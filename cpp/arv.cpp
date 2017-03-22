@@ -14,14 +14,14 @@
 
 namespace {
 
-struct DLL_LOCAL RSIDHash {
+struct RSIDHash {
   inline std::size_t operator() (const arv::RSID& rsid) const
   {
     return static_cast<std::size_t>(rsid);
   }
 };
 
-struct DLL_LOCAL RSIDEq {
+struct RSIDEq {
   inline bool operator()(const arv::RSID& a, const arv::RSID& b) const
   {
     return a == b;
@@ -84,7 +84,7 @@ Genotype operator~(const Genotype& g)
                   complement(g.second));
 }
 
-Genotype DLL_PUBLIC complement(const Genotype& g)
+Genotype complement(const Genotype& g)
 {
   return ~g;
 }
@@ -197,7 +197,7 @@ bool SNP::operator==(const Genotype& g) const
   return genotype == g;
 }
 
-struct DLL_LOCAL GenomeIteratorImpl {
+struct GenomeIteratorImpl {
   SNPMap::const_iterator it;
 
   GenomeIteratorImpl(SNPMap::const_iterator& i):
@@ -254,7 +254,7 @@ bool GenomeIterator::operator!=(const GenomeIterator& o)
   return pimpl->it != o.pimpl->it;
 }
 
-struct DLL_LOCAL Genome::GenomeImpl {
+struct Genome::GenomeImpl {
   SNPMap snps;
 
   GenomeImpl(const std::size_t size) :

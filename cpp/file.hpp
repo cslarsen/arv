@@ -11,14 +11,9 @@
 #ifndef ARV_FILE_HPP
 #define ARV_FILE_HPP
 
-#ifndef BUILDING_DLL
-# define BUILDING_DLL
-#endif
-#include "export.hpp"
-
 namespace arv {
 
-class DLL_LOCAL File {
+class File {
   int fd;
 public:
   File(const char* filename, const int flags);
