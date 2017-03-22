@@ -118,7 +118,7 @@ cdef extern from "arv.hpp" namespace "arv":
     cdef void parse_file(const string&, CGenome&) except +
     cdef CGenotype complement(const CGenotype&)
 
-cdef class Genotype:
+cdef class Genotype(object):
     """A pair of nucleotides."""
     cdef CGenotype _genotype
 
@@ -154,7 +154,7 @@ cdef class Genotype:
         gt._genotype = complement(self._genotype)
         return gt
 
-cdef class SNP:
+cdef class SNP(object):
     """A single nucleotide polymorphism."""
     cdef CSNP _snp
 
@@ -193,7 +193,7 @@ cdef class SNP:
     def __str__(self):
         return str(self.genotype)
 
-cdef class Genome:
+cdef class Genome(object):
     """A collection of SNPs for a human being.
 
     Provides a dictionary interface, including keys, values, __get_item__ and
