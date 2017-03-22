@@ -123,7 +123,10 @@ class BenchmarkTests(unittest.TestCase):
     @unittest.skipUnless(os.path.isfile(os.getenv("ARV_BENCHMARK", ".")),
         "Specify ARV_BENCHMARK=<genome-filename> to benchmark")
     def test_parser_speed(self):
-        times = 40
+        try:
+            times = int(os.getenv("ARV_BENCHMARK_COUNT", "40"))
+        except:
+            times = 40
         code = benchmarks["parsing"]
         filename = os.getenv("ARV_BENCHMARK")
         seconds = benchmark(times, code, filename=filename, stream=sys.stderr,

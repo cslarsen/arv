@@ -98,7 +98,8 @@ tests, but does not install, arv:
 
 If you set the environment variable ``ARV_BENCHMARK`` to a genome filename and
 run the tests, it will perform a short benchmark, reporting the best parsing
-time on it.
+time on it. You can also set ``ARV_BENCHMARK_COUNT=<number>`` to change how
+many times it should parse the given file.
 
 Usage
 =====
