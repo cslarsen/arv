@@ -5,7 +5,8 @@ import os
 import shutil
 import unittest
 
-def extra_compile_flags(debug=None, warnings=True, hidden_symbols=True):
+def extra_compile_flags(debug=None, warnings=True, hidden_symbols=True,
+        strip=True):
     flags = []
 
     # TODO: Can we detect compiler through Cython? We default to gcc here,
@@ -27,6 +28,14 @@ def extra_compile_flags(debug=None, warnings=True, hidden_symbols=True):
         if hidden_symbols:
             flags += ["-fvisibility=hidden",
                       "-include", "cpp/public_py_init_sym.hpp"]
+
+    return flags
+
+def extra_link_flags(debug=False, strip=True):
+    flags = []
+
+    if strip:
+        flags += ["-Wl,-s"]
 
     return flags
 
@@ -74,6 +83,7 @@ def extensions():
             language="c++",
             include_dirs=["cpp"],
             extra_compile_args=extra_compile_flags(os.getenv("ARV_DEBUG", False)),
+            extra_link_args=extra_link_flags(os.getenv("ARV_DEBUG", False)),
         ),
     ]
     #configure_google_hashmap()
