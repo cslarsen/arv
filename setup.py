@@ -5,7 +5,7 @@ import os
 import shutil
 import unittest
 
-def extra_compile_flags(debug=None, hidden_symbols=False):
+def extra_compile_flags(debug=None, warnings=True, hidden_symbols=False):
     flags = []
 
     # TODO: Can we detect compiler through Cython? We default to gcc here,
@@ -15,9 +15,10 @@ def extra_compile_flags(debug=None, hidden_symbols=False):
         "-DBUILDING_DLL",
     ]
 
-    if debug:
+    if warnings:
         flags += ["-W", "-Wall"]
-    else:
+
+    if not debug:
         flags += [
             "-g0", # no symbols
             "-march=native",
