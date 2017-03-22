@@ -58,8 +58,6 @@ from _arv import (
 )
 
 from .match import unphased_match
-from . import traits
-from . import util
 
 __author__ = "Christian Stigen Larsen"
 __copyright__ = "Copyright 2017 Christian Stigen Larsen"
