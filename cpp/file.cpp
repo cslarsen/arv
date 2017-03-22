@@ -18,7 +18,7 @@
 namespace arv {
 
 File::File(const char* filename, const int flags):
-  fd(open(filename, flags))
+  fd(open(filename, flags, S_IRUSR))
 {
   if ( fd < 0 ) {
     std::string msg = "Could not open ";
