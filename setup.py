@@ -5,7 +5,7 @@ import os
 import shutil
 import unittest
 
-def extra_compile_flags(debug=None):
+def extra_compile_flags(debug=None, hidden_symbols=False):
     flags = []
 
     # TODO: Can we detect compiler through Cython? We default to gcc here,
@@ -22,8 +22,10 @@ def extra_compile_flags(debug=None):
             "-g0", # no symbols
             "-march=native",
             "-O2",
-            #"-fvisibility=hidden", # not working portably
         ]
+        if hidden_symbols:
+            flags += ["-fvisibility=hidden",
+                      "-include", "cpp/public_py_init_sym.hpp"]
 
     return flags
 
