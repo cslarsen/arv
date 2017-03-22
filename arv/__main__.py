@@ -7,8 +7,8 @@ Copyright 2017 Christian Stigen Larsen
 Distributed under the GNU GPL v3 or later. See COPYING.
 """
 
-import __init__ as arv
 import argparse
+import arv
 import os
 import sys
 
