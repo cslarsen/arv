@@ -1,6 +1,5 @@
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
-import multiprocessing
 import os
 import shutil
 import unittest
@@ -140,7 +139,10 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.2",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
     ],
 )
