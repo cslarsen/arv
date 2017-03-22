@@ -9,9 +9,11 @@ Distributed under the GNU GPL v3 or later; see COPYING.
 import argparse
 import arv
 import contextlib
+import os
 import random
 import sys
 import time
+import unittest
 
 benchmarks = {
     "parsing": "arv.load(filename)",
@@ -53,9 +55,9 @@ assert(num == len(genome))
 """,
 }
 
-def log(msg):
-    sys.stdout.write(msg)
-    sys.stdout.flush()
+def log(msg, stream=sys.stdout):
+    stream.write(msg)
+    stream.flush()
 
 if sys.version_info[:2] >= (3, 3):
     mark_time = time.perf_counter
@@ -70,6 +72,8 @@ def timed_block():
     elapsed = mark_time() - start
 
 def benchmark(times, code, **local_args):
+    stream = local_args.get("stream", sys.stdout)
+    prefix = local_args.get("prefix", "")
     best = 1e9
     for no in range(times):
         localvars = {
@@ -85,12 +89,13 @@ def benchmark(times, code, **local_args):
             exec(code, localvars)
 
         elapsed = elapsed()
-        if round(elapsed, 4) < round(best, 4):
-            log("\n%6.4fs " % elapsed)
+        if elapsed < best:
+            if round(elapsed, 4) < round(best, 4):
+                log("\n%s%6.4fs " % (prefix, elapsed), stream=stream)
             best = elapsed
         else:
-            log(".")
-    return elapsed
+            log(".", stream=stream)
+    return best
 
 def all_benchmarks(filename, times):
     log("Benchmarking arv %s at %s\n" % (arv.__version__, arv.__file__))
@@ -113,6 +118,22 @@ def all_benchmarks(filename, times):
             log("\n")
 
     return results
+
+class BenchmarkTests(unittest.TestCase):
+    @unittest.skipUnless(os.path.isfile(os.getenv("ARV_BENCHMARK", ".")),
+        "Specify ARV_BENCHMARK=<genome-filename> to benchmark")
+    def test_parser_speed(self):
+        times = 40
+        code = benchmarks["parsing"]
+        filename = os.getenv("ARV_BENCHMARK")
+        seconds = benchmark(times, code, filename=filename, stream=sys.stderr,
+                prefix="  ")
+        genome = arv.load(filename)
+        sys.stderr.flush()
+        sys.stderr.write(" %d SNPs in ~%dms or %.1g SNPs/second ... " % (
+                len(genome), int(round(seconds, 3)*1000), len(genome)/seconds))
+        sys.stderr.flush()
+
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
