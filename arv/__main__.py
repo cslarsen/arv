@@ -44,6 +44,10 @@ def _parse_args():
         print("Distributed under the %s" % arv.__license__)
         sys.exit(0)
 
+    if len(opts.files) == 0:
+        p.print_help()
+        sys.exit(1)
+
     return opts
 
 def summary(genome):
@@ -76,7 +80,6 @@ def _main():
         genomes.append(genome)
 
     if opts.example:
-        log()
         for filename, genome in zip(opts.files, genomes):
             log("%s ... %s\n" % (os.path.basename(filename), example(genome)))
 
