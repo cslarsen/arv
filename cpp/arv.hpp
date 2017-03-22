@@ -114,7 +114,7 @@ struct DLL_PUBLIC GenomeIterator {
   bool operator!=(const GenomeIterator&);
   const RsidSNP operator*();
 private:
-  GenomeIteratorImpl* DLL_LOCAL pimpl;
+  GenomeIteratorImpl* pimpl;
 };
 
 struct DLL_PUBLIC Genome {
@@ -193,7 +193,7 @@ struct DLL_PUBLIC Genome {
 
 private:
   struct DLL_LOCAL GenomeImpl;
-  GenomeImpl* DLL_LOCAL pimpl;
+  GenomeImpl* pimpl;
 };
 
 Nucleotide complement(const Nucleotide& n);
