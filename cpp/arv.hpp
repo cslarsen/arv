@@ -110,7 +110,8 @@ struct GenomeIterator {
   GenomeIterator& operator++();
   bool operator==(const GenomeIterator&);
   bool operator!=(const GenomeIterator&);
-  const RsidSNP operator*();
+  const RsidSNP operator*() const;
+  const RsidSNP value() const;
 private:
   GenomeIteratorImpl* pimpl;
 };

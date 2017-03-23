@@ -86,6 +86,7 @@ cdef extern from "arv.hpp" namespace "arv":
         bool operator==(const CGenomeIterator&);
         bool operator!=(const CGenomeIterator&);
         const RsidSNP operator*();
+        const RsidSNP& value();
 
     cdef const CSNP NONE_SNP
 

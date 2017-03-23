@@ -236,7 +236,12 @@ GenomeIterator& GenomeIterator::operator++()
   return *this;
 }
 
-const RsidSNP GenomeIterator::operator*()
+const RsidSNP GenomeIterator::operator*() const
+{
+  return value();
+}
+
+const RsidSNP GenomeIterator::value() const
 {
   RsidSNP r;
   r.rsid = (*pimpl->it).first;
