@@ -201,18 +201,26 @@ cdef class Genome(object):
     """
     cdef CGenome _genome
     cdef int orientation
-    cdef str name
+    cdef str _name
     cdef str _ethnicity
 
     def __cinit__(Genome self, size_t size=1000003):
         self._genome = CGenome(size)
         self.orientation = 0
-        self.name = ""
+        self._name = ""
         self._ethnicity = ""
 
     cpdef double load_factor(Genome self):
         """The underlying hash table's load factor."""
         return self._genome.load_factor()
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, string value):
+        self._name = value
 
     @property
     def ethnicity(self):
@@ -272,7 +280,8 @@ cdef class Genome(object):
         return self._genome.size()
 
     def __repr__(self):
-        return "<Genome: SNPs=%d, name=%r>" % (self.__len__(), self.name)
+        return "<Genome: SNPs=%d, name=%r, ethnicity=%r>" % (self.__len__(),
+                self.name, self.ethnicity)
 
     def __getitem__(self, key):
         """Retrieves genotype keyed by its RSID.

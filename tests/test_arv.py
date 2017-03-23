@@ -12,7 +12,8 @@ import unittest
 class ArvModuleTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.genome = arv.load("tests/fake_genome.txt")
+        cls.filename = "tests/fake_genome.txt"
+        cls.genome = arv.load(cls.filename)
 
     def test_len(self):
         self.assertEqual(len(self.genome), 24)
@@ -28,6 +29,13 @@ class ArvModuleTests(unittest.TestCase):
         self.assertEqual(self.genome.ethnicity, "european")
         self.genome.ethnicity = ""
         self.assertEqual(self.genome.ethnicity, "")
+
+    def test_name(self):
+        self.assertEqual(self.genome.name, self.filename)
+        self.genome.name = "foo bar"
+        self.assertEqual(self.genome.name, "foo bar")
+        self.genome.name = self.filename
+        self.assertEqual(self.genome.name, self.filename)
 
     def test_genotype_compare(self):
         a = self.genome.get_snp("rs4477212").genotype
