@@ -200,19 +200,29 @@ cdef class Genome(object):
     so on.
     """
     cdef CGenome _genome
-    cdef int orientation
+    cdef int _orientation
     cdef str _name
     cdef str _ethnicity
 
     def __cinit__(Genome self, size_t size=1000003):
         self._genome = CGenome(size)
-        self.orientation = 0
+        self._orientation = 0
         self._name = ""
         self._ethnicity = ""
 
     cpdef double load_factor(Genome self):
         """The underlying hash table's load factor."""
         return self._genome.load_factor()
+
+    @property
+    def orientation(self):
+        return self._orientation
+
+    @orientation.setter
+    def orientation(self, int value):
+        if value not in [-1, 1]:
+            raise ValueError("Orientation must be either -1 or +1")
+        self._orientation = value
 
     @property
     def name(self):
@@ -280,8 +290,8 @@ cdef class Genome(object):
         return self._genome.size()
 
     def __repr__(self):
-        return "<Genome: SNPs=%d, name=%r, ethnicity=%r>" % (self.__len__(),
-                self.name, self.ethnicity)
+        return "<Genome: SNPs=%d, orientation=%d, name=%r, ethnicity=%r>" % (
+                self.__len__(), self.orientation, self.name, self.ethnicity)
 
     def __getitem__(self, key):
         """Retrieves genotype keyed by its RSID.
@@ -326,17 +336,25 @@ cdef class Genome(object):
         """Flag indicating presence of a Y chromosome."""
         return self._genome.y_chromosome
 
-def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
+def load(filename, name=None, ethnicity=None, size_t initial_size=1000003,
+        orientation=1):
     """Loads given 23andMe raw genome file.
 
     Arguments:
         filename:        Name of file to load.
+
         name (optional): Name to give the genome. Will use filename by default.
-        ethnicity:       Provide genome's ethnicity to unlock more reports.
-                         Accepted values are typically "european", "african",
-                         "asian". None by default.
+
+        ethnicity (optional): Provide genome's ethnicity to unlock more reports.
+                              Accepted values are typically "european", "african",
+                              "asian". None by default.
+
         initial_size (optional): Number of initial empty slots to reserve in
                                  the underlying hash table.
+
+        orientation (optional): +1 or -1, corresponding to the plus or minus
+                                strand. 23andMe files have always plus
+                                orientation.
 
     Raises:
         RuntimeError - instead of FileNotFoundError etc.
@@ -348,6 +366,7 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003):
     parse_file(filename.encode("utf-8"), genome._genome)
     genome.name = name if name is not None else filename
     genome.ethnicity = ethnicity if ethnicity is not None else ""
+    genome.orientation = orientation
     return genome
 
 def _sizes():

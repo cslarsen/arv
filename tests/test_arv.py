@@ -30,6 +30,17 @@ class ArvModuleTests(unittest.TestCase):
         self.genome.ethnicity = ""
         self.assertEqual(self.genome.ethnicity, "")
 
+    def test_orientation(self):
+        self.assertEqual(self.genome.orientation, +1)
+        self.genome.orientation = -1
+        self.assertEqual(self.genome.orientation, -1)
+        self.genome.orientation = +1
+        self.assertEqual(self.genome.orientation, +1)
+        with self.assertRaises(ValueError):
+            self.genome.orientation = -2
+        with self.assertRaises(ValueError):
+            self.genome.orientation = 2
+
     def test_name(self):
         self.assertEqual(self.genome.name, self.filename)
         self.genome.name = "foo bar"
