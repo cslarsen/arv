@@ -202,17 +202,25 @@ cdef class Genome(object):
     cdef CGenome _genome
     cdef int orientation
     cdef str name
-    cdef str ethnicity
+    cdef str _ethnicity
 
     def __cinit__(Genome self, size_t size=1000003):
         self._genome = CGenome(size)
         self.orientation = 0
         self.name = ""
-        self.ethnicity = ""
+        self._ethnicity = ""
 
     cpdef double load_factor(Genome self):
         """The underlying hash table's load factor."""
         return self._genome.load_factor()
+
+    @property
+    def ethnicity(self):
+        return self._ethnicity
+
+    @ethnicity.setter
+    def ethnicity(self, string value):
+        self._ethnicity = value
 
     cdef string _rsid_str(self, RSID rsid):
         if rsid >= 0:

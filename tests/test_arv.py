@@ -22,6 +22,13 @@ class ArvModuleTests(unittest.TestCase):
         self.assertTrue(self.genome.y_chromosome)
         self.assertFalse(arv.Genome().y_chromosome)
 
+    def test_ethnicity(self):
+        self.assertEqual(self.genome.ethnicity, "")
+        self.genome.ethnicity = "european"
+        self.assertEqual(self.genome.ethnicity, "european")
+        self.genome.ethnicity = ""
+        self.assertEqual(self.genome.ethnicity, "")
+
     def test_genotype_compare(self):
         a = self.genome.get_snp("rs4477212").genotype
         b = self.genome.get_snp("rs4672279").genotype
