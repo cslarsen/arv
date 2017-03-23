@@ -89,7 +89,7 @@ GitHub with as much detail as possible (``g++/clang++ --version``, ``uname
 If you set the environment variable ``ARV_DEBUG``, it will build with full
 warnings and debug symbols.
 
-You can also intall it locally through ``setup.py``. The following builds and
+You can also install it locally through ``setup.py``. The following builds and
 tests, but does not install, arv:
 
 .. code:: bash
