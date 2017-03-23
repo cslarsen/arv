@@ -180,6 +180,26 @@ class ArvModuleTests(unittest.TestCase):
         self.assertGreater(self.genome.load_factor(), 0.0)
         self.assertLess(self.genome.load_factor(), 1.0)
 
+    def test_keys(self):
+        keys = sorted(["i3001754", "i3001755", "i3001759", "i3001761",
+            "i3001773", "i4000755", "i4000759", "rs10488822", "rs10810289",
+            "rs11980927", "rs12913832", "rs1426654", "rs1540613", "rs28504042",
+            "rs3135027", "rs4477212", "rs4536786", "rs4672279", "rs6015286",
+            "rs6026400", "rs6123756", "rs742927", "rs7715122", "rs913897"])
+
+        def to_int(key):
+            if key.startswith("rs"):
+                return int(key[2:])
+            elif key.startswith("i"):
+                return -int(key[1:])
+            else:
+                raise ValueError(key)
+
+        integer_keys = map(to_int, keys)
+
+        self.assertEqual(sorted(list(self.genome.keys())),
+                sorted(integer_keys))
+
     def test_snps(self):
         snp = self.genome.get_snp
 
