@@ -103,11 +103,13 @@ struct RsidSNP {
 
 struct GenomeIterator {
   // todo copy ctor, assignment op, dtor
+  GenomeIterator();
   GenomeIterator(GenomeIteratorImpl*);
   ~GenomeIterator();
   GenomeIterator(const GenomeIterator&);
   GenomeIterator& operator=(const GenomeIterator&);
   GenomeIterator& operator++();
+  void next();
   bool operator==(const GenomeIterator&);
   bool operator!=(const GenomeIterator&);
   const RsidSNP operator*() const;

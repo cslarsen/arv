@@ -206,6 +206,11 @@ struct GenomeIteratorImpl {
   }
 };
 
+GenomeIterator::GenomeIterator():
+  pimpl(NULL)
+{
+}
+
 GenomeIterator::GenomeIterator(GenomeIteratorImpl* p):
   pimpl(p)
 {
@@ -234,6 +239,11 @@ GenomeIterator& GenomeIterator::operator++()
 {
   ++pimpl->it;
   return *this;
+}
+
+void GenomeIterator::next()
+{
+  this->operator++();
 }
 
 const RsidSNP GenomeIterator::operator*() const

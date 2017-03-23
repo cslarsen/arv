@@ -65,14 +65,14 @@ cdef extern from "arv.hpp" namespace "arv":
             const CGenotype& = CGenotype(NONE, NONE))
         CSNP(const CSNP&)
 
-        CSNP& operator=(const CSNP&);
-        bool operator!=(const CSNP&) const;
-        bool operator<(const CSNP&) const;
-        bool operator<=(const CSNP&) const;
-        bool operator==(const CGenotype&) const;
-        bool operator==(const CSNP&) const;
-        bool operator>(const CSNP&) const;
-        bool operator>=(const CSNP&) const;
+        CSNP& operator=(const CSNP&)
+        bool operator!=(const CSNP&) const
+        bool operator<(const CSNP&) const
+        bool operator<=(const CSNP&) const
+        bool operator==(const CGenotype&) const
+        bool operator==(const CSNP&) const
+        bool operator>(const CSNP&) const
+        bool operator>=(const CSNP&) const
 
     cdef cppclass RsidSNP:
         RSID rsid
@@ -80,13 +80,15 @@ cdef extern from "arv.hpp" namespace "arv":
         bool operator==(const RsidSNP&) const
 
     cdef cppclass CGenomeIterator "arv::GenomeIterator":
-        CGenomeIterator(const CGenomeIterator&);
-        CGenomeIterator& operator=(const CGenomeIterator&);
-        CGenomeIterator& operator++();
-        bool operator==(const CGenomeIterator&);
-        bool operator!=(const CGenomeIterator&);
-        const RsidSNP operator*();
-        const RsidSNP& value();
+        CGenomeIterator()
+        CGenomeIterator(const CGenomeIterator&)
+        CGenomeIterator& operator=(const CGenomeIterator&)
+        CGenomeIterator& operator++()
+        bool operator==(const CGenomeIterator&)
+        bool operator!=(const CGenomeIterator&)
+        void next()
+        const RsidSNP operator*()
+        const RsidSNP& value()
 
     cdef const CSNP NONE_SNP
 
@@ -193,6 +195,28 @@ cdef class SNP(object):
 
     def __str__(self):
         return str(self.genotype)
+
+cdef class GenomeIterator(object):
+    """Iterates through the ``arv.SNP`` objects of a ``arv.Genome``."""
+    cdef CGenomeIterator _itr
+
+    def __cinit__(GenomeIterator self):
+        self._itr = CGenomeIterator()
+
+    def __iter__(self):
+        return self
+
+    def next(GenomeIterator self):
+        cdef RsidSNP current = self._itr.value()
+
+        #if current == NONE_SNP:
+            #raise StopIteration()
+
+        self._itr.next()
+
+        snp = SNP()
+        snp._snp = current.snp
+        return snp
 
 cdef class Genome(object):
     """A collection of SNPs for a human being.
