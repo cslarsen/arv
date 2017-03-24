@@ -21,13 +21,27 @@ class ArvModuleTests(unittest.TestCase):
             "rs3135027", "rs4477212", "rs4536786", "rs4672279", "rs6015286",
             "rs6026400", "rs6123756", "rs742927", "rs7715122", "rs913897"])
 
+    def _int(self, rsid):
+        """Converts RSID to integer."""
+        if rsid.startswith("rs"):
+            return int(rsid[2:])
+        elif rsid.startswith("i"):
+            return -int(rsid[1:])
+        else:
+            raise ValueError(rsid)
+
     def test_len(self):
         self.assertEqual(len(self.genome), 24)
-        self.assertEqual(len(arv.Genome()), 0)
+
+    def test_contains(self):
+        for key in self.keys:
+            self.assertIn(key, self.genome)
+            self.assertNotIn("x" + key, self.genome)
+            self.assertIn(self._int(key), self.genome)
+            self.assertNotIn(-1*self._int(key), self.genome)
 
     def test_ychromosome(self):
         self.assertTrue(self.genome.y_chromosome)
-        self.assertFalse(arv.Genome().y_chromosome)
 
     def test_ethnicity(self):
         self.assertEqual(self.genome.ethnicity, "")

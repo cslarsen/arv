@@ -17,32 +17,19 @@ cdef extern from "arv.hpp" namespace "arv":
         NONE, A, G, C, T, D, I
 
     cdef enum Chromosome:
-        CHR_NO =  0,
-        CHR_01 =  1,
-        CHR_02 =  2,
-        CHR_03 =  3,
-        CHR_04 =  4,
-        CHR_05 =  5,
-        CHR_06 =  6,
-        CHR_07 =  7,
-        CHR_08 =  8,
-        CHR_09 =  9,
-        CHR_10 = 10,
-        CHR_11 = 11,
-        CHR_12 = 12,
-        CHR_13 = 13,
-        CHR_14 = 14,
-        CHR_15 = 15,
-        CHR_16 = 16,
-        CHR_17 = 17,
-        CHR_18 = 18,
-        CHR_19 = 19,
-        CHR_20 = 20,
-        CHR_21 = 21,
-        CHR_22 = 22,
-        CHR_X  = 23,
-        CHR_Y  = 24,
-        CHR_MT = 25
+        CHR_NO =  0, CHR_01 =  1,
+        CHR_02 =  2, CHR_03 =  3,
+        CHR_04 =  4, CHR_05 =  5,
+        CHR_06 =  6, CHR_07 =  7,
+        CHR_08 =  8, CHR_09 =  9,
+        CHR_10 = 10, CHR_11 = 11,
+        CHR_12 = 12, CHR_13 = 13,
+        CHR_14 = 14, CHR_15 = 15,
+        CHR_16 = 16, CHR_17 = 17,
+        CHR_18 = 18, CHR_19 = 19,
+        CHR_20 = 20, CHR_21 = 21,
+        CHR_22 = 22, CHR_X  = 23,
+        CHR_Y  = 24, CHR_MT = 25
 
     cdef cppclass CGenotype "arv::Genotype":
         Nucleotide first
@@ -52,7 +39,6 @@ cdef extern from "arv.hpp" namespace "arv":
         CGenotype(const Nucleotide&, const Nucleotide&)
         bool operator==(const CGenotype&) const
         bool operator<(const CGenotype&) const
-
         string to_string() const
 
     cdef cppclass CSNP "arv::SNP":
@@ -61,10 +47,9 @@ cdef extern from "arv.hpp" namespace "arv":
         CGenotype genotype
 
         CSNP(const Chromosome& = CHR_NO,
-            const Position& = 0,
-            const CGenotype& = CGenotype(NONE, NONE))
+             const Position& = 0,
+             const CGenotype& = CGenotype(NONE, NONE))
         CSNP(const CSNP&)
-
         CSNP& operator=(const CSNP&)
         bool operator!=(const CSNP&) const
         bool operator<(const CSNP&) const
@@ -83,10 +68,8 @@ cdef extern from "arv.hpp" namespace "arv":
         CGenomeIterator()
         CGenomeIterator(const CGenomeIterator&)
         CGenomeIterator& operator=(const CGenomeIterator&)
-
         bool operator==(const CGenomeIterator&)
         bool operator!=(const CGenomeIterator&)
-
         void next()
         const RsidSNP& value()
 
@@ -316,12 +299,12 @@ cdef class Genome(object):
     cdef RSID _rsid_int(self, key) except? 0:
         if isinstance(key, int):
             return key
-        if isinstance(key, str):
+        elif isinstance(key, str):
             if key.startswith("rs"):
                 return int(key[2:])
             if key.startswith("i"):
                 return -int(key[1:])
-        raise KeyError(key)
+        return 0
 
     def keys(self):
         return GenomeIterator._iterate(self._genome, 0)
@@ -362,6 +345,9 @@ cdef class Genome(object):
     def __repr__(self):
         return "<Genome: SNPs=%d, orientation=%d, name=%r, ethnicity=%r>" % (
                 self.__len__(), self.orientation, self.name, self.ethnicity)
+
+    def __contains__(self, key):
+        return self._genome.has(self._rsid_int(key))
 
     def __getitem__(self, key):
         """Retrieves genotype keyed by its RSID.
