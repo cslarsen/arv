@@ -166,26 +166,6 @@ struct Genome {
    */
   std::size_t size() const;
 
-  /*!
-   * Returns RSIDs that exist in both genomes.
-   */
-  std::vector<RSID> intersect_rsid(const Genome& genome) const;
-
-  /*!
-   * Returns RSID for SNPs that have the same genotype in both genomes.
-   */
-  std::vector<RSID> intersect_snp(const Genome& genome) const;
-
-  /*!
-   * Returns all RSIDs in this genome.
-   */
-  std::vector<RSID> rsids() const;
-
-  /*!
-   * Returns a copy of all SNPs.
-   */
-  std::vector<SNP> snps() const;
-
   bool operator==(const Genome&) const;
   bool operator!=(const Genome&) const;
 

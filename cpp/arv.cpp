@@ -376,51 +376,6 @@ void Genome::insert(const std::pair<RSID, SNP>& obj)
   pimpl->snps.insert(obj);
 }
 
-std::vector<RSID> Genome::intersect_rsid(const Genome& genome) const
-{
-  std::vector<RSID> r;
-
-  for ( const auto i : pimpl->snps )
-    if ( genome.has(i.first) )
-      r.push_back(i.first);
-
-  return r;
-}
-
-std::vector<RSID> Genome::intersect_snp(const Genome& genome) const
-{
-  std::vector<RSID> r;
-
-  for ( const auto i : pimpl->snps )
-    if ( genome.has(i.first) )
-      if ( genome[i.first] == operator[](i.first) )
-        r.push_back(i.first);
-
-  return r;
-}
-
-std::vector<RSID> Genome::rsids() const
-{
-  std::vector<RSID> r(size());
-
-  std::size_t n = 0;
-  for ( const auto i : pimpl->snps )
-    r[n++] = i.first;
-
-  return r;
-}
-
-std::vector<SNP> Genome::snps() const
-{
-  std::vector<SNP> r(size());
-
-  std::size_t n = 0;
-  for ( const auto i : pimpl->snps )
-    r[n++] = i.second;
-
-  return r;
-}
-
 bool Genome::operator==(const Genome& o) const
 {
   // cheap tests first

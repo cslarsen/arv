@@ -105,8 +105,6 @@ cdef extern from "arv.hpp" namespace "arv":
         const CSNP& operator[](const RSID&) const
         bool has(const RSID&) const
         void insert(const RSID&, const CSNP&)
-        vector[RSID] rsids() const
-        vector[CSNP] snps() const
 
         bool operator==(const CGenome&) const
         bool operator!=(const CGenome&) const
