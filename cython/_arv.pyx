@@ -226,8 +226,8 @@ cdef class Genome(object):
     """
     cdef CGenome _genome
     cdef int _orientation
-    cdef str _name
-    cdef str _ethnicity
+    cdef basestring _name
+    cdef basestring _ethnicity
 
     def __cinit__(Genome self, size_t size=1000003):
         self._genome = CGenome(size)
@@ -254,7 +254,7 @@ cdef class Genome(object):
         return self._name
 
     @name.setter
-    def name(self, string value):
+    def name(self, basestring value):
         self._name = value
 
     @property
@@ -262,7 +262,7 @@ cdef class Genome(object):
         return self._ethnicity
 
     @ethnicity.setter
-    def ethnicity(self, string value):
+    def ethnicity(self, basestring value):
         self._ethnicity = value
 
     cdef string _rsid_str(self, RSID rsid):
