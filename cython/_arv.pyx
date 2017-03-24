@@ -198,25 +198,69 @@ cdef class SNP(object):
 
 cdef class GenomeIterator(object):
     """Iterates through the ``arv.SNP`` objects of a ``arv.Genome``."""
-    cdef CGenomeIterator _itr
+    cdef CGenomeIterator _cur
+    cdef CGenomeIterator _end
+    cdef int _type
 
-    def __cinit__(GenomeIterator self):
-        self._itr = CGenomeIterator()
+    def __cinit__(GenomeIterator self, int iterator_type):
+        self._type = iterator_type
+
+    @staticmethod
+    cdef _iterate(const CGenome& genome, int iterator_type):
+        it = GenomeIterator(iterator_type)
+        it._cur = genome.begin()
+        it._end = genome.end()
+        return it
 
     def __iter__(self):
         return self
 
-    def next(GenomeIterator self):
-        cdef RsidSNP current = self._itr.value()
+    def next(self):
+        # Python 2 compatibility
+        return self.__next__()
 
-        #if current == NONE_SNP:
-            #raise StopIteration()
+    def __next__(self):
+        return self._dispatch()
 
-        self._itr.next()
+    cdef _dispatch(GenomeIterator self):
+        if self._type == 0:
+            return self._next_key()
+        elif self._type == 1:
+            return self._next_value()
+        else:
+            return self._next_item()
 
-        snp = SNP()
-        snp._snp = current.snp
-        return snp
+    cdef basestring _next_value(GenomeIterator self):
+        if self._cur == self._end:
+            raise StopIteration()
+
+        cdef basestring gt = str(self._cur.value().snp.genotype.to_string())
+        self._cur.next()
+        return gt
+
+    cdef _rsid_str(GenomeIterator self, RSID rsid):
+        if rsid < 0:
+            return "i%d" % -rsid
+        else:
+            return "rs%d" % rsid
+
+    cdef basestring _next_key(GenomeIterator self):
+        if self._cur == self._end:
+            raise StopIteration()
+
+        cdef RSID rsid = self._cur.value().rsid
+        self._cur.next()
+        return self._rsid_str(rsid)
+
+    cdef _next_item(GenomeIterator self):
+        if self._cur == self._end:
+            raise StopIteration()
+
+        rsid = self._rsid_str(self._cur.value().rsid)
+        genotype = self._cur.value().snp.genotype.to_string()
+        self._cur.next()
+        return (rsid, genotype)
+
 
 cdef class Genome(object):
     """A collection of SNPs for a human being.
@@ -282,10 +326,13 @@ cdef class Genome(object):
         raise KeyError(key)
 
     def keys(self):
-        return self._genome.rsids()
+        return GenomeIterator._iterate(self._genome, 0)
 
-    cdef vector[CSNP] values(self):
-        return self._genome.snps()
+    def values(self):
+        return GenomeIterator._iterate(self._genome, 1)
+
+    def items(self):
+        return GenomeIterator._iterate(self._genome, 2)
 
     cpdef SNP get_snp(self, key):
         """Retrieves given SNP.
