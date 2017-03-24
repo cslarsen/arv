@@ -102,18 +102,18 @@ struct RsidSNP {
 };
 
 struct GenomeIterator {
-  // todo copy ctor, assignment op, dtor
   GenomeIterator();
-  GenomeIterator(GenomeIteratorImpl*);
-  ~GenomeIterator();
   GenomeIterator(const GenomeIterator&);
+  GenomeIterator(GenomeIteratorImpl*);
   GenomeIterator& operator=(const GenomeIterator&);
-  GenomeIterator& operator++();
-  void next();
+  ~GenomeIterator();
+
   bool operator==(const GenomeIterator&);
   bool operator!=(const GenomeIterator&);
-  const RsidSNP operator*() const;
+
+  void next();
   const RsidSNP value() const;
+
 private:
   GenomeIteratorImpl* pimpl;
 };

@@ -235,20 +235,9 @@ GenomeIterator& GenomeIterator::operator=(const GenomeIterator& o)
   return *this;
 }
 
-GenomeIterator& GenomeIterator::operator++()
-{
-  ++pimpl->it;
-  return *this;
-}
-
 void GenomeIterator::next()
 {
-  this->operator++();
-}
-
-const RsidSNP GenomeIterator::operator*() const
-{
-  return value();
+  ++pimpl->it;
 }
 
 const RsidSNP GenomeIterator::value() const
