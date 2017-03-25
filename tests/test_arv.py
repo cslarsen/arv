@@ -7,6 +7,7 @@ Distributed under the GNU GPL v3 or later; see COPYING.
 """
 
 import arv
+import sys
 import unittest
 
 class ArvModuleTests(unittest.TestCase):
@@ -29,6 +30,10 @@ class ArvModuleTests(unittest.TestCase):
             return -int(rsid[1:])
         else:
             raise ValueError(rsid)
+
+    def test_open_error(self):
+        with self.assertRaises(RuntimeError):
+            arv.load("non-existing-file")
 
     def test_len(self):
         self.assertEqual(len(self.genome), 24)
@@ -69,8 +74,8 @@ class ArvModuleTests(unittest.TestCase):
         self.assertEqual(self.genome.name, self.filename)
 
     def test_genotype_compare(self):
-        a = self.genome.get_snp("rs4477212").genotype
-        b = self.genome.get_snp("rs4672279").genotype
+        a = self.genome["rs4477212"].genotype
+        b = self.genome["rs4672279"].genotype
 
         self.assertFalse(a != a)
         self.assertTrue(a != b)
@@ -99,101 +104,115 @@ class ArvModuleTests(unittest.TestCase):
         self.assertTrue(b > "AT")
         self.assertTrue(b >= "AT")
 
+    def test_snp_str_comparison(self):
+        get = lambda key: self.genome[key]
+        self.assertEqual(get("i3001754"), "A")
+        self.assertEqual(get("i3001755"), "--")
+        self.assertEqual(get("i3001759"), "--")
+        self.assertEqual(get("i3001761"), "--")
+        self.assertEqual(get("i3001773"), "T")
+        self.assertEqual(get("i4000755"), "C")
+        self.assertEqual(get("i4000759"), "G")
+        self.assertEqual(get("rs10488822"), "TC")
+        self.assertEqual(get("rs10810289"), "AA")
+        self.assertEqual(get("rs11980927"), "GG")
+        self.assertEqual(get("rs12913832"), "GG")
+        self.assertEqual(get("rs1426654"), "AA")
+        self.assertEqual(get("rs1540613"), "AG")
+        self.assertEqual(get("rs28504042"), "--")
+        self.assertEqual(get("rs3135027"), "G")
+        self.assertEqual(get("rs4477212"), "AT")
+        self.assertEqual(get("rs4536786"), "CA")
+        self.assertEqual(get("rs4672279"), "GT")
+        self.assertEqual(get("rs6015286"), "--")
+        self.assertEqual(get("rs6026400"), "CC")
+        self.assertEqual(get("rs6123756"), "TT")
+        self.assertEqual(get("rs742927"), "GG")
+        self.assertEqual(get("rs7715122"), "AT")
+        self.assertEqual(get("rs913897"), "AC")
+
     def test_genotypes(self):
-        self.assertEqual(self.genome["i3001754"], "A")
-        self.assertEqual(self.genome["i3001755"], "--")
-        self.assertEqual(self.genome["i3001759"], "--")
-        self.assertEqual(self.genome["i3001761"], "--")
-        self.assertEqual(self.genome["i3001773"], "T")
-        self.assertEqual(self.genome["i4000755"], "C")
-        self.assertEqual(self.genome["i4000759"], "G")
-        self.assertEqual(self.genome["rs10488822"], "TC")
-        self.assertEqual(self.genome["rs10810289"], "AA")
-        self.assertEqual(self.genome["rs11980927"], "GG")
-        self.assertEqual(self.genome["rs12913832"], "GG")
-        self.assertEqual(self.genome["rs1426654"], "AA")
-        self.assertEqual(self.genome["rs1540613"], "AG")
-        self.assertEqual(self.genome["rs28504042"], "--")
-        self.assertEqual(self.genome["rs3135027"], "G")
-        self.assertEqual(self.genome["rs4477212"], "AT")
-        self.assertEqual(self.genome["rs4536786"], "CA")
-        self.assertEqual(self.genome["rs4672279"], "GT")
-        self.assertEqual(self.genome["rs6015286"], "--")
-        self.assertEqual(self.genome["rs6026400"], "CC")
-        self.assertEqual(self.genome["rs6123756"], "TT")
-        self.assertEqual(self.genome["rs742927"], "GG")
-        self.assertEqual(self.genome["rs7715122"], "AT")
-        self.assertEqual(self.genome["rs913897"], "AC")
+        get = lambda key: self.genome[key].genotype
 
-        self.assertEqual(self.genome[-3001754], "A")
-        self.assertEqual(self.genome[-3001755], "--")
-        self.assertEqual(self.genome[-3001759], "--")
-        self.assertEqual(self.genome[-3001761], "--")
-        self.assertEqual(self.genome[-3001773], "T")
-        self.assertEqual(self.genome[-4000755], "C")
-        self.assertEqual(self.genome[-4000759], "G")
-        self.assertEqual(self.genome[10488822], "TC")
-        self.assertEqual(self.genome[10810289], "AA")
-        self.assertEqual(self.genome[11980927], "GG")
-        self.assertEqual(self.genome[12913832], "GG")
-        self.assertEqual(self.genome[1426654], "AA")
-        self.assertEqual(self.genome[1540613], "AG")
-        self.assertEqual(self.genome[28504042], "--")
-        self.assertEqual(self.genome[3135027], "G")
-        self.assertEqual(self.genome[4477212], "AT")
-        self.assertEqual(self.genome[4536786], "CA")
-        self.assertEqual(self.genome[4672279], "GT")
-        self.assertEqual(self.genome[6015286], "--")
-        self.assertEqual(self.genome[6026400], "CC")
-        self.assertEqual(self.genome[6123756], "TT")
-        self.assertEqual(self.genome[742927], "GG")
-        self.assertEqual(self.genome[7715122], "AT")
-        self.assertEqual(self.genome[913897], "AC")
+        self.assertEqual(get("i3001754"), "A")
+        self.assertEqual(get("i3001755"), "--")
+        self.assertEqual(get("i3001759"), "--")
+        self.assertEqual(get("i3001761"), "--")
+        self.assertEqual(get("i3001773"), "T")
+        self.assertEqual(get("i4000755"), "C")
+        self.assertEqual(get("i4000759"), "G")
+        self.assertEqual(get("rs10488822"), "TC")
+        self.assertEqual(get("rs10810289"), "AA")
+        self.assertEqual(get("rs11980927"), "GG")
+        self.assertEqual(get("rs12913832"), "GG")
+        self.assertEqual(get("rs1426654"), "AA")
+        self.assertEqual(get("rs1540613"), "AG")
+        self.assertEqual(get("rs28504042"), "--")
+        self.assertEqual(get("rs3135027"), "G")
+        self.assertEqual(get("rs4477212"), "AT")
+        self.assertEqual(get("rs4536786"), "CA")
+        self.assertEqual(get("rs4672279"), "GT")
+        self.assertEqual(get("rs6015286"), "--")
+        self.assertEqual(get("rs6026400"), "CC")
+        self.assertEqual(get("rs6123756"), "TT")
+        self.assertEqual(get("rs742927"), "GG")
+        self.assertEqual(get("rs7715122"), "AT")
+        self.assertEqual(get("rs913897"), "AC")
 
-        with self.assertRaises(KeyError):
-            self.genome[1.0]
-
-        with self.assertRaises(KeyError):
-            self.genome.get_snp(1.0)
+        self.assertEqual(get(-3001754), "A")
+        self.assertEqual(get(-3001755), "--")
+        self.assertEqual(get(-3001759), "--")
+        self.assertEqual(get(-3001761), "--")
+        self.assertEqual(get(-3001773), "T")
+        self.assertEqual(get(-4000755), "C")
+        self.assertEqual(get(-4000759), "G")
+        self.assertEqual(get(10488822), "TC")
+        self.assertEqual(get(10810289), "AA")
+        self.assertEqual(get(11980927), "GG")
+        self.assertEqual(get(12913832), "GG")
+        self.assertEqual(get(1426654), "AA")
+        self.assertEqual(get(1540613), "AG")
+        self.assertEqual(get(28504042), "--")
+        self.assertEqual(get(3135027), "G")
+        self.assertEqual(get(4477212), "AT")
+        self.assertEqual(get(4536786), "CA")
+        self.assertEqual(get(4672279), "GT")
+        self.assertEqual(get(6015286), "--")
+        self.assertEqual(get(6026400), "CC")
+        self.assertEqual(get(6123756), "TT")
+        self.assertEqual(get(742927), "GG")
+        self.assertEqual(get(7715122), "AT")
+        self.assertEqual(get(913897), "AC")
 
         with self.assertRaises(KeyError):
-            self.genome[123]
+            get(1.0)
 
         with self.assertRaises(KeyError):
-            self.genome.get_snp(123)
+            get(123)
 
         with self.assertRaises(KeyError):
-            self.genome.get_snp(0)
+            get(-123)
 
         with self.assertRaises(KeyError):
-            self.genome[-123]
+            get("rs123")
 
         with self.assertRaises(KeyError):
-            self.genome.get_snp(-123)
+            get("rs123")
 
         with self.assertRaises(KeyError):
-            self.genome["rs123"]
+            get("i123")
 
         with self.assertRaises(KeyError):
-            self.genome.get_snp("rs123")
+            get("rs91389")
 
         with self.assertRaises(KeyError):
-            self.genome["i123"]
+            get("rs9138971")
 
         with self.assertRaises(KeyError):
-            self.genome.get_snp("i123")
+            get("rs813897")
 
         with self.assertRaises(KeyError):
-            self.genome["rs91389"]
-
-        with self.assertRaises(KeyError):
-            self.genome["rs9138971"]
-
-        with self.assertRaises(KeyError):
-            self.genome["rs813897"]
-
-        with self.assertRaises(KeyError):
-            self.genome["rs13897"]
+            get("rs13897")
 
     def test_load_factor(self):
         self.assertIsInstance(self.genome.load_factor(), float)
@@ -209,8 +228,8 @@ class ArvModuleTests(unittest.TestCase):
         self.assertEqual(len(self.genome), len(list(self.genome.values())))
         self.assertEqual(len(self.keys), len(list(self.genome.values())))
 
-        for rsid, genotype in zip(self.genome.keys(), self.genome.values()):
-            self.assertEqual(genotype, self.genome[rsid])
+        for rsid, snp in zip(self.genome.keys(), self.genome.values()):
+            self.assertEqual(snp, self.genome[rsid])
 
     def test_items(self):
         # Depends on genome.keys and genome.values
@@ -221,12 +240,12 @@ class ArvModuleTests(unittest.TestCase):
         self.assertEqual(len(list(self.genome.values())),
                 len(list(self.genome.items())))
 
-        for rsid, genotype in self.genome.items():
+        for rsid, snp in self.genome.items():
             self.assertIn(rsid, self.keys)
-            self.assertEqual(genotype, self.genome[rsid])
+            self.assertEqual(snp, self.genome[rsid])
 
     def test_snps(self):
-        snp = self.genome.get_snp
+        snp = self.genome.__getitem__
 
         self.assertEqual(snp("rs4477212").chromosome, 1)
         self.assertEqual(snp("rs4477212").position, 82154)

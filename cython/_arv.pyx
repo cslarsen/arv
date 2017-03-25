@@ -6,9 +6,9 @@
 
 from libc.stdint cimport uint32_t, int32_t
 from libcpp cimport bool
-from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.utility cimport pair
+from libcpp.vector cimport vector
 
 cdef extern from "arv.hpp" namespace "arv":
     ctypedef uint32_t Position
@@ -120,8 +120,37 @@ cdef RSID __rsid2int(key) except? 0:
         return 0
 
 cdef class Genotype(object):
-    """A pair of nucleotides."""
+    """Contains a pair of nucleotides.
+
+    The characters that are used are ``A``, ``T``, ``C``, ``G``, in addition to
+    ``D`` (deletion), ``I`` (insertion) and ``-`` (no call). The last dash
+    always occurs in pairs, as in ``--``, indicating that 23andMe wasn't able
+    to call it.
+
+    Some chromosomes naturally have only one nucleotide, for example the
+    Y-chromosome and mitochondrial DNA (``MT``).
+
+    You can convert a ``Genotype`` to a string with ``str()``. Since this is
+    such a common operation, you can compare directly with strings. For
+    example, this is valid:
+
+        >>> gt
+        <Genotype 'AT'>
+        >>> gt == "AT"
+        True
+        >>> gt == "AA"
+        False
+    """
     cdef CGenotype _genotype
+
+    def __cinit__(self):
+        self._genotype = CGenotype(NONE, NONE)
+
+    @staticmethod
+    cdef _init(CGenotype genotype):
+        r = Genotype()
+        r._genotype = genotype
+        return r
 
     def __repr__(self):
         return "<Genotype %r>" % str(self)
@@ -129,11 +158,34 @@ cdef class Genotype(object):
     def __str__(self):
         return str(self._genotype.to_string())
 
+    cpdef _rich_cmp(self, Genotype obj, int op):
+        cdef CGenotype this = self._genotype
+        cdef CGenotype that = obj._genotype
+
+        if op == 0:
+            return this < that
+        elif op == 1:
+            return (this == that) or (this < that)
+        elif op == 2:
+            return this == that
+        elif op == 3:
+            return not (this == that)
+        elif op == 4:
+            return that < this
+        elif op == 5:
+            return (this == that) or (that < this)
+        raise NotImplementedError()
+
     def __richcmp__(self, obj, int op):
-        # The Genotype may look like a string, so allow comparisons with
-        # strings
-        this = str(self)
-        that = str(obj)
+        if isinstance(obj, str):
+            # String comparison
+            this = str(self)
+            that = str(obj)
+        elif isinstance(obj, Genotype):
+            # Genotype comparison
+            return self._rich_cmp(obj, op)
+        else:
+            raise NotImplementedError()
 
         if op == 0:
             return this < that
@@ -147,8 +199,8 @@ cdef class Genotype(object):
             return this > that
         elif op == 5:
             return this >= that
-        else:
-            raise NotImplementedError()
+
+        raise NotImplementedError()
 
     def __invert__(self):
         gt = Genotype()
@@ -156,7 +208,11 @@ cdef class Genotype(object):
         return gt
 
 cdef class SNP(object):
-    """A single nucleotide polymorphism."""
+    """A single nucleotide polymorphism.
+
+    Contains a ``genotype``, which ``chromosome`` it belongs to, and its
+    ``position`` on the reference human genome.
+    """
     cdef CSNP _snp
 
     def __cinit__(self):
@@ -170,14 +226,15 @@ cdef class SNP(object):
 
     @property
     def position(self):
+        """Location on the reference human genome."""
         return self._snp.position
 
     @property
     def chromosome(self):
-        """Returns the chromosome.
+        """Which ``Chromosome`` the SNP belongs to.
 
-        Possible values are the integers 1 through 22, and the strings "MT",
-        "X" and "Y".
+        Possible values are the integers 1 through 22 and the strings "MT"
+        (mitochondrial DNA) "X" and "Y".
         """
         cdef Chromosome c = self._snp.chromosome
 
@@ -188,10 +245,8 @@ cdef class SNP(object):
 
     @property
     def genotype(self):
-        """Returns the Genotype."""
-        gt = Genotype()
-        gt._genotype = self._snp.genotype
-        return gt
+        """The SNPs called ``Genotype``."""
+        return Genotype._init(self._snp.genotype)
 
     def __repr__(self):
         return "<SNP: chromosome=%r position=%r genotype=%r>" % (
@@ -200,9 +255,49 @@ cdef class SNP(object):
     def __str__(self):
         return str(self.genotype)
 
+    cpdef _rich_cmp(self, SNP obj, int op):
+        cdef CSNP this = self._snp
+        cdef CSNP that = obj._snp
+
+        if op == 0:
+            return this < that
+        elif op == 1:
+            return (this == that) or (this < that)
+        elif op == 2:
+            return this == that
+        elif op == 3:
+            return not (this == that)
+        elif op == 4:
+            return that < this
+        elif op == 5:
+            return (this == that) or (that < this)
+        raise NotImplementedError()
+
+    def __richcmp__(self, obj, int op):
+        if isinstance(obj, str):
+            # String comparison
+            this = str(self.genotype)
+            that = str(obj)
+            if op == 0:
+                return this < that
+            elif op == 1:
+                return (this == that) or (this < that)
+            elif op == 2:
+                return this == that
+            elif op == 3:
+                return not (this == that)
+            elif op == 4:
+                return that < this
+            elif op == 5:
+                return (this == that) or (that < this)
+        elif isinstance(obj, SNP):
+            # Genotype comparison
+            return self._rich_cmp(obj, op)
+        raise NotImplementedError()
+
 
 cdef class GenomeIterator(object):
-    """Iterates through the ``arv.SNP`` objects of a ``arv.Genome``."""
+    """Iterates through the ``SNP`` objects of a ``Genome``."""
     cdef CGenomeIterator _cur
     cdef CGenomeIterator _end
     cdef int _type
@@ -236,13 +331,13 @@ cdef class GenomeIterator(object):
         else:
             return self._next_item()
 
-    cdef basestring _next_value(GenomeIterator self):
+    cdef SNP _next_value(GenomeIterator self):
         if self._cur == self._end:
             raise StopIteration()
 
-        cdef basestring gt = str(self._cur.value().second.genotype.to_string())
+        snp = SNP._init(self._cur.value().second)
         self._cur.next()
-        return gt
+        return snp
 
     cdef basestring _next_key(GenomeIterator self):
         if self._cur == self._end:
@@ -256,17 +351,16 @@ cdef class GenomeIterator(object):
         if self._cur == self._end:
             raise StopIteration()
 
-        rsid = __rsid2str(self._cur.value().first)
-        genotype = self._cur.value().second.genotype.to_string()
+        cdef basestring rsid = __rsid2str(self._cur.value().first)
+        cdef SNP snp = SNP._init(self._cur.value().second)
         self._cur.next()
-        return (rsid, genotype)
+        return (rsid, snp)
 
 
 cdef class Genome(object):
     """A collection of SNPs for a human being.
 
-    Provides a dictionary interface, including keys, values, __get_item__ and
-    so on.
+    Implements the dictionary protocol.
     """
     cdef CGenome _genome
     cdef int _orientation
@@ -285,6 +379,11 @@ cdef class Genome(object):
 
     @property
     def orientation(self):
+        """The orientation of the genotype call, represented as an integer
+        being either +1 (plus strand) or -1 (minus strand).
+
+        For 23andMe genomes, this will always be +1.
+        """
         return self._orientation
 
     @orientation.setter
@@ -295,6 +394,10 @@ cdef class Genome(object):
 
     @property
     def name(self):
+        """A user-defined name that goes along with the genome.
+
+        If not explicitly set, it will be set to the filename.
+        """
         return self._name
 
     @name.setter
@@ -303,6 +406,14 @@ cdef class Genome(object):
 
     @property
     def ethnicity(self):
+        """A user-defined ethnicity that goes along with the genome.
+
+        Certain reports are only valid for given ethnic groups, and therefore
+        this serves as a way to detect which reports are applicable to this
+        genome.
+
+        Usual values are ``european``, ``asian``, ``african``.
+        """
         return self._ethnicity
 
     @ethnicity.setter
@@ -311,7 +422,8 @@ cdef class Genome(object):
 
     @property
     def y_chromosome(Genome self):
-        """Immutable flag indicating presence of a Y-chromosome."""
+        """A boolean indicating the presence of a Y-chromosome within this
+        genome."""
         return self._genome.y_chromosome
 
     def keys(self):
@@ -322,28 +434,6 @@ cdef class Genome(object):
 
     def items(self):
         return GenomeIterator._iterate(self._genome, 2)
-
-    cpdef SNP get_snp(self, key):
-        """Retrieves given SNP.
-
-        Arguments:
-            key: An RSID as a string ("rs123") or an integer (123, for
-                 example). Internal IDs ("i123") are represented as negative
-                 numbers (-123).
-
-        Returns:
-            A ``SNP``.
-
-        Raises:
-            KeyError - if RSID was not found.
-        """
-        cdef RSID rsid = __rsid2int(key)
-        cdef CSNP snp = self._genome[rsid]
-
-        if snp == NONE_SNP:
-            raise KeyError(key)
-
-        return SNP._init(snp)
 
     def __len__(self):
         return self._genome.size()
@@ -356,30 +446,19 @@ cdef class Genome(object):
         return self._genome.has(__rsid2int(key))
 
     def __getitem__(self, key):
-        """Retrieves genotype keyed by its RSID.
+        """Retrieves SNP from its RSID.
 
         Arguments:
             key: An RSID as a string (e.g. "rs123" or "i123") or a plain
-            integer. Positive integers are used for normal RSIDs (e.g. 123 for
-            "rs123") and negative integers for internal IDs (e.g. -123 for
-            "i123"). The reason we support integers is because ``keys()`` will
-            return integers, because it is so much faster to work with and
-            takes up much less space.
+                integer. Positive integers are used for normal RSIDs (e.g. 123
+                for "rs123") and negative integers for internal IDs (e.g. -123 for
+                "i123").
 
         Raises:
-            KeyError - SNP not found.
+            KeyError - RSID not found in genome.
 
         Returns:
-            A one or two-character string containing the genotype for this
-            RSID. The order of the two characters is the same as given in the
-            source file.
-
-            The characters that are used are ``A``, ``T``, ``C``, ``G`` as well
-            as ``D``, ``I`` and ``-``. The first four are nucleotides, while
-            ``D`` indicates deletion, ``I`` insertion. SNPs that are present in
-            the genome, but with no result, are always indicated by two dashes,
-            ``--``. Some SNPs only have one nucleotide, for example from the Y
-            chromosome or mitochondrial DNA.
+            An ``SNP``.
 
         Usage:
             >>> genome["rs2534636"]
@@ -391,7 +470,14 @@ cdef class Genome(object):
             >>> genome["rs3135027"]
             'G'
         """
-        return str(self.get_snp(key).genotype)
+        cdef RSID rsid = __rsid2int(key)
+        cdef CSNP snp = self._genome[rsid]
+
+        if snp == NONE_SNP:
+            raise KeyError(key)
+
+        return SNP._init(snp)
+
 
 def load(filename, name=None, ethnicity=None, size_t initial_size=1000003,
         orientation=1):
@@ -414,7 +500,7 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003,
                                 orientation.
 
     Raises:
-        RuntimeError - instead of FileNotFoundError etc.
+        RuntimeError - File not found, parser errors, etc.
 
     Returns:
         A ``Genome``.
