@@ -10,6 +10,7 @@ config.log
 config.status
 cpp/sparsehash/internal/sparseconfig.h
 dist
+genome.txt
 genomes
 GPATH
 GRTAGS
