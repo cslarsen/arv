@@ -13,6 +13,14 @@
 #include "filesize.hpp"
 #include "mmap.hpp"
 
+#ifdef __GNUC__
+#define likely(x)   __builtin_expect((x),1)
+#define unlikely(x) __builtin_expect((x),0)
+#else
+#define likely(x)   (x)
+#define unlikely(x) (x)
+#endif
+
 namespace arv {
 
 static Nucleotide CharToNucleotide[256] = {NONE};
@@ -62,7 +70,7 @@ static Nucleotide parse_nucleotide(const char*& s)
 
 static Chromosome parse_chromo(const char*& s)
 {
-  if ( isdigit(*s) )
+  if ( likely(isdigit(*s)) )
       return static_cast<Chromosome>(parse_uint32(s));
 
   switch ( *s++ ) {
@@ -76,8 +84,8 @@ static Chromosome parse_chromo(const char*& s)
 
 static Genotype parse_genotype(const char*& s)
 {
-  Nucleotide first = parse_nucleotide(s);
-  Nucleotide second = parse_nucleotide(s);
+  const Nucleotide first = parse_nucleotide(s);
+  const Nucleotide second = parse_nucleotide(s);
   return Genotype(first, second);
 }
 
@@ -117,10 +125,10 @@ void parse_file(const std::string& name, Genome& genome)
   bool internal = false; // rsid or internal id
 
   for ( ; *s; ++s ) {
-    if (*s == 'i')
-      internal = true;
-    else if ( *s == 'r')
+    if ( *s == 'r' )
       internal = false;
+    else if ( *s == 'i' )
+      internal = true;
     else {
       skipline(s);
       continue;
@@ -130,10 +138,10 @@ void parse_file(const std::string& name, Genome& genome)
     SNP& snp = buffer[buffer_pos].second;
 
     // Skip i/rs prefix and parse number
-    if ( internal )
-      rsid = -parse_int32(s += 1);
-    else
+    if ( !internal )
       rsid = parse_int32(s += 2);
+    else
+      rsid = -parse_int32(s += 1);
 
     snp.chromosome = parse_chromo(skipwhite(s));
     snp.position = parse_uint32(skipwhite(s));
