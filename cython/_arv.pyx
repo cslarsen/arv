@@ -102,6 +102,25 @@ cdef extern from "arv.hpp" namespace "arv":
     cdef void parse_file(const string&, CGenome&) except +
     cdef CGenotype complement(const CGenotype&)
 
+cdef basestring __rsid2str(const RSID& rsid):
+    """Converts RSID to integer."""
+    if rsid >= 0:
+        return "rs%d" % rsid
+    else:
+        return "i%d" % -rsid
+
+cdef RSID __rsid2int(key) except? 0:
+    """Converts RSID to string."""
+    if isinstance(key, int):
+        return key
+    elif isinstance(key, str):
+        if key.startswith("rs"):
+            return int(key[2:])
+        elif key.startswith("i"):
+            return -int(key[1:])
+    else:
+        return 0
+
 cdef class Genotype(object):
     """A pair of nucleotides."""
     cdef CGenotype _genotype
@@ -145,9 +164,15 @@ cdef class SNP(object):
     def __cinit__(self):
         self._snp = NONE_SNP
 
+    @staticmethod
+    cdef _init(CSNP snp):
+        r = SNP()
+        r._snp = snp
+        return r
+
     @property
     def position(self):
-        return self._snp.position;
+        return self._snp.position
 
     @property
     def chromosome(self):
@@ -177,6 +202,7 @@ cdef class SNP(object):
     def __str__(self):
         return str(self.genotype)
 
+
 cdef class GenomeIterator(object):
     """Iterates through the ``arv.SNP`` objects of a ``arv.Genome``."""
     cdef CGenomeIterator _cur
@@ -187,7 +213,8 @@ cdef class GenomeIterator(object):
         self._type = iterator_type
 
     @staticmethod
-    cdef _iterate(const CGenome& genome, int iterator_type):
+    cdef GenomeIterator _iterate(const CGenome& genome, const int
+            iterator_type):
         it = GenomeIterator(iterator_type)
         it._cur = genome.begin()
         it._end = genome.end()
@@ -219,25 +246,19 @@ cdef class GenomeIterator(object):
         self._cur.next()
         return gt
 
-    cdef _rsid_str(GenomeIterator self, RSID rsid):
-        if rsid < 0:
-            return "i%d" % -rsid
-        else:
-            return "rs%d" % rsid
-
     cdef basestring _next_key(GenomeIterator self):
         if self._cur == self._end:
             raise StopIteration()
 
         cdef RSID rsid = self._cur.value().rsid
         self._cur.next()
-        return self._rsid_str(rsid)
+        return __rsid2str(rsid)
 
     cdef _next_item(GenomeIterator self):
         if self._cur == self._end:
             raise StopIteration()
 
-        rsid = self._rsid_str(self._cur.value().rsid)
+        rsid = __rsid2str(self._cur.value().rsid)
         genotype = self._cur.value().snp.genotype.to_string()
         self._cur.next()
         return (rsid, genotype)
@@ -290,21 +311,10 @@ cdef class Genome(object):
     def ethnicity(self, basestring value):
         self._ethnicity = value
 
-    cdef string _rsid_str(self, RSID rsid):
-        if rsid >= 0:
-            return "rs%d" % rsid
-        else:
-            return "i%d" % -rsid
-
-    cdef RSID _rsid_int(self, key) except? 0:
-        if isinstance(key, int):
-            return key
-        elif isinstance(key, str):
-            if key.startswith("rs"):
-                return int(key[2:])
-            if key.startswith("i"):
-                return -int(key[1:])
-        return 0
+    @property
+    def y_chromosome(Genome self):
+        """Immutable flag indicating presence of a Y-chromosome."""
+        return self._genome.y_chromosome
 
     def keys(self):
         return GenomeIterator._iterate(self._genome, 0)
@@ -329,15 +339,13 @@ cdef class Genome(object):
         Raises:
             KeyError - if RSID was not found.
         """
-        cdef RSID rsid = self._rsid_int(key)
-        cdef CSNP s = self._genome[rsid]
+        cdef RSID rsid = __rsid2int(key)
+        cdef CSNP snp = self._genome[rsid]
 
-        if s == NONE_SNP:
+        if snp == NONE_SNP:
             raise KeyError(key)
 
-        snp = SNP()
-        snp._snp = s
-        return snp
+        return SNP._init(snp)
 
     def __len__(self):
         return self._genome.size()
@@ -347,7 +355,7 @@ cdef class Genome(object):
                 self.__len__(), self.orientation, self.name, self.ethnicity)
 
     def __contains__(self, key):
-        return self._genome.has(self._rsid_int(key))
+        return self._genome.has(__rsid2int(key))
 
     def __getitem__(self, key):
         """Retrieves genotype keyed by its RSID.
@@ -386,11 +394,6 @@ cdef class Genome(object):
             'G'
         """
         return str(self.get_snp(key).genotype)
-
-    @property
-    def y_chromosome(Genome self):
-        """Flag indicating presence of a Y chromosome."""
-        return self._genome.y_chromosome
 
 def load(filename, name=None, ethnicity=None, size_t initial_size=1000003,
         orientation=1):
