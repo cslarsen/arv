@@ -73,13 +73,20 @@ static Chromosome parse_chromo(const char*& s)
   if ( likely(isdigit(*s)) )
       return static_cast<Chromosome>(parse_uint32(s));
 
-  switch ( *s++ ) {
-    case 'M': ++s; // skip T in "MT"
-              return CHR_MT;
-    case 'X': return CHR_X;
-    case 'Y': return CHR_Y;
-    default:  return CHR_NO;
+  const char c = *s++;
+
+  if ( c == 'X' )
+    return CHR_X;
+
+  if ( c == 'M' ) {
+    ++s; // skip T in "MT"
+    return CHR_MT;
   }
+
+  if ( c == 'Y' )
+    return CHR_Y;
+
+  return CHR_NO;
 }
 
 static Genotype parse_genotype(const char*& s)
