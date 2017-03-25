@@ -135,15 +135,11 @@ void parse_file(const std::string& name, Genome& genome)
     else
       rsid = parse_int32(s += 2);
 
-    // We postpone handling the rare case that last == first
-    if ( rsid < genome.first ) genome.first = rsid;
-    else if ( rsid > genome.last ) genome.last = rsid;
-
     snp.chromosome = parse_chromo(skipwhite(s));
     snp.position = parse_uint32(skipwhite(s));
     snp.genotype = parse_genotype(skipwhite(s));
 
-    genome.y_chromosome |= (snp.chromosome == CHR_Y && snp.genotype.first != NONE);
+    genome.y_chromosome |= snp.chromosome == CHR_Y;
 
     // Ordinarly, we would just call `genome.insert(rsid, snp)` here, but it's
     // a tad faster to stage them in an array first, and then flush it to the
@@ -159,12 +155,6 @@ void parse_file(const std::string& name, Genome& genome)
   // Store the rest of the buffer
   for ( size_t n = 0; n < buffer_pos; ++n )
     genome.insert(buffer[n]);
-
-  // Handle the rare case that last == first (only one SNP)
-  if ( genome.first == 0 )
-    genome.first = genome.last;
-  if ( genome.last == 0 )
-    genome.last = genome.first;
 }
 
 } // namespace arv

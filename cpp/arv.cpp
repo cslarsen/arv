@@ -289,24 +289,18 @@ struct Genome::GenomeImpl {
 
 Genome::Genome():
   y_chromosome(false),
-  first(0xffffffff),
-  last(0),
   pimpl(new GenomeImpl(1000000))
 {
 }
 
 Genome::Genome(const std::size_t size):
   y_chromosome(false),
-  first(0xffffffff),
-  last(0),
   pimpl(new GenomeImpl(size))
 {
 }
 
 Genome::Genome(const Genome& g) :
   y_chromosome(g.y_chromosome),
-  first(g.first),
-  last(g.last),
   pimpl(new GenomeImpl(*g.pimpl))
 {
 }
@@ -316,8 +310,6 @@ Genome& Genome::operator=(const Genome& g)
   if ( this != &g ) {
     *pimpl = *g.pimpl;
     y_chromosome = g.y_chromosome;
-    first = g.first;
-    last = g.last;
   }
   return *this;
 }
@@ -355,8 +347,7 @@ void Genome::insert(const RsidSNP& obj)
 bool Genome::operator==(const Genome& o) const
 {
   // cheap tests first
-  if ( !(first == o.first && last == o.last && y_chromosome == o.y_chromosome
-        && size() == o.size() ) )
+  if ( !(y_chromosome == o.y_chromosome && size() == o.size() ) )
     return false;
   else
     return o.pimpl->snps == pimpl->snps;

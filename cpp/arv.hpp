@@ -119,16 +119,6 @@ struct Genome {
    */
   bool y_chromosome;
 
-  /*!
-   * Lowest RSID.
-   */
-  RSID first;
-
-  /*!
-   * Highest RSID.
-   */
-  RSID last;
-
   Genome();
   Genome(const std::size_t size);
   Genome(const Genome&);
