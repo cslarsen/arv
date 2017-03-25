@@ -94,12 +94,7 @@ extern const SNP NONE_SNP;
 
 struct GenomeIteratorImpl;
 
-struct RsidSNP {
-  RSID rsid;
-  SNP snp;
-
-  bool operator==(const RsidSNP& o) const;
-};
+typedef std::pair<RSID, SNP> RsidSNP;
 
 struct GenomeIterator {
   GenomeIterator();
@@ -108,11 +103,11 @@ struct GenomeIterator {
   GenomeIterator& operator=(const GenomeIterator&);
   ~GenomeIterator();
 
-  bool operator==(const GenomeIterator&);
-  bool operator!=(const GenomeIterator&);
+  bool operator==(const GenomeIterator&) const;
+  bool operator!=(const GenomeIterator&) const;
 
   void next();
-  const RsidSNP value() const;
+  RsidSNP value() const;
 
 private:
   GenomeIteratorImpl* pimpl;
@@ -153,8 +148,7 @@ struct Genome {
   /*!
    * Add a SNP to the hash table.
    */
-  void insert(const RSID& rsid, const SNP& snp);
-  void insert(const std::pair<RSID, SNP>&);
+  void insert(const RsidSNP&);
 
   /*!
    * Underlying hash table's load factor. (For developer purposes)

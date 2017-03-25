@@ -36,11 +36,6 @@ namespace arv {
 
 const SNP NONE_SNP(CHR_NO, 0, Genotype(NONE, NONE));
 
-bool RsidSNP::operator==(const RsidSNP& o) const
-{
-  return rsid == o.rsid && snp == o.snp;
-}
-
 static char nucleotide_char(const Nucleotide& n)
 {
   switch ( n ) {
@@ -240,20 +235,17 @@ void GenomeIterator::next()
   ++pimpl->it;
 }
 
-const RsidSNP GenomeIterator::value() const
+RsidSNP GenomeIterator::value() const
 {
-  RsidSNP r;
-  r.rsid = (*pimpl->it).first;
-  r.snp = (*pimpl->it).second;
-  return r;
+  return *pimpl->it;
 }
 
-bool GenomeIterator::operator==(const GenomeIterator& o)
+bool GenomeIterator::operator==(const GenomeIterator& o) const
 {
   return pimpl->it == o.pimpl->it;
 }
 
-bool GenomeIterator::operator!=(const GenomeIterator& o)
+bool GenomeIterator::operator!=(const GenomeIterator& o) const
 {
   return pimpl->it != o.pimpl->it;
 }
@@ -355,12 +347,7 @@ double Genome::load_factor() const
   return pimpl->snps.load_factor();
 }
 
-void Genome::insert(const RSID& rsid, const SNP& snp)
-{
-  pimpl->snps.insert({rsid, snp});
-}
-
-void Genome::insert(const std::pair<RSID, SNP>& obj)
+void Genome::insert(const RsidSNP& obj)
 {
   pimpl->snps.insert(obj);
 }

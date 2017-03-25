@@ -8,6 +8,7 @@ from libc.stdint cimport uint32_t, int32_t
 from libcpp cimport bool
 from libcpp.vector cimport vector
 from libcpp.string cimport string
+from libcpp.utility cimport pair
 
 cdef extern from "arv.hpp" namespace "arv":
     ctypedef uint32_t Position
@@ -59,19 +60,16 @@ cdef extern from "arv.hpp" namespace "arv":
         bool operator>(const CSNP&) const
         bool operator>=(const CSNP&) const
 
-    cdef cppclass RsidSNP:
-        RSID rsid
-        CSNP snp
-        bool operator==(const RsidSNP&) const
+    ctypedef pair[RSID, CSNP] RsidSNP
 
     cdef cppclass CGenomeIterator "arv::GenomeIterator":
         CGenomeIterator()
         CGenomeIterator(const CGenomeIterator&)
         CGenomeIterator& operator=(const CGenomeIterator&)
-        bool operator==(const CGenomeIterator&)
-        bool operator!=(const CGenomeIterator&)
+        bool operator==(const CGenomeIterator&) const
+        bool operator!=(const CGenomeIterator&) const
         void next()
-        const RsidSNP& value()
+        RsidSNP value() const
 
     cdef const CSNP NONE_SNP
 
@@ -242,7 +240,7 @@ cdef class GenomeIterator(object):
         if self._cur == self._end:
             raise StopIteration()
 
-        cdef basestring gt = str(self._cur.value().snp.genotype.to_string())
+        cdef basestring gt = str(self._cur.value().second.genotype.to_string())
         self._cur.next()
         return gt
 
@@ -250,7 +248,7 @@ cdef class GenomeIterator(object):
         if self._cur == self._end:
             raise StopIteration()
 
-        cdef RSID rsid = self._cur.value().rsid
+        cdef RSID rsid = self._cur.value().first
         self._cur.next()
         return __rsid2str(rsid)
 
@@ -258,8 +256,8 @@ cdef class GenomeIterator(object):
         if self._cur == self._end:
             raise StopIteration()
 
-        rsid = __rsid2str(self._cur.value().rsid)
-        genotype = self._cur.value().snp.genotype.to_string()
+        rsid = __rsid2str(self._cur.value().first)
+        genotype = self._cur.value().second.genotype.to_string()
         self._cur.next()
         return (rsid, genotype)
 

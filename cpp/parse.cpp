@@ -111,7 +111,7 @@ void parse_file(const std::string& name, Genome& genome)
   // Local cache of SNPs and RSIDs, for more locality and hence more speed. Its
   // size is somewhat arbitrary, but shouldn't be too big.
   const std::size_t BUFFER_SIZE = 200;
-  std::pair<RSID, SNP> buffer[BUFFER_SIZE];
+  RsidSNP buffer[BUFFER_SIZE];
   size_t buffer_pos = 0;
 
   bool internal = false; // rsid or internal id
