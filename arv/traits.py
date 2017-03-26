@@ -25,12 +25,12 @@ def breastfeeding_iq(genome):
     assert_european(genome)
     s = ""
 
-    if "C" in genome["rs174575"].genotype:
+    if "C" in str(genome["rs174575"].genotype):
         s += "Being breastfed raised subjects' IQ by 6-7 points on average (rs174575)\n"
     else:
         s += "Little to no effect of being breastfed on IQ (rs174575)\n"
 
-    if "A" in genome["rs1535"].genotype:
+    if "A" in str(genome["rs1535"].genotype):
         s += "Being breastfed raised subjects' IQ by 4-5 points on average (rs1535)\n"
     else:
         s += "Little or no effect of being breastfed on IQ (rs1535)\n"
