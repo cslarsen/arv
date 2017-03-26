@@ -4,40 +4,48 @@ import os
 import shutil
 import unittest
 
-def extra_compile_flags(debug=None, warnings=True, hidden_symbols=True,
-        strip=True):
-    flags = []
+class ArvOptions:
+    debug = os.getenv("ARV_DEBUG", False)
+    debug_symbols = False
+    hidden_symbols = True
+    strip = True
+    warnings = True
 
-    # TODO: Can we detect compiler through Cython? We default to gcc here,
-    # which isn't very polite.
-    flags += [
-        "--std=c++11",
-        "-DBUILDING_DLL",
-    ]
+    # Currently just assume we have gcc/clang
+    is_gcc = True
 
-    if warnings:
-        flags += ["-W", "-Wall"]
+    @staticmethod
+    def compile_flags():
+        flags = []
 
-    if not debug:
-        flags += [
-            "-g0", # no symbols
-            "-march=native",
-            "-mtune=native",
-            "-O2",
-        ]
-        if hidden_symbols:
-            flags += ["-fvisibility=hidden",
-                      "-include", "cpp/public_py_init_sym.hpp"]
+        if ArvOptions.is_gcc:
+            flags += ["--std=c++11", # REQUIRED
+                      "-DBUILDING_DLL"] # REQUIRED
 
-    return flags
+            if ArvOptions.warnings:
+                flags += ["-W", "-Wall"]
 
-def extra_link_flags(debug=False, strip=True):
-    flags = []
+            if not ArvOptions.debug:
+                # Make the binary a good bit faster
+                flags += ["-march=native", "-mtune=native", "-O2"]
 
-    if strip:
-        flags += ["-Wl,-s"]
+                if not ArvOptions.debug_symbols:
+                    flags += ["-g0"]
 
-    return flags
+                if ArvOptions.hidden_symbols:
+                    flags += ["-fvisibility=hidden",
+                              "-include", "cpp/public_py_init_sym.hpp"]
+        return flags
+
+    @staticmethod
+    def link_flags():
+        flags = []
+
+        if ArvOptions.is_gcc:
+            if ArvOptions.strip:
+                flags += ["-Wl,-s"]
+
+        return flags
 
 # From http://stackoverflow.com/a/26698408/21028
 class lazy_cythonize(list):
@@ -82,8 +90,8 @@ def extensions():
             ],
             language="c++",
             include_dirs=["cpp"],
-            extra_compile_args=extra_compile_flags(os.getenv("ARV_DEBUG", False)),
-            extra_link_args=extra_link_flags(os.getenv("ARV_DEBUG", False)),
+            extra_compile_args=ArvOptions.compile_flags(),
+            extra_link_args=ArvOptions.link_flags(),
         ),
     ]
     #configure_google_hashmap()
