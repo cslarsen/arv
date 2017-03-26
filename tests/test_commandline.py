@@ -28,7 +28,11 @@ class ArvModuleTests(unittest.TestCase):
                 startswith("usage: arv [-h]"))
 
     def test_example(self):
-        self.assertEqual(self._execute("--example", self.genome_path),
-            ["fake_genome.txt ... 25 SNPs, male",
-             "fake_genome.txt ... A man with blue eyes and light skin",
-             ""])
+        self.assertEqual(self._execute("--example", "--ethnicity=europan",
+            self.genome_path),
+        ["fake_genome.txt ... 25 SNPs, male",
+         "fake_genome.txt ... ",
+         "  Alcohol flush reaction: Little to no reaction (two copies of the ALDH2 gene)",
+         "  Description           : A man with blue eyes and light skin",
+         ""])
+

@@ -9,6 +9,7 @@ Distributed under the GNU GPL v3 or later. See COPYING.
 
 import argparse
 import arv
+import arv.traits
 import os
 import sys
 
@@ -32,6 +33,9 @@ def _parse_args():
 
     p.add_argument("--version", "-V", default=False, action="store_true",
             help="Shows version and exits")
+
+    p.add_argument("--ethnicity", default="", type=str,
+            help="Sets ethnicity for all genomes")
 
     p.add_argument("files", nargs="*",
             help="23andMe raw genome file name(s)")
@@ -66,8 +70,18 @@ def example(genome):
         "AG": "brown or green",
         "GG": "blue"})
 
-    report = "A {gender} with {color} eyes and {complexion} skin"
-    return report.format(**locals())
+    report = {"Description":
+        "A {gender} with {color} eyes and {complexion} skin".format(**locals())}
+
+    report.update(arv.traits.traits_report(genome))
+
+    # Format report
+    out = []
+    width = max(map(len, report.keys()))
+    for k, v in sorted(report.items()):
+        out.append("  %-*s: %s" % (width, k, v))
+
+    return "\n" + "\n".join(out)
 
 def _main():
     opts = _parse_args()
@@ -75,7 +89,7 @@ def _main():
     genomes = []
     for filename in opts.files:
         log("%s ... " % os.path.basename(filename))
-        genome = arv.load(filename)
+        genome = arv.load(filename, ethnicity=opts.ethnicity)
         log("%s\n" % summary(genome))
         genomes.append(genome)
 

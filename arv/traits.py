@@ -14,7 +14,7 @@ from arv.util import make_report
 
 def bitter_taste(genome):
     "Bitter taste perception."
-    return unphased_match(genome.rs713598, {
+    return unphased_match(genome["rs713598"], {
         "CC": "Probably can't taste certain bitter flavours",
         "CG": "Can taste bitter flavours that others can't",
         "GG": "Can taste bitter flavours that others can't",
@@ -25,12 +25,12 @@ def breastfeeding_iq(genome):
     assert_european(genome)
     s = ""
 
-    if "C" in genome.rs174575:
+    if "C" in genome["rs174575"]:
         s += "Being breastfed raised subjects' IQ by 6-7 points on average (rs174575)\n"
     else:
         s += "Little to no effect of being breastfed on IQ (rs174575)\n"
 
-    if "A" in genome.rs1535:
+    if "A" in genome["rs1535"]:
         s += "Being breastfed raised subjects' IQ by 4-5 points on average (rs1535)\n"
     else:
         s += "Little or no effect of being breastfed on IQ (rs1535)\n"
@@ -47,7 +47,7 @@ def alcohol_flush_reaction(genome):
 
 def earwax_type(genome):
     "Earwax type."
-    return unphased_match(genome.rs17822931, {
+    return unphased_match(genome["rs17822931"], {
         "CC": "Wet earwax (sticky, honey-colored)",
         "CT": "Wet earwax (sticky, honey-colored)",
         "TT": "Dry earwax (flaky, pale)",
@@ -56,7 +56,7 @@ def earwax_type(genome):
 def eye_color(genome):
     "Eye color."
     assert_european(genome)
-    return unphased_match(genome.rs12913832, {
+    return unphased_match(genome["rs12913832"], {
         "AA": "Brown eyes, although 14% have green and 1% have blue",
         "AG": "Most likely brown or green, but 7% have blue",
         "GG": "Most likely blue, but 30% have green and 1% brown",
@@ -64,7 +64,7 @@ def eye_color(genome):
 
 def lactose_intolerance(genome):
     "Lactose intolerance."
-    return unphased_match(genome.rs4988235, {
+    return unphased_match(genome["rs4988235"], {
         "AA": "Likely lactose tolerant",
         "AG": "Likely lactose tolerant",
         "GG": "Likely lactose intolerant",
@@ -72,7 +72,7 @@ def lactose_intolerance(genome):
 
 def malaria_resistance(genome):
     "Malaria resistance (Duffy antigen)."
-    return unphased_match(genome.rs2814778, {
+    return unphased_match(genome["rs2814778"], {
         "CC": "Likely resistant to P. vivax",
         "CT": "Likely to have some resistance to P. vivax",
         "TT": "Likely not resistant to P. vivax",
@@ -94,7 +94,7 @@ def male_pattern_baldness(genome):
 
 def norovirus_resistance(genome):
     """Norovirus resistance (most common strain)."""
-    return unphased_match(genome.rs601338, {
+    return unphased_match(genome["rs601338"], {
         "AA": "Resistant to most common strain",
         "AG": "Likely not resistant to most common strain",
         "GG": "Likely not resistant to most common strain",
@@ -102,7 +102,7 @@ def norovirus_resistance(genome):
 
 def muscle_performance(genome):
     """Muscle performance."""
-    return unphased_match(genome.rs1815739, {
+    return unphased_match(genome["rs1815739"], {
         "CC": "Likely sprinter, perhaps endurance athlete (two copies)",
         "CT": "Likely sprinter, perhaps endurance athlete (one copy)",
         "TT": "Unlikely sprinter, but likely endurance athlete (no copies)",
@@ -111,7 +111,7 @@ def muscle_performance(genome):
 def smoking_behaviour(genome):
     """Smoking behaviour."""
     assert_european(genome)
-    return unphased_match(genome.rs1051730, {
+    return unphased_match(genome["rs1051730"], {
         "AA": "Likely to smoke more than average",
         "AG": "Likely to smoke a little bit more than average",
         "GG": "Likely to smoke typical amount of cigarettes per day",
@@ -119,7 +119,7 @@ def smoking_behaviour(genome):
 
 def red_hair(genome):
     """Hair color; odds for red hair."""
-    return unphased_match(genome.rs1805007, {
+    return unphased_match(genome["rs1805007"], {
         "CC": "Typical odds for red hair",
         "CT": "Substantially increased odds for red hair",
         "TT": "Greatly increased odds for red hair",
@@ -127,7 +127,7 @@ def red_hair(genome):
 
 def blond_vs_brown_hair(genome):
     """Hair color; blond versus brown."""
-    return unphased_match(genome.rs1667394, {
+    return unphased_match(genome["rs1667394"], {
         "CC": "Greatly decreased odds of having blond hair vs. brown",
         "CT": "Decreased odds of having blond hair vs. brown",
         "TT": "Typical odds of having blond hair vs. brown hair",
@@ -135,7 +135,7 @@ def blond_vs_brown_hair(genome):
 
 def pain_sensitivity(genome):
     """Pain sensitivity."""
-    return unphased_match(genome.rs6269, {
+    return unphased_match(genome["rs6269"], {
         "AA": "Increased sensitivity to pain",
         "AG": "Typical sensitivity to pain",
         "GG": "Less sensitive to pain",
@@ -144,7 +144,7 @@ def pain_sensitivity(genome):
 def caffeine_metabolism(genome):
     """Caffeine metabolism."""
     assert_european(genome)
-    return unphased_match(genome.rs762551, {
+    return unphased_match(genome["rs762551"], {
         "AA": "Fast metabolizer",
         "AC": "Slow metabolizer",
         "CC": "Slow metabolizer",
@@ -153,7 +153,7 @@ def caffeine_metabolism(genome):
 def heroin_addiction(genome):
     """Heroin addiction."""
     assert_european(genome)
-    return unphased_match(genome.rs1799971, {
+    return unphased_match(genome["rs1799971"], {
         "AA": "Typical odds of addiction",
         "AG": "Higher odds of addiction",
         "GG": "Higher odds of addiction",
@@ -161,14 +161,14 @@ def heroin_addiction(genome):
 
 def hair_curl(genome):
     assert_european(genome)
-    return unphased_match(genome.rs17646946, {
+    return unphased_match(genome["rs17646946"], {
         "AA": "Straighter hair on average",
         "AG": "Straighter hair on average",
         "GG": "Slightly curlier hair on average"})
 
 def hiv_aids_resistance(genome):
     """Resistance to HIV/AIDS."""
-    return unphased_match(genome.i3003626, {
+    return unphased_match(genome["i3003626"], {
         "DD": "Some resistance to most common strain of HIV",
         "DI": "Not resistant, but may have slower disease progression",
         "II": "Not resistant"})
@@ -176,7 +176,7 @@ def hiv_aids_resistance(genome):
 def aspargus_detection(genome):
     """Aspargus metabolite detection."""
     assert_european(genome)
-    return unphased_match(genome.rs4481887, {
+    return unphased_match(genome["rs4481887"], {
         "AA": "Higher odds of smelling aspargus in urine",
         "AG": "Medium odds of smelling aspargus in urine",
         "GG": "Typical odds of smelling aspargus in urine",
@@ -185,13 +185,13 @@ def aspargus_detection(genome):
 def adiponectin_levels(genome):
     """Adiponectin levels."""
     if genome.ethnicity == "asian":
-        r = unphased_match(genome.rs1851665, {
+        r = unphased_match(genome["rs1851665"], {
             "AA": "Slightly lower, which may be bad (rs1851665)\n",
             "AG": "Typical (rs1851665)\n",
             "GG": "Slightly higher, which is good (rs1851665)\n",
             None: "Unable to determine for rs1851665\n"})
 
-        r += unphased_match(genome.rs7193788, {
+        r += unphased_match(genome["rs7193788"], {
             "AA": "Slightly higher, which is good (rs7193788)",
             "AG": "Typical (rs7193788)",
             "GG": "Slightly lower, which may be bad (rs7193788)",
@@ -199,7 +199,7 @@ def adiponectin_levels(genome):
         return r
 
     elif genome.ethnicity in [None, "european"]:
-        return unphased_match(genome.rs6444175, {
+        return unphased_match(genome["rs6444175"], {
             "AA": "Lower, which may be bad",
             "AG": "Slightly lower, which may be bad",
             "GG": "Typical levels",
@@ -246,7 +246,7 @@ def birth_weight(genome):
 def blood_glucose(genome):
     """Blood glucose."""
     assert_european(genome)
-    return unphased_match(genome.rs560887, {
+    return unphased_match(genome["rs560887"], {
         "CC": "Average fasting plasma glucose levels of 5.18mmol/L",
         "CT": "Average fasting plasma glucose levels of 5.12mmol/L",
         "TT": "Average fasting plasma glucose levels of 5.06mmol/L",

@@ -1,7 +1,14 @@
-# Copyright 2014, 2016, 2017 Christian Stigen Larsen
-# Distributed under the GPL v3 or later. See COPYING.
+"""
+Part of arv
+Copyright 2017 Christian Stigen Larsen
 
-def make_report(genome, functions):
+dna-traits
+Copyright 2014, 2016, 2017 Christian Stigen Larsen
+
+Distributed under the GPL v3 or later. See COPYING.
+"""
+
+def make_report(genome, functions, verbose=False):
     """Runs each function with genome as argument, returning a dict of
     results."""
     report = {}
@@ -13,11 +20,17 @@ def make_report(genome, functions):
             title = func.__name__.replace("_", " ").capitalize()
 
         try:
-            report[title] = func(genome)
+            result = func(genome)
+            if result is not None:
+                report[title] = result
         except ValueError as e:
-            report[title] = "Error: %s" % e
+            if verbose:
+                report[title] = "Error: %s" % e
         except AssertionError as e:
-            report[title] = "Error: %s" % e
+            if verbose:
+                report[title] = "Error: %s" % e
+        except KeyError as e:
+            continue
         except NotImplementedError:
             continue
 
