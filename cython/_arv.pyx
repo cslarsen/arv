@@ -79,6 +79,8 @@ cdef extern from "arv.hpp" namespace "arv":
         CGenome(const CGenome&) except +
         CGenome& operator=(const CGenome&)
 
+        bool y_chromosome
+
         double load_factor() const
         size_t size() const
 
@@ -92,10 +94,6 @@ cdef extern from "arv.hpp" namespace "arv":
 
         CGenomeIterator begin() const
         CGenomeIterator end() const
-
-        bool y_chromosome
-        RSID first
-        RSID last
 
     cdef void parse_file(const string&, CGenome&) except +
     cdef CGenotype complement(const CGenotype&)
