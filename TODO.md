@@ -1,0 +1,10 @@
+- Make parsing safe
+  - detect overflow while parsing integers
+  - use fuzzing (afl, e.g.) to break the parser
+- Benchmark other ops
+  - iteration
+  - random access
+- Modify google dense hash map to move/emplace from buffer
+  - try to use a nearly full buffer to make this faster
+- Try to move y-chromo detection out of the loop
+- Remove the pimpl pattern, don't need it anymore
