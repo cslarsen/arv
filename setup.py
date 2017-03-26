@@ -18,32 +18,36 @@ class ArvOptions:
     def compile_flags():
         flags = []
 
-        if ArvOptions.is_gcc:
-            flags += ["--std=c++11", # REQUIRED
-                      "-DBUILDING_DLL"] # REQUIRED
+        if not ArvOptions.is_gcc:
+            return flags
 
-            if ArvOptions.warnings:
-                flags += ["-W", "-Wall"]
+        flags += ["--std=c++11", # REQUIRED
+                  "-DBUILDING_DLL"] # REQUIRED
 
-            if not ArvOptions.debug:
-                # Make the binary a good bit faster
-                flags += ["-march=native", "-mtune=native", "-O2"]
+        if ArvOptions.warnings:
+            flags += ["-W", "-Wall"]
 
-                if not ArvOptions.debug_symbols:
-                    flags += ["-g0"]
+        if not ArvOptions.debug:
+            # Make the binary a good bit faster
+            flags += ["-march=native", "-mtune=native", "-O2"]
 
-                if ArvOptions.hidden_symbols:
-                    flags += ["-fvisibility=hidden",
-                              "-include", "cpp/public_py_init_sym.hpp"]
+            if not ArvOptions.debug_symbols:
+                flags += ["-g0"]
+
+            if ArvOptions.hidden_symbols:
+                flags += ["-fvisibility=hidden",
+                          "-include", "cpp/public_py_init_sym.hpp"]
         return flags
 
     @staticmethod
     def link_flags():
         flags = []
 
-        if ArvOptions.is_gcc:
-            if ArvOptions.strip:
-                flags += ["-Wl,-s"]
+        if not ArvOptions.is_gcc:
+            return flags
+
+        if ArvOptions.strip:
+            flags += ["-Wl,-s"]
 
         return flags
 
