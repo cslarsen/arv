@@ -7,6 +7,7 @@ Distributed under the GNU GPL v3 or later; see COPYING.
 """
 
 import arv
+import arv.match
 import sys
 import unittest
 
@@ -16,11 +17,33 @@ class ArvModuleTests(unittest.TestCase):
         cls.filename = "tests/fake_genome.txt"
         cls.genome = arv.load(cls.filename)
 
-        cls.keys = sorted(["i3001754", "i3001755", "i3001759", "i3001761",
-            "i3001773", "i4000755", "i4000759", "rs10488822", "rs10810289",
-            "rs11980927", "rs12913832", "rs1426654", "rs1540613", "rs28504042",
-            "rs3135027", "rs4477212", "rs4536786", "rs4672279", "rs6015286",
-            "rs6026400", "rs6123756", "rs742927", "rs7715122", "rs913897"])
+        cls.keys = sorted([
+            "i3001754",
+            "i3001755",
+            "i3001759",
+            "i3001761",
+            "i3001773",
+            "i4000755",
+            "i4000759",
+            "rs10488822",
+            "rs10810289",
+            "rs11980927",
+            "rs12913832",
+            "rs1426654",
+            "rs1540613",
+            "rs28504042",
+            "rs3135027",
+            "rs4477212",
+            "rs4536786",
+            "rs4672279",
+            "rs6015286",
+            "rs6026400",
+            "rs6123756",
+            "rs671",
+            "rs742927",
+            "rs7715122",
+            "rs913897",
+            ])
 
     def _int(self, rsid):
         """Converts RSID to integer."""
@@ -36,7 +59,7 @@ class ArvModuleTests(unittest.TestCase):
             arv.load("non-existing-file")
 
     def test_len(self):
-        self.assertEqual(len(self.genome), 24)
+        self.assertEqual(len(self.genome), 25)
 
     def test_contains(self):
         for key in self.keys:
@@ -103,6 +126,27 @@ class ArvModuleTests(unittest.TestCase):
         self.assertTrue(b == "GT")
         self.assertTrue(b > "AT")
         self.assertTrue(b >= "AT")
+
+    def test_unphased_match(self):
+        self.assertIsInstance(self.genome["rs10488822"], arv.SNP)
+        self.assertEqual(self.genome["rs10488822"].genotype, "TC")
+
+        self.assertEqual(arv.unphased_match(self.genome["rs10488822"], {
+            "TC": "Matched TC",
+            None: "No match"}), "Matched TC")
+
+        self.assertEqual(arv.unphased_match(self.genome["rs10488822"], {
+            "CT": "Matched CT",
+            None: "No match"}), "Matched CT")
+
+        self.assertEqual(arv.unphased_match(self.genome["rs10488822"], {
+            "AT": "Matched AT",
+            None: "No match"}), "No match")
+
+        # No default case (None key)
+        with self.assertRaises(KeyError):
+            arv.unphased_match(self.genome["rs10488822"], {
+                "AT": "Matched AT"})
 
     def test_snp_str_comparison(self):
         get = lambda key: self.genome[key]

@@ -22,9 +22,14 @@ class ArvInferTests(unittest.TestCase):
         complexion = "light" if self.genome["rs1426654"].genotype == "AA" else "dark"
         self.assertEqual(complexion, "light")
 
+        # Rich comparison with string
+        complexion = "light" if self.genome["rs1426654"] == "AA" else "dark"
+        self.assertEqual(complexion, "light")
+
     def test_infer_unphased_match_eyecolor(self):
-        eyecolor = arv.unphased_match(self.genome["rs12913832"].genotype, {
+        eyecolor = arv.unphased_match(self.genome["rs12913832"], {
             "AA": "brown eyes",
             "AG": "brown or green eyes",
-            "GG": "blue eyes"})
+            "GG": "blue eyes",
+            None: "unknown"})
         self.assertEqual(eyecolor, "blue eyes")

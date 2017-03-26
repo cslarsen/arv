@@ -39,7 +39,7 @@ def unphased_match(snp, phenotypes):
     if isinstance(snp, str):
         genotype = snp
     else:
-        genotype = str(snp)
+        genotype = str(snp.genotype)
 
     # Look for "IJ"
     if genotype in phenotypes:

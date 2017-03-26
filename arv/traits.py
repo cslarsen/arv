@@ -39,7 +39,7 @@ def breastfeeding_iq(genome):
 
 def alcohol_flush_reaction(genome):
     "Alcohol flush reaction."
-    return unphased_match(genome.rs671, {
+    return unphased_match(genome["rs671"], {
         "AA": "Extreme reaction (no copies of the ALDH2 gene)",
         "AG": "Moderate reaction (one copy of the ALDH2 gene)",
         "GG": "Little to no reaction (two copies of the ALDH2 gene)",

@@ -59,9 +59,9 @@ def summary(genome):
 def example(genome):
     """Returns an example report for the genome."""
     gender = "man" if genome.y_chromosome else "woman"
-    complexion = "light" if genome["rs1426654"].genotype == "AA" else "dark"
+    complexion = "light" if genome["rs1426654"] == "AA" else "dark"
 
-    color = arv.unphased_match(genome["rs12913832"].genotype, {
+    color = arv.unphased_match(genome["rs12913832"], {
         "AA": "brown",
         "AG": "brown or green",
         "GG": "blue"})

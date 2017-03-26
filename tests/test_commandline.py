@@ -29,6 +29,6 @@ class ArvModuleTests(unittest.TestCase):
 
     def test_example(self):
         self.assertEqual(self._execute("--example", self.genome_path),
-            ["fake_genome.txt ... 24 SNPs, male",
+            ["fake_genome.txt ... 25 SNPs, male",
              "fake_genome.txt ... A man with blue eyes and light skin",
              ""])
