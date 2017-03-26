@@ -8,3 +8,6 @@
   - try to use a nearly full buffer to make this faster
 - Try to move y-chromo detection out of the loop
 - Remove the pimpl pattern, don't need it anymore
+- Build with profiling
+- Build with gcov, do coverage testing
+  - Use coveralls
