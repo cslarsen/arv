@@ -244,6 +244,34 @@ class ArvModuleTests(unittest.TestCase):
             self.assertIn(rsid, self.keys)
             self.assertEqual(snp, self.genome[rsid])
 
+    def test_snp_comparison(self):
+        a = self.genome["rs4477212"]
+        b = self.genome["rs4672279"]
+
+        self.assertEqual(a, "AT")
+        self.assertEqual(a.chromosome, 1)
+        self.assertEqual(a.genotype, "AT")
+        self.assertEqual(a.position, 82154)
+        self.assertEqual(b, "GT")
+        self.assertEqual(b.chromosome, 2)
+        self.assertEqual(b.genotype, "GT")
+        self.assertEqual(b.position, 59444675)
+        self.assertGreater(b, a)
+        self.assertGreaterEqual(a, a)
+        self.assertGreaterEqual(b, a)
+        self.assertGreaterEqual(b, b)
+        self.assertLess(a, b)
+        self.assertLessEqual(a, a)
+        self.assertLessEqual(a, b)
+        self.assertLessEqual(b, b)
+        self.assertNotEqual(a, "GT")
+        self.assertNotEqual(a, "TA")
+        self.assertNotEqual(a, "TG")
+        self.assertNotEqual(a, b)
+        self.assertNotEqual(b, "")
+        self.assertNotEqual(b, "AT")
+        self.assertNotEqual(b, "TG")
+
     def test_snps(self):
         snp = self.genome.__getitem__
 

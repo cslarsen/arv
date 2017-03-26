@@ -212,6 +212,20 @@ cdef class SNP(object):
 
     Contains a ``genotype``, which ``chromosome`` it belongs to, and its
     ``position`` on the reference human genome.
+
+    Comparisons
+    -----------
+
+    ``SNP``\ s support rich comparisons operator. Comparing two SNPs is
+    equivalent to comparing two tuples of (position, chromosome, genotype).
+
+    You may also compare a ``SNP`` with a string. In that case, it will perform
+    a string comparison with its genotype. For example
+
+        >>> snp.genotype
+        'AT'
+        >>> snp == "AT"
+        True
     """
     cdef CSNP _snp
 
@@ -262,15 +276,15 @@ cdef class SNP(object):
         if op == 0:
             return this < that
         elif op == 1:
-            return (this == that) or (this < that)
+            return this <= that
         elif op == 2:
             return this == that
         elif op == 3:
-            return not (this == that)
+            return this != that
         elif op == 4:
-            return that < this
+            return this > that
         elif op == 5:
-            return (this == that) or (that < this)
+            return this >= that
         raise NotImplementedError()
 
     def __richcmp__(self, obj, int op):
@@ -281,15 +295,15 @@ cdef class SNP(object):
             if op == 0:
                 return this < that
             elif op == 1:
-                return (this == that) or (this < that)
+                return this <= that
             elif op == 2:
                 return this == that
             elif op == 3:
-                return not (this == that)
+                return this != that
             elif op == 4:
-                return that < this
+                return this > that
             elif op == 5:
-                return (this == that) or (that < this)
+                return this >= that
         elif isinstance(obj, SNP):
             # Genotype comparison
             return self._rich_cmp(obj, op)

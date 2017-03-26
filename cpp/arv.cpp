@@ -145,9 +145,9 @@ SNP& SNP::operator=(const SNP& snp) {
 
 bool SNP::operator==(const SNP& snp) const
 {
-  return genotype == snp.genotype &&
+  return position == snp.position &&
          chromosome == snp.chromosome &&
-         position == snp.position;
+         genotype == snp.genotype;
 }
 
 bool SNP::operator<(const SNP& snp) const

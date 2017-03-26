@@ -79,8 +79,9 @@ struct SNP {
   SNP();
   SNP(const Chromosome&, const Position&, const Genotype&);
   SNP(const SNP&);
-
   SNP& operator=(const SNP&);
+
+  // Comparisons are based on the tuple (position, chromosome, genotype)
   bool operator!=(const SNP&) const;
   bool operator<(const SNP&) const;
   bool operator<=(const SNP&) const;
