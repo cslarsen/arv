@@ -13,7 +13,7 @@ You can then look up genotypes from RSIDs
 
 You can also access SNPs
 
-    >>> genome.get_snp("rs123")
+    >>> genome["rs123"]
     <SNP: chromosome=1 position=112233 genotype='AA'>
 
 By using ``unphased_match``, you can match genotypes while disregarding the

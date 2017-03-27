@@ -134,7 +134,7 @@ You can also access the SNP as an object:
 
 .. code:: python
 
-    >>> genome.get_snp("rs123")
+    >>> genome["rs123"]
     >>> snp
     <SNP: chromosome=7 position=24966446 genotype='AA'>
     >>> snp.chromosome
@@ -171,9 +171,9 @@ complement:
 
 .. code:: python
 
-    >>> genome.get_snp("rs4988235").genotype
+    >>> genome["rs4988235"].genotype
     'AA'
-    >>> ~genome.get_snp("rs4988235").genotype
+    >>> ~genome["rs4988235"].genotype
     'TT'
 
 By reading a few `GWAS
@@ -183,7 +183,7 @@ tolerance:
 
 .. code:: python
 
-    >>> arv.unphased_match(~genome.get_snp("rs4988235").genotype, {
+    >>> arv.unphased_match(~genome["rs4988235"].genotype, {
         "TT": "Likely lactose tolerant",
         "TC": "Likely lactose tolerant",
         "CC": "Likely lactose intolerant",
