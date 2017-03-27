@@ -6,6 +6,8 @@ Copyright 2014, 2016, 2017 Christian Stigen Larsen
 Distributed under the GPL v3 or later. See COPYING.
 """
 
+import arv
+
 def assert_european(genome):
     """If ethnicity is set, make sure it's European."""
     if genome.ethnicity not in [None, "european"]:
@@ -38,8 +40,12 @@ def unphased_match(snp, phenotypes):
     """
     if isinstance(snp, str):
         genotype = snp
-    else:
+    elif isinstance(snp, arv.Genotype):
+        genotype = str(snp)
+    elif isinstance(snp, arv.SNP):
         genotype = str(snp.genotype)
+    else:
+        raise TypeError(type(snp))
 
     # Look for "IJ"
     if genotype in phenotypes:
