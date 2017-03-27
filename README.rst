@@ -24,7 +24,8 @@ For my genome, this little program produces::
 
 The parser is insanely fast, having been written in finely tuned C++, exposed
 via Cython. A 2013 Xeon machine I've tested on parses a 24 Mb file into a hash
-table in 70 ms!
+table in 93 ms! (It originally did it in 70ms with g++ 5, so I'll go back and
+find out why it regressed)
 
 Works with Python 2.7+ and 3+. Installable with pip!
 
@@ -123,14 +124,7 @@ To see if there are any Y-chromosomes present in the genome,
     >>> genome.y_chromosome
     True
 
-The genome provides a ``dict``-like interface. To get the genotype of a given SNP, just enter the RSID. It will return it as a string.
-
-.. code:: python
-
-    >>> genome["rs123"]
-    'AA'
-
-You can also access the SNP as an object:
+The genome provides a ``dict``-like interface. To get a given SNP, just enter the RSID.
 
 .. code:: python
 
@@ -142,21 +136,24 @@ You can also access the SNP as an object:
     >>> snp.position
     24966446
     >>> snp.genotype
-    'AA'
+    <Genotype 'AA'>
 
-The last line actually returns a ``Genotype`` object, but its ``repr``
-returns something that looks like a string. This lets you perform a few
-operations on the nucleotides. For example, you can get its complement with the
-``~``-operator.
+The ``Genotype`` object can be converted to a string with ``str``, but it also
+allows rich comparisons with strings directly:
+
+.. code:: python
+
+    >>> snp.genotype == "AA"
+    True
+
+you can get its complement with the ``~``-operator.
 
 .. code:: python
 
     >>> type(snp.genotype)
-    <type '_arv.Genotype'>
-    >>> snp.genotype
-    'AA'
+    <class '_arv.Genotype'>
     >>> ~snp.genotype
-    'TT'
+    <Genotype 'TT'>
 
 The complement is important due to eah SNPs orientation. All of 23andMe SNPs
 are oriented towards the positive ("plus") strand, based on the `GRCh37
@@ -172,9 +169,9 @@ complement:
 .. code:: python
 
     >>> genome["rs4988235"].genotype
-    'AA'
+    <Genotype 'AA'>
     >>> ~genome["rs4988235"].genotype
-    'TT'
+    <Genotype 'TT'>
 
 By reading a few `GWAS
 <https://en.wikipedia.org/wiki/Genome-wide_association_study>`_ research
@@ -216,7 +213,7 @@ For example, you can drop into a Python REPL like so:
 		>>> genome
 		<Genome: SNPs=960614, name='genome.txt'>
 		>>> genome["rs123"]
-		'AA'
+		<SNP: chromosome=7 position=24966446 genotype=<Genotype 'AA'>>
 
 If you specify several files, you can access them through the variable
 ``genomes``.
