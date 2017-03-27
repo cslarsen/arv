@@ -1,3 +1,4 @@
+- Parse GRCh37/38 build
 - Make parsing safe
   - detect overflow while parsing integers
   - use fuzzing (afl, e.g.) to break the parser
