@@ -115,7 +115,7 @@ Then you load the genome in Python with
 
     >>> genome = arv.load("filename.txt")
     >>> genome
-    <Genome: SNPs=960614, name='filename.txt'>
+    <Genome: SNPs=960613, name='filename.txt'>
 
 To see if there are any Y-chromosomes present in the genome,
 
