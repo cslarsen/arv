@@ -154,7 +154,8 @@ void parse_file(const std::string& name, Genome& genome)
     snp.position = parse_uint32(skipwhite(s));
     snp.genotype = parse_genotype(skipwhite(s));
 
-    genome.y_chromosome |= snp.chromosome == CHR_Y;
+    genome.y_chromosome |= (snp.chromosome == CHR_Y && snp.genotype.first !=
+        NONE);
 
     // Ordinarly, we would just call `genome.insert(rsid, snp)` here, but it's
     // a tad faster to stage them in an array first, and then flush it to the
