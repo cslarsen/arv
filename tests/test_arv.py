@@ -70,6 +70,114 @@ class ArvModuleTests(unittest.TestCase):
 
     def test_ychromosome(self):
         self.assertTrue(self.genome.y_chromosome)
+        self.assertEqual(self.genome.y_chromosome, True)
+
+    def test_female_genome(self):
+        female = arv.load("tests/fake_genome_female.txt")
+        self.assertFalse(female.y_chromosome)
+        self.assertEqual(female.y_chromosome, False)
+        self.assertEqual(len(female), 24)
+
+        self.assertEqual(female["rs4477212"].chromosome, 1)
+        self.assertEqual(female["rs4477212"].position, 82154)
+        self.assertEqual(female["rs4477212"].genotype, "AT")
+        self.assertEqual(female["rs4477212"].genotype,
+                female["rs7715122"].genotype)
+        self.assertNotEqual(female["rs4477212"].genotype, "TA")
+        self.assertNotEqual(female["rs4477212"].genotype, "AA")
+        self.assertNotEqual(female["rs4477212"].genotype, "")
+
+        self.assertEqual(female["rs4672279"].chromosome, 2)
+        self.assertEqual(female["rs4672279"].position, 59444675)
+        self.assertEqual(female["rs4672279"].genotype, "GT")
+
+        self.assertEqual(female["rs4536786"].chromosome, 3)
+        self.assertEqual(female["rs4536786"].position, 140049121)
+        self.assertEqual(female["rs4536786"].genotype, "CA")
+
+        self.assertEqual(female["rs7715122"].chromosome, 5)
+        self.assertEqual(female["rs7715122"].position, 94197884)
+        self.assertEqual(female["rs7715122"].genotype, "AT")
+
+        self.assertEqual(female["rs11980927"].chromosome, 7)
+        self.assertEqual(female["rs11980927"].position, 20010422)
+        self.assertEqual(female["rs11980927"].genotype, "GG")
+
+        self.assertEqual(female["rs10810289"].chromosome, 9)
+        self.assertEqual(female["rs10810289"].position, 14899708)
+        self.assertEqual(female["rs10810289"].genotype, "AA")
+
+        self.assertEqual(female["rs10488822"].chromosome, 11)
+        self.assertEqual(female["rs10488822"].position, 35984271)
+        self.assertEqual(female["rs10488822"].genotype, "TC")
+
+        self.assertEqual(female["rs913897"].chromosome, 13)
+        self.assertEqual(female["rs913897"].position, 73892459)
+        self.assertEqual(female["rs913897"].genotype, "AC")
+
+        self.assertEqual(female["rs1540613"].chromosome, 16)
+        self.assertEqual(female["rs1540613"].position, 80476182)
+        self.assertEqual(female["rs1540613"].genotype, "AG")
+
+        self.assertEqual(female["rs6123756"].chromosome, 20)
+        self.assertEqual(female["rs6123756"].position, 56556146)
+        self.assertEqual(female["rs6123756"].genotype, "TT")
+
+        self.assertEqual(female["rs6015286"].chromosome, 20)
+        self.assertEqual(female["rs6015286"].position, 57048415)
+        self.assertEqual(female["rs6015286"].genotype, "--")
+
+        self.assertEqual(female["rs6026400"].chromosome, 20)
+        self.assertEqual(female["rs6026400"].position, 57183524)
+        self.assertEqual(female["rs6026400"].genotype, "CC")
+
+        self.assertEqual(female["i3001754"].chromosome, "MT")
+        self.assertEqual(female["i3001754"].position, 16256)
+        self.assertEqual(female["i3001754"].genotype, "A")
+
+        self.assertEqual(female["i3001755"].chromosome, "MT")
+        self.assertEqual(female["i3001755"].position, 16257)
+        self.assertEqual(female["i3001755"].genotype, "--")
+
+        self.assertEqual(female["i3001759"].chromosome, "MT")
+        self.assertEqual(female["i3001759"].position, 16258)
+        self.assertEqual(female["i3001759"].genotype, "--")
+
+        self.assertEqual(female["i3001761"].chromosome, "MT")
+        self.assertEqual(female["i3001761"].position, 16259)
+        self.assertEqual(female["i3001761"].genotype, "--")
+
+        self.assertEqual(female["i3001773"].chromosome, "MT")
+        self.assertEqual(female["i3001773"].position, 16265)
+        self.assertEqual(female["i3001773"].genotype, "T")
+
+        self.assertEqual(female["i4000755"].chromosome, "MT")
+        self.assertEqual(female["i4000755"].position, 16548)
+        self.assertEqual(female["i4000755"].genotype, "C")
+
+        self.assertEqual(female["i4000759"].chromosome, "MT")
+        self.assertEqual(female["i4000759"].position, 16567)
+        self.assertEqual(female["i4000759"].genotype, "G")
+
+        self.assertEqual(female["rs1426654"].chromosome, 15)
+        self.assertEqual(female["rs1426654"].position, 48426484)
+        self.assertEqual(female["rs1426654"].genotype, "AA")
+
+        self.assertEqual(female["rs12913832"].chromosome, 15)
+        self.assertEqual(female["rs12913832"].position, 28365618)
+        self.assertEqual(female["rs12913832"].genotype, "GG")
+
+        self.assertEqual(female["rs28504042"].chromosome, "MT")
+        self.assertEqual(female["rs28504042"].position, 1549)
+        self.assertEqual(female["rs28504042"].genotype, "--")
+
+        self.assertEqual(female["rs3135027"].chromosome, "MT")
+        self.assertEqual(female["rs3135027"].position, 1598)
+        self.assertEqual(female["rs3135027"].genotype, "G")
+
+        self.assertEqual(female["rs671"].chromosome, 12)
+        self.assertEqual(female["rs671"].position, 112241766)
+        self.assertEqual(female["rs671"].genotype, "GG")
 
     def test_ethnicity(self):
         self.assertEqual(self.genome.ethnicity, "")
