@@ -245,7 +245,7 @@ details.
     :target: http://www.gnu.org/licenses/old-licenses/gpl-3.en.html
     :alt: Project License
 
-.. |versions| image:: https://img.shields.io/badge/python-2%2B%2C%203%2B-blue.svg
+.. |versions| image:: https://img.shields.io/badge/python-2.7%2B%2C%203%2B-blue.svg
     :target: https://pypi.python.org/pypi/arv/
     :alt: Supported Python versions
 
