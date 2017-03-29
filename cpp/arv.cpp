@@ -289,7 +289,7 @@ struct Genome::GenomeImpl {
 
 Genome::Genome():
   y_chromosome(false),
-  pimpl(new GenomeImpl(1000000))
+  pimpl(new GenomeImpl(0))
 {
 }
 

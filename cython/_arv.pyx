@@ -517,7 +517,7 @@ def load(filename, name=None, ethnicity=None, size_t initial_size=1000003,
     Returns:
         A ``Genome``.
     """
-    genome = Genome(initial_size)
+    cdef Genome genome = Genome(0)
     parse_file(filename.encode("utf-8"), genome._genome)
     genome.name = name if name is not None else filename
     genome.ethnicity = ethnicity if ethnicity is not None else ""
