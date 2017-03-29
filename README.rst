@@ -24,8 +24,8 @@ For my genome, this little program produces::
 
 The parser is insanely fast, having been written in finely tuned C++, exposed
 via Cython. A 2013 Xeon machine I've tested on parses a 24 Mb file into a hash
-table in 93 ms! (It originally did it in 70ms with g++ 5, so I'll go back and
-find out why it regressed)
+table in about 78 ms. The newer 23andMe files are smaller, and parses in a mere
+62 ms!
 
 Works with Python 2.7+ and 3+. Installable with pip!
 

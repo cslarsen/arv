@@ -29,13 +29,20 @@ class ArvOptions:
 
         if not ArvOptions.debug:
             # Make the binary a good bit faster
-            flags += ["-march=native", "-mtune=native", "-O2"]
+            flags += [
+                "-fdata-sections", # small impact, i.e. not important
+                "-ffunction-sections", # small impact, i.e. not important
+                "-fno-rtti", # small impact, i.e. not important
+                "-march=native", # important
+                "-mtune=native", # important, but could use march=generic
+                "-O3", # important, but O2 also works fine
+            ]
 
             if not ArvOptions.debug_symbols:
                 flags += ["-g0"]
 
             if ArvOptions.hidden_symbols:
-                flags += ["-fvisibility=hidden",
+                flags += ["-fvisibility=hidden", # I like clean binaries
                           "-include", "cpp/public_py_init_sym.hpp"]
         return flags
 
