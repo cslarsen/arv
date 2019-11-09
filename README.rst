@@ -128,7 +128,7 @@ The genome provides a ``dict``-like interface. To get a given SNP, just enter th
 
 .. code:: python
 
-    >>> genome["rs123"]
+    >>> snp = genome["rs123"]
     >>> snp
     <SNP: chromosome=7 position=24966446 genotype='AA'>
     >>> snp.chromosome
