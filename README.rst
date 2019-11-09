@@ -201,19 +201,19 @@ You can also invoke ``arv`` from the command line:
 
 .. code:: bash
 
-		$ python -m arv --help
+    $ python -m arv --help
 
 For example, you can drop into a Python REPL like so:
 
 .. code:: bash
 
-		$ python -m arv --repl genome.txt
-		genome.txt ... 960614 SNPs, male
-		Type `genome` to see the parsed 23andMe raw genome file
-		>>> genome
-		<Genome: SNPs=960614, name='genome.txt'>
-		>>> genome["rs123"]
-		<SNP: chromosome=7 position=24966446 genotype=<Genotype 'AA'>>
+    $ python -m arv --repl genome.txt
+    genome.txt ... 960614 SNPs, male
+    Type `genome` to see the parsed 23andMe raw genome file
+    >>> genome
+    <Genome: SNPs=960614, name='genome.txt'>
+    >>> genome["rs123"]
+    <SNP: chromosome=7 position=24966446 genotype=<Genotype 'AA'>>
 
 If you specify several files, you can access them through the variable
 ``genomes``.
@@ -222,10 +222,10 @@ The example at the top of this document can be run with ``--example``:
 
 .. code:: bash
 
-		$ python -m arv --example genome.txt
-		genome.txt ... 960614 SNPs, male
+    $ python -m arv --example genome.txt
+    genome.txt ... 960614 SNPs, male
 
-		genome.txt ... A man with blue eyes and light skin
+    genome.txt ... A man with blue eyes and light skin
 
 License
 =======
